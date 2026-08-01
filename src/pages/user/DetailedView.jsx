@@ -31,6 +31,30 @@ const galleryImages = [
     alt: "Luxurious Bathroom"
   }
 ];
+
+const faqs = [
+  {
+    question: "What are the check-in and check-out times?",
+    answer: "Check-in is from 2:00 PM, and check-out is until 12:00 PM (noon). Early check-in or late check-out is subject to availability and may incur additional charges."
+  },
+  {
+    question: "Is there a free airport shuttle service?",
+    answer: "Yes, we provide a complimentary 24/7 airport shuttle service. It departs every 30 minutes. Please contact the front desk upon arrival or provide your flight details in advance."
+  },
+  {
+    question: "Do you offer free Wi-Fi?",
+    answer: "Yes, high-speed Wi-Fi is available complimentary in all guest rooms and public areas across the property."
+  },
+  {
+    question: "Can I cancel my reservation for free?",
+    answer: "Cancellation policies vary by room type and rate selected. Rooms marked with 'Free cancellation' can be canceled up to 24 hours before your stay without penalty."
+  },
+  {
+    question: "Is there parking available at the hotel?",
+    answer: "Yes, we offer complimentary secure parking for all staying guests. Valet service is also available upon request."
+  }
+];
+
 const availableRooms = [
   {
     id: 1,
@@ -138,15 +162,27 @@ const renderAmenityIcon = (icon) => {
   }
 };
 
+const getDaysInMonth = (year, month) => {
+    return new Date(year, month + 1, 0).getDate();
+};
+
+const getFirstDayOfMonth = (year, month) => {
+    return new Date(year, month, 1).getDay();
+};
+
 export default function DetailedView() {
   const [activePhotoIndex, setActivePhotoIndex] = useState(0);
   const [showReviewsModal, setShowReviewsModal] = useState(false);
   const [showAmenitiesModal, setShowAmenitiesModal] = useState(false);
   const [showLocationModal, setShowLocationModal] = useState(false);
+  const [openFaqIndex, setOpenFaqIndex] = useState(null);
+  const [showCalendar, setShowCalendar] = useState(false);
+  const [showOccupancy, setShowOccupancy] = useState(false);
+  const [currentMonthOffset, setCurrentMonthOffset] = useState(0);
 
   const [searchState, setSearchState] = useState({
-    checkIn: '12 Aug 2026',
-    checkOut: '14 Aug 2026',
+    checkIn: '2026-08-12',
+    checkOut: '2026-08-14',
     adults: 2,
     children: 0,
     rooms: 1,
@@ -178,6 +214,111 @@ export default function DetailedView() {
     return new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', maximumFractionDigits: 0 }).format(price);
   };
 
+  const formatDateDisplay = (dateString) => {
+    if (!dateString) return '';
+    const date = new Date(dateString);
+    const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+    const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    return `${days[date.getDay()]} ${date.getDate()} ${months[date.getMonth()]}`;
+  };
+
+  const handleDateClick = (year, month, day) => {
+    const yyyy = year;
+    const mm = String(month + 1).padStart(2, '0');
+    const dd = String(day).padStart(2, '0');
+    const dateStr = `${yyyy}-${mm}-${dd}`;
+
+    if (!searchState.checkIn || (searchState.checkIn && searchState.checkOut)) {
+      setSearchState(prev => ({ ...prev, checkIn: dateStr, checkOut: '' }));
+    } else {
+      const checkInDate = new Date(searchState.checkIn);
+      const selectedDate = new Date(dateStr);
+      if (selectedDate < checkInDate) {
+        setSearchState(prev => ({ ...prev, checkIn: dateStr }));
+      } else {
+        setSearchState(prev => ({ ...prev, checkOut: dateStr }));
+        setShowCalendar(false);
+      }
+    }
+  };
+
+  const renderMonth = (offset, isExtraMonth = false) => {
+    const today = new Date();
+    const targetDate = new Date(today.getFullYear(), today.getMonth() + offset, 1);
+    const year = targetDate.getFullYear();
+    const month = targetDate.getMonth();
+
+    const monthNames = [
+      "January", "February", "March", "April", "May", "June",
+      "July", "August", "September", "October", "November", "December"
+    ];
+
+    const daysInMonth = getDaysInMonth(year, month);
+    const firstDay = getFirstDayOfMonth(year, month);
+
+    const dayCells = [];
+    for (let i = 0; i < firstDay; i++) {
+      dayCells.push(<div key={`pad-${i}`} className="h-8 w-8"></div>);
+    }
+
+    for (let day = 1; day <= daysInMonth; day++) {
+      const yyyy = year;
+      const mm = String(month + 1).padStart(2, '0');
+      const dd = String(day).padStart(2, '0');
+      const cellDateStr = `${yyyy}-${mm}-${dd}`;
+      const cellDate = new Date(cellDateStr);
+
+      const isCheckIn = searchState.checkIn === cellDateStr;
+      const isCheckOut = searchState.checkOut === cellDateStr;
+      const isInRange = searchState.checkIn && searchState.checkOut && cellDate > new Date(searchState.checkIn) && cellDate < new Date(searchState.checkOut);
+
+      let cellClass = "h-8 w-8 flex items-center justify-center rounded-full text-xs sm:text-[13px] font-semibold cursor-pointer transition-colors relative ";
+
+      if (isCheckIn || isCheckOut) {
+        cellClass += "bg-[#003B95] text-white";
+      } else if (isInRange) {
+        cellClass += "bg-blue-50 dark:bg-slate-800 text-gray-800 dark:text-white rounded-none";
+      } else {
+        const compareToday = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+        const isPast = cellDate < compareToday;
+        if (isPast) {
+          cellClass += "text-gray-300 dark:text-slate-700 cursor-not-allowed pointer-events-none";
+        } else {
+          cellClass += "text-gray-700 dark:text-gray-200 hover:bg-gray-150 dark:hover:bg-slate-800";
+        }
+      }
+
+      dayCells.push(
+        <button
+          key={day}
+          type="button"
+          onClick={() => handleDateClick(year, month, day)}
+          className={cellClass}
+        >
+          {day}
+        </button>
+      );
+    }
+
+    return (
+      <div className={`flex-1 min-w-[210px] sm:min-w-[240px] ${isExtraMonth ? 'sm:hidden' : ''}`}>
+        <h4 className="text-center font-bold text-gray-800 dark:text-white mb-3 text-sm sm:text-base">
+          {monthNames[month]} {year}
+        </h4>
+        <div className="grid grid-cols-7 gap-y-1 text-center mb-2 hidden sm:grid">
+          {["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"].map(d => (
+            <span key={d} className="text-xs font-semibold text-gray-400 dark:text-slate-500 uppercase">
+              {d}
+            </span>
+          ))}
+        </div>
+        <div className="grid grid-cols-7 gap-y-1 justify-items-center">
+          {dayCells}
+        </div>
+      </div>
+    );
+  };
+
   const calculateTotalRoomsPrice = () => {
     return selectedRooms.reduce((total, room) => total + (room.price * searchState.nights), 0);
   };
@@ -189,6 +330,177 @@ export default function DetailedView() {
   return (
     <UserLayout>
       <section className="max-w-[1320px] mx-auto px-3 sm:px-6 pt-24 sm:pt-28 pb-16">
+
+        {/* Editable Booking Search Bar */}
+        <div className="mb-6 mx-auto max-w-3xl bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 rounded-full p-1.5 sm:p-2 shadow-sm flex flex-row items-center gap-1.5 sm:gap-4 relative z-20">
+          <div className="flex-1 w-full grid grid-cols-3 divide-x divide-gray-200 dark:divide-slate-700 min-w-0">
+            <div 
+              className="px-2 sm:px-4 py-1.5 sm:py-1 cursor-pointer hover:bg-gray-50 dark:hover:bg-slate-800 rounded-l-full transition-colors min-w-0"
+              onClick={() => {
+                setShowCalendar(!showCalendar);
+                setShowOccupancy(false);
+              }}
+            >
+              <p className="text-[8px] sm:text-[10px] font-bold text-gray-500 uppercase tracking-wider mb-0.5">Check-in</p>
+              <p className="text-[10px] sm:text-sm font-semibold text-gray-900 dark:text-white truncate">{searchState.checkIn ? formatDateDisplay(searchState.checkIn) : 'Add date'}</p>
+            </div>
+            <div 
+              className="px-2 sm:px-4 py-1.5 sm:py-1 cursor-pointer hover:bg-gray-50 dark:hover:bg-slate-800 transition-colors min-w-0"
+              onClick={() => {
+                setShowCalendar(!showCalendar);
+                setShowOccupancy(false);
+              }}
+            >
+              <p className="text-[8px] sm:text-[10px] font-bold text-gray-500 uppercase tracking-wider mb-0.5">Check-out</p>
+              <p className="text-[10px] sm:text-sm font-semibold text-gray-900 dark:text-white truncate">{searchState.checkOut ? formatDateDisplay(searchState.checkOut) : 'Add date'}</p>
+            </div>
+            <div 
+              className="px-2 sm:px-4 py-1.5 sm:py-1 cursor-pointer hover:bg-gray-50 dark:hover:bg-slate-800 rounded-r-full transition-colors min-w-0"
+              onClick={() => {
+                setShowOccupancy(!showOccupancy);
+                setShowCalendar(false);
+              }}
+            >
+              <p className="text-[8px] sm:text-[10px] font-bold text-gray-500 uppercase tracking-wider mb-0.5">Guests</p>
+              <p className="text-[10px] sm:text-sm font-semibold text-gray-900 dark:text-white truncate">
+                {searchState.adults} Adults {searchState.children > 0 ? `· ${searchState.children} Kids` : ''}
+              </p>
+            </div>
+          </div>
+          <button className="w-auto bg-[#2563eb] hover:bg-blue-700 text-white px-3 sm:px-6 py-2 sm:py-2 rounded-full font-bold text-[10px] sm:text-sm transition-all shadow-sm shrink-0">
+            Search
+          </button>
+        </div>
+
+        {/* Calendar Popover */}
+        {showCalendar && (
+          <div className="absolute top-[320px] sm:top-[160px] left-1/2 -translate-x-1/2 w-[94vw] max-w-[580px] bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 rounded-2xl shadow-2xl p-3 sm:p-4 z-50">
+            <div className="flex border-b border-gray-150 dark:border-slate-800 mb-3 select-none">
+              <button type="button" className="px-4 py-2 border-b-2 border-[#2563eb] font-bold text-sm text-[#2563eb] dark:text-blue-400">
+                Calendar
+              </button>
+            </div>
+            <div className="grid grid-cols-7 gap-y-1 text-center mb-2 sm:hidden px-1 text-[11px] font-bold text-gray-400 dark:text-slate-500 uppercase">
+              {["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"].map(d => (
+                <span key={d}>{d}</span>
+              ))}
+            </div>
+            <div className="flex flex-col sm:flex-row gap-4 justify-between relative pt-1 max-h-[260px] overflow-y-auto sm:max-h-none sm:overflow-visible pr-1 sm:pr-0 scrollbar-none">
+              {renderMonth(currentMonthOffset)}
+              <div className="hidden sm:block w-px bg-gray-100 dark:bg-slate-800 self-stretch" />
+              {renderMonth(currentMonthOffset + 1)}
+              {renderMonth(currentMonthOffset + 2, true)}
+
+              <button
+                type="button"
+                onClick={() => setCurrentMonthOffset(currentMonthOffset - 1)}
+                className="hidden sm:flex absolute left-0 -top-2 w-8 h-8 rounded-full border border-gray-250 dark:border-slate-700 bg-white dark:bg-slate-800 items-center justify-center text-gray-600 dark:text-gray-300 hover:bg-gray-50 shadow-sm transition-colors z-10"
+              >
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+                </svg>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => setCurrentMonthOffset(currentMonthOffset + 1)}
+                className="hidden sm:flex absolute right-0 -top-2 w-8 h-8 rounded-full border border-gray-250 dark:border-slate-700 bg-white dark:bg-slate-800 items-center justify-center text-gray-600 dark:text-gray-300 hover:bg-gray-50 shadow-sm transition-colors z-10"
+              >
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+                </svg>
+              </button>
+            </div>
+          </div>
+        )}
+
+        {/* Backdrop for Popovers */}
+        {(showCalendar || showOccupancy) && (
+          <div 
+            className="fixed inset-0 z-40 bg-transparent" 
+            onClick={() => {
+              setShowCalendar(false);
+              setShowOccupancy(false);
+            }} 
+          />
+        )}
+
+        {/* Occupancy Popover */}
+        {showOccupancy && (
+          <div className="absolute top-[320px] sm:top-[160px] left-1/2 -translate-x-1/2 w-[90vw] max-w-[280px] mt-1 bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 rounded-2xl shadow-2xl p-3.5 z-50">
+            {/* Adults Counter */}
+            <div className="flex items-center justify-between mb-3">
+              <span className="font-bold text-gray-800 dark:text-white text-xs">Adults</span>
+              <div className="border border-gray-200 dark:border-slate-700 rounded-md py-1 px-2.5 flex items-center justify-between gap-3 w-[85px]">
+                <button
+                  type="button"
+                  onClick={() => setSearchState(prev => ({ ...prev, adults: Math.max(1, prev.adults - 1) }))}
+                  className={`text-base font-normal select-none leading-none ${searchState.adults <= 1 ? 'text-gray-300 dark:text-slate-700 cursor-not-allowed' : 'text-[#2563eb] dark:text-blue-400 cursor-pointer'}`}
+                  disabled={searchState.adults <= 1}
+                >
+                  —
+                </button>
+                <span className="font-bold text-gray-800 dark:text-white text-xs">{searchState.adults}</span>
+                <button
+                  type="button"
+                  onClick={() => setSearchState(prev => ({ ...prev, adults: prev.adults + 1 }))}
+                  className="text-base font-normal text-[#2563eb] dark:text-blue-400 cursor-pointer select-none leading-none"
+                >
+                  +
+                </button>
+              </div>
+            </div>
+
+            {/* Children Counter */}
+            <div className="flex items-center justify-between mb-3">
+              <span className="font-bold text-gray-800 dark:text-white text-xs">Children</span>
+              <div className="border border-gray-200 dark:border-slate-700 rounded-md py-1 px-2.5 flex items-center justify-between gap-3 w-[85px]">
+                <button
+                  type="button"
+                  onClick={() => setSearchState(prev => ({ ...prev, children: Math.max(0, prev.children - 1) }))}
+                  className={`text-base font-normal select-none leading-none ${searchState.children <= 0 ? 'text-gray-300 dark:text-slate-700 cursor-not-allowed' : 'text-[#2563eb] dark:text-blue-400 cursor-pointer'}`}
+                  disabled={searchState.children <= 0}
+                >
+                  —
+                </button>
+                <span className="font-bold text-gray-800 dark:text-white text-xs">{searchState.children}</span>
+                <button
+                  type="button"
+                  onClick={() => setSearchState(prev => ({ ...prev, children: prev.children + 1 }))}
+                  className="text-base font-normal text-[#2563eb] dark:text-blue-400 cursor-pointer select-none leading-none"
+                >
+                  +
+                </button>
+              </div>
+            </div>
+
+            {/* Compact Travelling with pets? */}
+            <div className="flex items-center justify-between py-2 border-t border-gray-150 dark:border-slate-800 mt-1">
+              <span className="font-semibold text-gray-800 dark:text-white text-xs">Travelling with pets?</span>
+              <button
+                type="button"
+                onClick={() => setSearchState(prev => ({ ...prev, withPets: !prev.withPets }))}
+                className={`relative inline-flex h-4.5 w-8 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none ${searchState.withPets ? 'bg-[#2563eb]' : 'bg-gray-200 dark:bg-slate-700'}`}
+              >
+                <span
+                  className={`pointer-events-none inline-block h-3.5 w-3.5 transform rounded-full bg-white shadow-xs transition duration-200 ease-in-out ${searchState.withPets ? 'translate-x-3.5' : 'translate-x-0'}`}
+                />
+              </button>
+            </div>
+
+            <p className="text-[10px] text-gray-400 dark:text-gray-500 leading-tight mt-0.5">
+              Assistance animals aren't considered pets.
+            </p>
+
+            <button
+              type="button"
+              onClick={() => setShowOccupancy(false)}
+              className="mt-3 border border-[#2563eb] text-[#2563eb] hover:bg-blue-50 dark:hover:bg-slate-800 dark:border-blue-400 dark:text-blue-400 font-bold py-1.5 px-3 rounded-lg w-full text-center transition-colors block text-xs select-none"
+            >
+              Done
+            </button>
+          </div>
+        )}
 
         {/* Header: Title + Ratings */}
         <div className="mb-6">
@@ -271,28 +583,7 @@ export default function DetailedView() {
           </div>
         </div>
 
-        {/* Editable Booking Search Bar */}
-        <div className="mb-6 bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 rounded-xl sm:rounded-full p-2 sm:p-2 shadow-sm flex flex-col sm:flex-row items-center gap-2 sm:gap-4 relative z-20">
-          <div className="flex-1 w-full grid grid-cols-1 sm:grid-cols-3 divide-y sm:divide-y-0 sm:divide-x divide-gray-200 dark:divide-slate-700">
-            <div className="px-4 py-2 sm:py-1 cursor-pointer hover:bg-gray-50 dark:hover:bg-slate-800 rounded-t-lg sm:rounded-l-full sm:rounded-tr-none transition-colors">
-              <p className="text-[10px] font-bold text-gray-500 uppercase tracking-wider mb-0.5">Check-in</p>
-              <p className="text-sm font-semibold text-gray-900 dark:text-white">{searchState.checkIn}</p>
-            </div>
-            <div className="px-4 py-2 sm:py-1 cursor-pointer hover:bg-gray-50 dark:hover:bg-slate-800 transition-colors">
-              <p className="text-[10px] font-bold text-gray-500 uppercase tracking-wider mb-0.5">Check-out</p>
-              <p className="text-sm font-semibold text-gray-900 dark:text-white">{searchState.checkOut}</p>
-            </div>
-            <div className="px-4 py-2 sm:py-1 cursor-pointer hover:bg-gray-50 dark:hover:bg-slate-800 rounded-b-lg sm:rounded-r-full sm:rounded-bl-none transition-colors">
-              <p className="text-[10px] font-bold text-gray-500 uppercase tracking-wider mb-0.5">Guests & Rooms</p>
-              <p className="text-sm font-semibold text-gray-900 dark:text-white">
-                {searchState.adults} Adults · {searchState.children > 0 ? `${searchState.children} Children · ` : ''}{searchState.rooms} Room
-              </p>
-            </div>
-          </div>
-          <button className="w-full sm:w-auto bg-[#2563eb] hover:bg-blue-700 text-white px-6 py-3 sm:py-2 rounded-lg sm:rounded-full font-bold text-sm transition-all shadow-sm shrink-0">
-            Update Search
-          </button>
-        </div>
+
       
         <div className="mb-4 sm:mb-6">
           <div className="flex md:grid md:grid-cols-12 gap-2 sm:gap-3 overflow-x-auto md:overflow-visible snap-x snap-mandatory scrollbar-none pb-2 md:pb-0">
@@ -443,6 +734,37 @@ export default function DetailedView() {
                   </div>
                   );
                 })}
+              </div>
+            </div>
+
+            {/* FAQ Section */}
+            <div id="faq" className="scroll-mt-32 mb-10 sm:mb-14">
+              <h2 className="text-lg sm:text-xl font-extrabold text-gray-900 dark:text-white mb-4 sm:mb-6">Frequently Asked Questions</h2>
+              <div className="bg-white dark:bg-slate-900 rounded-2xl shadow-sm border border-gray-200 dark:border-slate-800 divide-y divide-gray-200 dark:divide-slate-800">
+                {faqs.map((faq, index) => (
+                  <div key={index} className="group">
+                    <button 
+                      onClick={() => setOpenFaqIndex(openFaqIndex === index ? null : index)}
+                      className="w-full text-left px-5 py-4 sm:px-6 sm:py-5 flex items-center justify-between focus:outline-none focus-visible:bg-gray-50 dark:focus-visible:bg-slate-800 transition-colors"
+                    >
+                      <span className="font-bold text-gray-900 dark:text-white text-sm sm:text-base pr-4">
+                        {faq.question}
+                      </span>
+                      <span className={`text-gray-400 shrink-0 transition-transform duration-200 ${openFaqIndex === index ? 'rotate-180' : ''}`}>
+                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" /></svg>
+                      </span>
+                    </button>
+                    <div 
+                      className={`overflow-hidden transition-all duration-300 ease-in-out ${
+                        openFaqIndex === index ? 'max-h-40 opacity-100' : 'max-h-0 opacity-0'
+                      }`}
+                    >
+                      <p className="px-5 pb-4 sm:px-6 sm:pb-5 text-sm text-gray-600 dark:text-gray-300 leading-relaxed pt-1">
+                        {faq.answer}
+                      </p>
+                    </div>
+                  </div>
+                ))}
               </div>
             </div>
           </div>
