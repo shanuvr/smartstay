@@ -102,6 +102,90 @@ const amenities = [
   { label: 'Airport Shuttle', icon: 'shuttle' }
 ];
 
+const allFacilities = [
+  {
+    category: "Internet access",
+    icon: "M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z", // Wifi icon alternative
+    items: [
+      "Free Wi-Fi in all rooms!", "Internet", "Internet [LAN]", "Internet services", "Wi-Fi in public areas"
+    ]
+  },
+  {
+    category: "Things to do, ways to relax",
+    icon: "M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z", // Relax icon
+    items: [
+      "Body scrub", "Body wrap", "Computer station", "Fitness center", "Foot bath", "Game room", "Garden",
+      "Gym/fitness", "Massage bed", "Nightclub", "On-site entertainment", "Pool facilities", "Pool with view",
+      "Private bath", "Sauna", "Spa", "Spa/sauna", "Steamroom", "Swimming pool", "Swimming pool [outdoor]",
+      "Ticket services", "Tours", "Yoga room"
+    ]
+  },
+  {
+    category: "Cleanliness and safety",
+    icon: "M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z", // Shield icon
+    items: [
+      "Anti-viral cleaning products", "Body thermometer", "Breakfast in room", "Breakfast takeaway service",
+      "Cashless payment service", "Daily disinfection in all rooms", "Daily disinfection in common areas",
+      "Doctor/nurse on call", "First aid kit", "Free face masks", "Guest rooms seal after sanitization",
+      "Hand sanitizer", "Hot water linen and laundry washing", "Hygiene certification",
+      "Individually-wrapped food options", "Physical distancing of at least 1 meter",
+      "Protective screens in common areas", "Room sanitization opt-out available", "Rooms sanitized between stays",
+      "Safe dining setup", "Sanitized kitchen and tableware items", "Shared stationery removed",
+      "Staff trained in safety protocol", "Temperature check for guests and staff"
+    ]
+  },
+  {
+    category: "Dining, drinking, and snacking",
+    icon: "M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z", // Food icon
+    items: [
+      "A la carte breakfast", "A la carte in restaurant", "Alcohol", "Alternative meal arrangement",
+      "Asian breakfast", "Bar", "BBQ facilities", "Bottle of water", "Breakfast [buffet]",
+      "Breakfast [continental]", "Buffet in restaurant", "Chinese cuisine in restaurant",
+      "Coffee/tea in restaurant", "Coffee shop", "Desserts in restaurant", "Happy hour",
+      "International cuisine in restaurant", "Kitchen", "Poolside bar", "Restaurant dinner",
+      "Restaurant lunch", "Restaurants", "Room service [24-hour]", "Salad in restaurant",
+      "Snack bar", "Soup in restaurant", "Vegetarian restaurant", "Western breakfast",
+      "Western cuisine in restaurant"
+    ]
+  },
+  {
+    category: "Services and conveniences",
+    icon: "M10 6H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V8a2 2 0 00-2-2h-5m-4 0V5a2 2 0 114 0v1m-4 0a2 2 0 104 0m-5 8a2 2 0 100-4 2 2 0 000 4zm0 0c1.306 0 2.417.835 2.83 2M9 14a3.001 3.001 0 00-2.83 2M15 11h3m-3 4h2", // Service icon
+    items: [
+      "Air conditioning in public area", "Audio-visual equipment for special events", "Business facilities",
+      "Cash withdrawal", "Concierge", "Contactless check-in/out", "Currency exchange", "Daily housekeeping",
+      "Doorman", "Dry cleaning", "Elevator", "Facilities for disabled guests", "Food delivery",
+      "Gift/souvenir shop", "Grooming service", "Invoice provided", "Ironing service", "Laundry service",
+      "Library", "Lockers", "Luggage storage", "Meeting/banquet facilities", "Meetings", "Safety deposit boxes",
+      "Salon", "Shared lounge/TV area", "Shops", "Smoke-free property", "Smoking area", "Xerox/fax in business center"
+    ]
+  },
+  {
+    category: "For the kids",
+    icon: "M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z", // Kids icon
+    items: [
+      "Kids meal", "Playground"
+    ]
+  },
+  {
+    category: "Access",
+    icon: "M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z", // Key/Access icon
+    items: [
+      "CCTV in common areas", "CCTV outside property", "Check-in/out [express]", "Check-in/out [private]",
+      "Check-in [24-hour]", "Filming locations", "Fire extinguisher", "Front desk [24-hour]", "Hotel chain",
+      "Non-smoking rooms", "Safety/security feature", "Security [24-hour]", "Smoke alarms", "Soundproof rooms"
+    ]
+  },
+  {
+    category: "Getting around",
+    icon: "M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4", // Transport icon
+    items: [
+      "Airport transfer", "Bicycle parking", "Car park [free of charge]", "Car park [on-site]",
+      "Car power charging station", "Rental car", "Shuttle service", "Valet parking"
+    ]
+  }
+];
+
 const renderAmenityIcon = (icon) => {
   const common = "w-5 h-5 text-[#2563eb]";
   switch (icon) {
@@ -174,6 +258,7 @@ export default function DetailedView() {
   const [activePhotoIndex, setActivePhotoIndex] = useState(0);
   const [showReviewsModal, setShowReviewsModal] = useState(false);
   const [showAmenitiesModal, setShowAmenitiesModal] = useState(false);
+  const [showFacilitiesModal, setShowFacilitiesModal] = useState(false);
   const [showLocationModal, setShowLocationModal] = useState(false);
   const [openFaqIndex, setOpenFaqIndex] = useState(null);
   const [showCalendar, setShowCalendar] = useState(false);
@@ -640,7 +725,12 @@ export default function DetailedView() {
           <nav className="flex items-center justify-between sm:justify-start gap-1.5 sm:gap-8 whitespace-nowrap border border-gray-200 dark:border-slate-800 rounded-full px-3 sm:px-10 shadow-sm bg-white dark:bg-slate-900 w-full sm:w-max">
             <a className="py-2 sm:py-3.5 font-bold text-[10px] sm:text-sm text-[#2563eb] border-b-2 border-[#2563eb] transition-all" href="#overview">Overview</a>
             <a className="py-2 sm:py-3.5 font-bold text-[10px] sm:text-sm text-gray-500 hover:text-[#2563eb] transition-all" href="#rooms">Rooms</a>
-            <a className="py-2 sm:py-3.5 font-bold text-[10px] sm:text-sm text-gray-500 hover:text-[#2563eb] transition-all" href="#facilities">Facilities</a>
+            <button
+              onClick={() => setShowFacilitiesModal(true)}
+              className="py-2 sm:py-3.5 font-bold text-[10px] sm:text-sm text-gray-500 hover:text-[#2563eb] transition-all cursor-pointer"
+            >
+              Facilities
+            </button>
             <button
               onClick={() => setShowLocationModal(true)}
               className="py-2 sm:py-3.5 font-bold text-[10px] sm:text-sm text-gray-500 hover:text-[#2563eb] transition-all cursor-pointer"
@@ -853,6 +943,56 @@ export default function DetailedView() {
         </div>
 
       </section>
+
+      {/* Facilities Modal */}
+      {showFacilitiesModal && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6 bg-slate-900/60 backdrop-blur-sm transition-opacity">
+          <div className="bg-white dark:bg-slate-900 rounded-2xl shadow-2xl w-full max-w-2xl max-h-[85vh] flex flex-col overflow-hidden border border-gray-200 dark:border-slate-800 relative animate-in fade-in zoom-in-95 duration-200">
+            {/* Header */}
+            <div className="flex items-center justify-between p-4 sm:p-5 sm:px-6 border-b border-gray-100 dark:border-slate-800 shrink-0">
+              <h2 className="text-xl font-extrabold text-gray-900 dark:text-white">All Facilities</h2>
+              <button 
+                onClick={() => setShowFacilitiesModal(false)}
+                className="p-1.5 sm:p-2 rounded-full hover:bg-gray-100 dark:hover:bg-slate-800 text-gray-500 transition-colors"
+              >
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M6 18L18 6M6 6l12 12" /></svg>
+              </button>
+            </div>
+            
+            {/* Body */}
+            <div className="flex-1 overflow-y-auto p-4 sm:p-5 sm:px-6 custom-scrollbar">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6 pb-6">
+                {allFacilities.map((facility, index) => (
+                  <div key={index} className="flex flex-col">
+                    <div className="flex items-center gap-2.5 mb-2.5">
+                      <div className="flex items-center justify-center w-7 h-7 rounded-lg bg-blue-50 dark:bg-blue-900/20 text-[#2563eb] dark:text-blue-400">
+                        <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d={facility.icon} />
+                        </svg>
+                      </div>
+                      <h3 className="text-base sm:text-lg font-bold text-gray-900 dark:text-white">{facility.category}</h3>
+                    </div>
+                    <ul className="grid grid-cols-1 gap-y-1.5 text-sm text-gray-600 dark:text-gray-400 ml-[38px]">
+                      {facility.items.slice(0, 5).map((item, idx) => (
+                        <li key={idx} className="flex items-start gap-1.5 leading-tight">
+                          <span className="text-[#2563eb] dark:text-blue-400 mt-[3px] shrink-0">•</span>
+                          <span>{item}</span>
+                        </li>
+                      ))}
+                      {facility.items.length > 5 && (
+                        <li className="flex items-start gap-1.5 leading-tight text-xs text-gray-400 italic mt-0.5">
+                          <span className="text-gray-300 dark:text-slate-600 mt-[3px] shrink-0">•</span>
+                          <span>+ {facility.items.length - 5} more options</span>
+                        </li>
+                      )}
+                    </ul>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </UserLayout>
   );
 }
