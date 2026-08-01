@@ -1,11 +1,17 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import UserLayout from '../../laybouts/Userlayout';
+import Card from '../../components/user/Card';
+
+const getDaysInMonth = (year, month) => {
+  return new Date(year, month + 1, 0).getDate();
+};
+
+const getFirstDayOfMonth = (year, month) => {
+  return new Date(year, month, 1).getDay();
+};
 
 export default function Listing({ onlyShowFavorites = false }) {
-  const navigate = useNavigate();
   const [filterOpen, setFilterOpen] = useState(false);
-  const [activeImageIndices, setActiveImageIndices] = useState({});
   const [activeToggle, setActiveToggle] = useState('general');
   const [favorites, setFavorites] = useState(() => {
     try {
@@ -15,6 +21,124 @@ export default function Listing({ onlyShowFavorites = false }) {
       return [];
     }
   });
+  const [minBudget, setMinBudget] = useState(700);
+  const [maxBudget, setMaxBudget] = useState(9000);
+  const [destination, setDestination] = useState('Hyderabad');
+  const [checkIn, setCheckIn] = useState('');
+  const [checkOut, setCheckOut] = useState('');
+  const [showCalendar, setShowCalendar] = useState(false);
+  const [currentMonthOffset, setCurrentMonthOffset] = useState(0);
+  const [showOccupancy, setShowOccupancy] = useState(false);
+  const [adults, setAdults] = useState(2);
+  const [children, setChildren] = useState(0);
+  const [rooms, setRooms] = useState(1);
+  const [withPets, setWithPets] = useState(false);
+
+  const formatDateDisplay = (dateString) => {
+    if (!dateString) return '';
+    const date = new Date(dateString);
+    const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+    const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    return `${days[date.getDay()]} ${date.getDate()} ${months[date.getMonth()]}`;
+  };
+
+  const handleDateClick = (year, month, day) => {
+    const yyyy = year;
+    const mm = String(month + 1).padStart(2, '0');
+    const dd = String(day).padStart(2, '0');
+    const dateStr = `${yyyy}-${mm}-${dd}`;
+
+    if (!checkIn || (checkIn && checkOut)) {
+      setCheckIn(dateStr);
+      setCheckOut('');
+    } else {
+      const checkInDate = new Date(checkIn);
+      const selectedDate = new Date(dateStr);
+      if (selectedDate < checkInDate) {
+        setCheckIn(dateStr);
+      } else {
+        setCheckOut(dateStr);
+        setShowCalendar(false);
+      }
+    }
+  };
+
+  const renderMonth = (offset, isExtraMonth = false) => {
+    const today = new Date();
+    const targetDate = new Date(today.getFullYear(), today.getMonth() + offset, 1);
+    const year = targetDate.getFullYear();
+    const month = targetDate.getMonth();
+
+    const monthNames = [
+      "January", "February", "March", "April", "May", "June",
+      "July", "August", "September", "October", "November", "December"
+    ];
+
+    const daysInMonth = getDaysInMonth(year, month);
+    const firstDay = getFirstDayOfMonth(year, month);
+
+    const dayCells = [];
+    for (let i = 0; i < firstDay; i++) {
+      dayCells.push(<div key={`pad-${i}`} className="h-8 w-8"></div>);
+    }
+
+    for (let day = 1; day <= daysInMonth; day++) {
+      const yyyy = year;
+      const mm = String(month + 1).padStart(2, '0');
+      const dd = String(day).padStart(2, '0');
+      const cellDateStr = `${yyyy}-${mm}-${dd}`;
+      const cellDate = new Date(cellDateStr);
+
+      const isCheckIn = checkIn === cellDateStr;
+      const isCheckOut = checkOut === cellDateStr;
+      const isInRange = checkIn && checkOut && cellDate > new Date(checkIn) && cellDate < new Date(checkOut);
+
+      let cellClass = "h-8 w-8 flex items-center justify-center rounded-full text-xs sm:text-[13px] font-semibold cursor-pointer transition-colors relative ";
+
+      if (isCheckIn || isCheckOut) {
+        cellClass += "bg-[#003B95] text-white";
+      } else if (isInRange) {
+        cellClass += "bg-blue-50 dark:bg-slate-800 text-gray-800 dark:text-white rounded-none";
+      } else {
+        const compareToday = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+        const isPast = cellDate < compareToday;
+        if (isPast) {
+          cellClass += "text-gray-300 dark:text-slate-700 cursor-not-allowed pointer-events-none";
+        } else {
+          cellClass += "text-gray-700 dark:text-gray-200 hover:bg-gray-150 dark:hover:bg-slate-800";
+        }
+      }
+
+      dayCells.push(
+        <button
+          key={day}
+          type="button"
+          onClick={() => handleDateClick(year, month, day)}
+          className={cellClass}
+        >
+          {day}
+        </button>
+      );
+    }
+
+    return (
+      <div className={`flex-1 min-w-[210px] sm:min-w-[240px] ${isExtraMonth ? 'sm:hidden' : ''}`}>
+        <h4 className="text-center font-bold text-gray-800 dark:text-white mb-3 text-sm sm:text-base">
+          {monthNames[month]} {year}
+        </h4>
+        <div className="grid grid-cols-7 gap-y-1 text-center mb-2 hidden sm:grid">
+          {["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"].map(d => (
+            <span key={d} className="text-xs font-semibold text-gray-400 dark:text-slate-500 uppercase">
+              {d}
+            </span>
+          ))}
+        </div>
+        <div className="grid grid-cols-7 gap-y-1 justify-items-center">
+          {dayCells}
+        </div>
+      </div>
+    );
+  };
 
   const toggleFavorite = (e, id) => {
     e.stopPropagation();
@@ -187,79 +311,66 @@ export default function Listing({ onlyShowFavorites = false }) {
     ? hotels.filter(r => favorites.includes(r.id))
     : hotels;
 
-  const handleNextImage = (e, hotelId, imagesLength) => {
-    e.stopPropagation();
-    setActiveImageIndices(prev => {
-      const curr = prev[hotelId] || 0;
-      return { ...prev, [hotelId]: (curr + 1) % imagesLength };
-    });
-  };
-
-  const handlePrevImage = (e, hotelId, imagesLength) => {
-    e.stopPropagation();
-    setActiveImageIndices(prev => {
-      const curr = prev[hotelId] || 0;
-      return { ...prev, [hotelId]: (curr - 1 + imagesLength) % imagesLength };
-    });
-  };
-
-  // Helper function to render SVG icons for amenities
-  const renderAmenityIcon = (amenity) => {
-    switch (amenity) {
-      case 'WiFi':
-        return (
-          <svg className="w-2.5 h-2.5 sm:w-3 sm:h-3 text-gray-500" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" d="M8.111 16.404a5.5 5.5 0 017.778 0M12 20h.01m-7.08-7.071a9.5 9.5 0 0114.142 0M6.228 6.228a14.5 14.5 0 0120.544 0" />
-          </svg>
-        );
-      case 'Parking':
-        return (
-          <svg className="w-2.5 h-2.5 sm:w-3 sm:h-3 text-gray-500" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4" />
-          </svg>
-        );
-      case 'AC':
-        return (
-          <svg className="w-2.5 h-2.5 sm:w-3 sm:h-3 text-gray-500" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364-6.364l-.707.707M6.343 17.657l-.707.707m0-12.728l.707.707m11.314 11.314l.707.707M12 8a4 4 0 100 8 4 4 0 000-8z" />
-          </svg>
-        );
-      case 'Pool':
-        return (
-          <svg className="w-2.5 h-2.5 sm:w-3 sm:h-3 text-gray-500" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 9h16.5m-16.5 3.75h16.5m-16.5 3.75h16.5" />
-          </svg>
-        );
-      case 'Spa':
-        return (
-          <svg className="w-2.5 h-2.5 sm:w-3 sm:h-3 text-gray-500" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" d="M12 21a9 9 0 100-18 9 9 0 000 18z" />
-          </svg>
-        );
-      case 'Gym':
-        return (
-          <svg className="w-2.5 h-2.5 sm:w-3 sm:h-3 text-gray-500" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 13.5l10.5-10.5m-10.5 0l10.5 10.5" />
-          </svg>
-        );
-      case 'Bar':
-        return (
-          <svg className="w-2.5 h-2.5 sm:w-3 sm:h-3 text-gray-500" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-          </svg>
-        );
-      default:
-        return (
-          <svg className="w-2.5 h-2.5 sm:w-3 sm:h-3 text-gray-500" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-          </svg>
-        );
-    }
-  };
+  const histogramBars = [12, 28, 42, 58, 78, 65, 45, 72, 88, 68, 52, 38, 28, 18, 32, 58, 82, 70, 52, 32, 22, 38, 62, 48, 28, 18, 28, 42, 58, 68, 78, 52, 32, 22, 32, 52, 72, 85, 62, 38, 28, 18, 12, 22, 38, 48, 38, 28, 18, 8, 12, 18, 28, 32, 28, 22, 18, 12, 8, 18, 32, 48, 62, 52, 32, 18, 12, 22, 38, 52, 42, 28, 18, 8, 5, 12, 22, 32, 28, 18, 12, 8];
 
   // Shared filter content used in both sidebar and mobile drawer
   const filterContent = (
     <>
+      {/* Budget */}
+      <div className="mb-3 pb-3 border-b border-gray-100 dark:border-slate-800">
+        <h3 className="text-sm font-bold text-gray-900 dark:text-white mb-1">Your budget (per night)</h3>
+        <div className="text-[13px] text-[#003B95] dark:text-blue-400 font-semibold mb-2">
+          ₹ {minBudget.toLocaleString('en-IN')} – ₹ {maxBudget.toLocaleString('en-IN')}+
+        </div>
+
+        {/* Histogram */}
+        <div className="flex items-end gap-[1.5px] h-10 mb-2 w-full justify-between">
+          {histogramBars.map((h, i) => (
+            <div
+              key={i}
+              className="flex-1 bg-gray-200 dark:bg-slate-700 rounded-t-sm min-w-0"
+              style={{ height: `${h}%` }}
+            />
+          ))}
+        </div>
+
+        {/* Dual Range Slider */}
+        <div className="relative h-1 w-full">
+          <div className="absolute h-1 w-full bg-gray-200 dark:bg-slate-700 rounded-full" />
+          <div
+            className="absolute h-1 bg-[#2563eb] rounded-full"
+            style={{
+              left: `${((minBudget - 700) / (30000 - 700)) * 100}%`,
+              right: `${100 - ((maxBudget - 700) / (30000 - 700)) * 100}%`,
+            }}
+          />
+          <input
+            type="range"
+            min={700}
+            max={30000}
+            step={100}
+            value={minBudget}
+            onChange={(e) => {
+              const v = parseInt(e.target.value);
+              setMinBudget(Math.min(v, maxBudget - 100));
+            }}
+            className="absolute top-1/2 -translate-y-1/2 w-full appearance-none bg-transparent pointer-events-none [&::-webkit-slider-thumb]:pointer-events-auto [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:h-[18px] [&::-webkit-slider-thumb]:w-[18px] [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-[#2563eb] [&::-webkit-slider-thumb]:border-2 [&::-webkit-slider-thumb]:border-white [&::-webkit-slider-thumb]:shadow-sm [&::-webkit-slider-thumb]:cursor-pointer [&::-moz-range-thumb]:pointer-events-auto [&::-moz-range-thumb]:appearance-none [&::-moz-range-thumb]:h-[18px] [&::-moz-range-thumb]:w-[18px] [&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:bg-[#2563eb] [&::-moz-range-thumb]:border-2 [&::-moz-range-thumb]:border-white [&::-moz-range-thumb]:shadow-sm [&::-moz-range-thumb]:cursor-pointer"
+          />
+          <input
+            type="range"
+            min={700}
+            max={30000}
+            step={100}
+            value={maxBudget}
+            onChange={(e) => {
+              const v = parseInt(e.target.value);
+              setMaxBudget(Math.max(v, minBudget + 100));
+            }}
+            className="absolute top-1/2 -translate-y-1/2 w-full appearance-none bg-transparent pointer-events-none [&::-webkit-slider-thumb]:pointer-events-auto [&::-webkit-slider-thumb]:appearance-none [&::-webkit-slider-thumb]:h-[18px] [&::-webkit-slider-thumb]:w-[18px] [&::-webkit-slider-thumb]:rounded-full [&::-webkit-slider-thumb]:bg-[#2563eb] [&::-webkit-slider-thumb]:border-2 [&::-webkit-slider-thumb]:border-white [&::-webkit-slider-thumb]:shadow-sm [&::-webkit-slider-thumb]:cursor-pointer [&::-moz-range-thumb]:pointer-events-auto [&::-moz-range-thumb]:appearance-none [&::-moz-range-thumb]:h-[18px] [&::-moz-range-thumb]:w-[18px] [&::-moz-range-thumb]:rounded-full [&::-moz-range-thumb]:bg-[#2563eb] [&::-moz-range-thumb]:border-2 [&::-moz-range-thumb]:border-white [&::-moz-range-thumb]:shadow-sm [&::-moz-range-thumb]:cursor-pointer"
+          />
+        </div>
+      </div>
+
       {/* Rating */}
       <div className="mb-4">
         <h4 className="text-[10px] font-bold text-gray-400 uppercase tracking-wider mb-1.5">Guest Rating</h4>
@@ -310,8 +421,246 @@ export default function Listing({ onlyShowFavorites = false }) {
     <UserLayout>
       <section className="max-w-[1320px] mx-auto px-3 sm:px-6 pt-24 sm:pt-28 pb-16">
 
+        {/* Search Bar Widget (from Home) */}
+        <div className="mb-8 relative">
+
+          {/* Backdrop overlay to close calendar or occupancy popover on click-outside */}
+          {(showCalendar || showOccupancy) && (
+            <div
+              className="fixed inset-0 z-40 bg-transparent"
+              onClick={() => {
+                setShowCalendar(false);
+                setShowOccupancy(false);
+              }}
+            />
+          )}
+
+          {/* Outer Responsive Container */}
+          <div className="bg-white dark:bg-slate-900 rounded-2xl lg:rounded-full shadow-lg border border-gray-200/60 dark:border-slate-800 p-2 sm:p-2.5 flex flex-col lg:flex-row items-stretch lg:items-center relative z-40">
+
+            {/* Where are you going? */}
+            <div className="lg:flex-[1.4] flex items-center gap-2.5 px-3.5 sm:px-4 py-2.5 border-b lg:border-b-0 lg:border-r border-gray-200 dark:border-slate-700">
+              <svg className="w-4.5 h-4.5 text-gray-500 flex-shrink-0" fill="none" stroke="currentColor" strokeWidth="1.8" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" />
+                <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" />
+              </svg>
+              <div className="flex-grow min-w-0">
+                <label className="block text-[11px] font-bold text-gray-900 dark:text-white cursor-pointer leading-tight">Where are you going?</label>
+                <input
+                  type="text"
+                  value={destination}
+                  onChange={(e) => setDestination(e.target.value)}
+                  placeholder="City, hotel or destination"
+                  className="w-full text-xs text-gray-600 dark:text-gray-200 font-medium placeholder-gray-400 focus:outline-none bg-transparent"
+                />
+              </div>
+            </div>
+
+            {/* Check-in & Check-out Container */}
+            <div className="lg:flex-[2.1] grid grid-cols-2 lg:flex lg:flex-row border-b lg:border-b-0 lg:border-r border-gray-200 dark:border-slate-700 divide-x divide-gray-200 dark:divide-slate-700">
+
+              {/* Check-in */}
+              <div
+                className="lg:flex-1 flex items-center gap-2 px-3 sm:px-3.5 py-2.5 cursor-pointer select-none"
+                onClick={() => {
+                  setShowCalendar(!showCalendar);
+                  setShowOccupancy(false);
+                }}
+              >
+                <svg className="w-4.5 h-4.5 text-gray-500 flex-shrink-0" fill="none" stroke="currentColor" strokeWidth="1.8" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5" />
+                </svg>
+                <div className="flex-grow min-w-0">
+                  <label className="block text-[11px] font-bold text-gray-900 dark:text-white cursor-pointer leading-tight">Check-in</label>
+                  <span className="text-xs text-gray-600 dark:text-gray-300 font-medium block truncate">
+                    {checkIn ? formatDateDisplay(checkIn) : 'Add dates'}
+                  </span>
+                </div>
+              </div>
+
+              {/* Check-out */}
+              <div
+                className="lg:flex-1 flex items-center gap-2 px-3 sm:px-3.5 py-2.5 cursor-pointer select-none"
+                onClick={() => {
+                  setShowCalendar(!showCalendar);
+                  setShowOccupancy(false);
+                }}
+              >
+                <svg className="w-4.5 h-4.5 text-gray-500 flex-shrink-0" fill="none" stroke="currentColor" strokeWidth="1.8" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5" />
+                </svg>
+                <div className="flex-grow min-w-0">
+                  <label className="block text-[11px] font-bold text-gray-900 dark:text-white cursor-pointer leading-tight">Check-out</label>
+                  <span className="text-xs text-gray-600 dark:text-gray-300 font-medium block truncate">
+                    {checkOut ? formatDateDisplay(checkOut) : 'Add dates'}
+                  </span>
+                </div>
+              </div>
+
+            </div>
+
+            {/* Guests */}
+            <div
+              className="lg:flex-[0.75] flex items-center justify-between gap-2 px-3.5 py-2.5 cursor-pointer select-none border-b lg:border-b-0 border-gray-200 dark:border-slate-700"
+              onClick={() => {
+                setShowOccupancy(!showOccupancy);
+                setShowCalendar(false);
+              }}
+            >
+              <div className="flex items-center gap-2 min-w-0">
+                <svg className="w-4.5 h-4.5 text-gray-500 flex-shrink-0" fill="none" stroke="currentColor" strokeWidth="1.8" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
+                </svg>
+                <div className="min-w-0">
+                  <label className="block text-[11px] font-bold text-gray-900 dark:text-white cursor-pointer leading-tight">Guests</label>
+                  <span className="text-xs text-gray-600 dark:text-gray-300 font-medium block truncate">
+                    {adults + children} Guests
+                  </span>
+                </div>
+              </div>
+              <svg className="w-3.5 h-3.5 text-gray-500 flex-shrink-0" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+              </svg>
+            </div>
+
+            {/* Search Button */}
+            <button
+              onClick={() => window.scrollTo({ top: document.getElementById('listing-results')?.offsetTop - 80 || 0, behavior: 'smooth' })}
+              className="w-full lg:w-auto bg-[#2563eb] hover:bg-blue-700 text-white font-semibold text-xs sm:text-sm px-7 py-3 rounded-xl lg:rounded-full transition-colors flex items-center justify-center gap-2 shadow-md flex-shrink-0 mt-2 lg:mt-0 cursor-pointer"
+            >
+              <svg className="w-4 h-4 lg:hidden" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
+              </svg>
+              <span>Search</span>
+            </button>
+
+          </div>
+
+          {/* Calendar Popover */}
+          {showCalendar && (
+            <div className="absolute top-full left-1/2 -translate-x-1/2 lg:translate-x-0 lg:left-auto lg:right-10 lg:w-[580px] w-[94vw] max-w-[580px] mt-2 bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 rounded-2xl shadow-2xl p-3 sm:p-4 z-50">
+              <div className="flex border-b border-gray-150 dark:border-slate-800 mb-3 select-none">
+                <button type="button" className="px-4 py-2 border-b-2 border-[#2563eb] font-bold text-sm text-[#2563eb] dark:text-blue-400">
+                  Calendar
+                </button>
+              </div>
+
+              <div className="grid grid-cols-7 gap-y-1 text-center mb-2 sm:hidden px-1 text-[11px] font-bold text-gray-400 dark:text-slate-500 uppercase">
+                {["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"].map(d => (
+                  <span key={d}>{d}</span>
+                ))}
+              </div>
+
+              <div className="flex flex-col sm:flex-row gap-4 justify-between relative pt-1 max-h-[260px] overflow-y-auto sm:max-h-none sm:overflow-visible pr-1 sm:pr-0 scrollbar-none">
+                {renderMonth(currentMonthOffset)}
+                <div className="hidden sm:block w-px bg-gray-100 dark:bg-slate-800 self-stretch" />
+                {renderMonth(currentMonthOffset + 1)}
+                {renderMonth(currentMonthOffset + 2, true)}
+
+                <button
+                  type="button"
+                  onClick={() => setCurrentMonthOffset(currentMonthOffset - 1)}
+                  className="hidden sm:flex absolute left-0 -top-2 w-8 h-8 rounded-full border border-gray-250 dark:border-slate-700 bg-white dark:bg-slate-800 items-center justify-center text-gray-600 dark:text-gray-300 hover:bg-gray-50 shadow-sm transition-colors z-10"
+                >
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+                  </svg>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => setCurrentMonthOffset(currentMonthOffset + 1)}
+                  className="hidden sm:flex absolute right-0 -top-2 w-8 h-8 rounded-full border border-gray-250 dark:border-slate-700 bg-white dark:bg-slate-800 items-center justify-center text-gray-600 dark:text-gray-300 hover:bg-gray-50 shadow-sm transition-colors z-10"
+                >
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+                  </svg>
+                </button>
+              </div>
+            </div>
+          )}
+
+          {/* Occupancy Popover */}
+          {showOccupancy && (
+            <div className="absolute top-full left-1/2 -translate-x-1/2 lg:translate-x-0 lg:left-auto lg:right-10 w-[90vw] max-w-[280px] mt-2 bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 rounded-2xl shadow-2xl p-3.5 z-50">
+              {/* Adults Counter */}
+              <div className="flex items-center justify-between mb-3">
+                <span className="font-bold text-gray-800 dark:text-white text-xs">Adults</span>
+                <div className="border border-gray-200 dark:border-slate-700 rounded-md py-1 px-2.5 flex items-center justify-between gap-3 w-[85px]">
+                  <button
+                    type="button"
+                    onClick={() => setAdults(Math.max(1, adults - 1))}
+                    className={`text-base font-normal select-none leading-none ${adults <= 1 ? 'text-gray-300 dark:text-slate-700 cursor-not-allowed' : 'text-[#2563eb] dark:text-blue-400 cursor-pointer'}`}
+                    disabled={adults <= 1}
+                  >
+                    —
+                  </button>
+                  <span className="font-bold text-gray-800 dark:text-white text-xs">{adults}</span>
+                  <button
+                    type="button"
+                    onClick={() => setAdults(adults + 1)}
+                    className="text-base font-normal text-[#2563eb] dark:text-blue-400 cursor-pointer select-none leading-none"
+                  >
+                    +
+                  </button>
+                </div>
+              </div>
+
+              {/* Children Counter */}
+              <div className="flex items-center justify-between mb-3">
+                <span className="font-bold text-gray-800 dark:text-white text-xs">Children</span>
+                <div className="border border-gray-200 dark:border-slate-700 rounded-md py-1 px-2.5 flex items-center justify-between gap-3 w-[85px]">
+                  <button
+                    type="button"
+                    onClick={() => setChildren(Math.max(0, children - 1))}
+                    className={`text-base font-normal select-none leading-none ${children <= 0 ? 'text-gray-300 dark:text-slate-700 cursor-not-allowed' : 'text-[#2563eb] dark:text-blue-400 cursor-pointer'}`}
+                    disabled={children <= 0}
+                  >
+                    —
+                  </button>
+                  <span className="font-bold text-gray-800 dark:text-white text-xs">{children}</span>
+                  <button
+                    type="button"
+                    onClick={() => setChildren(children + 1)}
+                    className="text-base font-normal text-[#2563eb] dark:text-blue-400 cursor-pointer select-none leading-none"
+                  >
+                    +
+                  </button>
+                </div>
+              </div>
+
+              {/* Travelling with pets? */}
+              <div className="flex items-center justify-between py-2 border-t border-gray-150 dark:border-slate-800 mt-1">
+                <span className="font-semibold text-gray-800 dark:text-white text-xs">Travelling with pets?</span>
+                <button
+                  type="button"
+                  onClick={() => setWithPets(!withPets)}
+                  className={`relative inline-flex h-4.5 w-8 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none ${withPets ? 'bg-[#2563eb]' : 'bg-gray-200 dark:bg-slate-700'}`}
+                >
+                  <span
+                    className={`pointer-events-none inline-block h-3.5 w-3.5 transform rounded-full bg-white shadow-xs transition duration-200 ease-in-out ${withPets ? 'translate-x-3.5' : 'translate-x-0'}`}
+                  />
+                </button>
+              </div>
+
+              <p className="text-[10px] text-gray-400 dark:text-gray-500 leading-tight mt-0.5">
+                Assistance animals aren't considered pets.
+              </p>
+
+              <button
+                type="button"
+                onClick={() => setShowOccupancy(false)}
+                className="mt-3 border border-[#2563eb] text-[#2563eb] hover:bg-blue-50 dark:hover:bg-slate-800 dark:border-blue-400 dark:text-blue-400 font-bold py-1.5 px-3 rounded-lg w-full text-center transition-colors block text-xs select-none"
+              >
+                Done
+              </button>
+            </div>
+          )}
+
+        </div>
+
         {/* Section Header with Filter Button on Mobile */}
-        <div className="sticky-nav-offset lg:relative lg:top-0 bg-white dark:bg-slate-950 z-30 py-4 mb-6 flex flex-wrap gap-3 justify-between items-center text-left border-b border-gray-100 dark:border-slate-800 lg:border-none -mx-2 px-4 sm:mx-0 sm:px-0">
+        <div id="listing-results" className="sticky-nav-offset lg:relative lg:top-0 bg-white dark:bg-slate-950 z-30 py-4 mb-6 flex flex-wrap gap-3 justify-between items-center text-left border-b border-gray-100 dark:border-slate-800 lg:border-none">
           <h2 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white tracking-tight">
             {onlyShowFavorites ? "My Saved Hotels" : "Hotels & Resorts in Hyderabad"}
           </h2>
@@ -380,11 +729,11 @@ export default function Listing({ onlyShowFavorites = false }) {
           </div>
         </div>
 
-        <div className="flex flex-col lg:flex-row gap-6 text-left">
+        <div className="flex flex-col lg:flex-row gap-6 text-left w-full">
 
           {/* Desktop Sidebar Filter (Hidden on mobile) */}
           {!onlyShowFavorites && (
-            <aside className="hidden lg:block w-60 flex-shrink-0 sticky top-24 self-start">
+            <aside className="hidden lg:block w-60 flex-shrink-0 self-start">
               <div className="bg-white dark:bg-slate-900 border border-gray-200/80 dark:border-slate-800 rounded-2xl p-5 shadow-xs space-y-5">
                 <div>
                   <h3 className="text-base font-bold text-gray-900 dark:text-white mb-4">Filters</h3>
@@ -396,211 +745,34 @@ export default function Listing({ onlyShowFavorites = false }) {
 
           {/* Hotel Cards Area */}
           <div className="flex-1 min-w-0 space-y-4">
-            {displayedHotels.map((hotel, index) => {
-              const activeImageIndex = activeImageIndices[hotel.id] || 0;
-              const score10 = parseFloat(hotel.ratingScore) <= 5 ? parseFloat(hotel.ratingScore) * 2 : parseFloat(hotel.ratingScore);
-              const rawLoc = parseFloat(hotel.locationScore);
-              const location10 = rawLoc <= 5 ? rawLoc * 2 : (rawLoc || 8.0);
-              return (
-                <div
-                  key={hotel.id}
-                  onClick={() => navigate(`/hotel/${hotel.id}`)}
-                  className="bg-white dark:bg-slate-900 rounded-2xl shadow-sm border border-gray-200/80 dark:border-slate-800 relative flex flex-row font-sans min-h-[140px] sm:min-h-[220px] cursor-pointer hover:-translate-y-1 hover:shadow-xl hover:border-[#2563eb]/40 transition-all duration-300 ease-out overflow-hidden"
-                >
 
-                  <div className="flex flex-row h-full w-full">
-
-                    {/* Left: Hotel Image Carousel */}
-                    <div className="relative w-[115px] sm:w-[220px] md:w-[250px] flex-shrink-0 min-h-full group cursor-pointer overflow-hidden bg-gray-100 dark:bg-slate-800">
-
-                      {/* Sliding Image Track */}
-                      <div
-                        className="flex h-full w-full transition-transform duration-300 ease-in-out"
-                        style={{ transform: `translateX(-${activeImageIndex * 100}%)` }}
-                      >
-                        {hotel.images.map((imgUrl, idx) => (
-                          <div key={idx} className="w-full h-full flex-shrink-0">
-                            <img
-                              alt={`${hotel.name} ${idx + 1}`}
-                              className="w-full h-full object-cover select-none"
-                              src={imgUrl}
-                            />
-                          </div>
-                        ))}
-                      </div>
-
-                      {/* Award Badge */}
-                      {hotel.awardBadge && (
-                        <div className="absolute top-2 left-2 bg-[#2563eb] text-white text-[8px] sm:text-[10px] font-extrabold uppercase tracking-wider px-2 py-0.5 rounded-full flex items-center gap-1 shadow-md border border-white/20">
-                          <svg className="w-2.5 h-2.5 text-white" fill="currentColor" viewBox="0 0 20 20">
-                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                          </svg>
-                          {hotel.awardBadge}
-                        </div>
-                      )}
-
-                      {/* Favorite Button */}
-                      <button
-                        onClick={(e) => toggleFavorite(e, hotel.id)}
-                        className={`absolute bottom-2 right-2 sm:bottom-auto sm:top-2 sm:right-2 w-7 h-7 sm:w-8 sm:h-8 bg-white/90 dark:bg-slate-900/90 backdrop-blur-xs rounded-full flex items-center justify-center shadow-md transition-colors z-10 cursor-pointer ${
-                          favorites.includes(hotel.id) ? 'text-red-500 scale-105' : 'text-gray-400 hover:text-red-500'
-                        }`}
-                      >
-                        <svg className="w-4 h-4 sm:w-4.5 sm:h-4.5" fill={favorites.includes(hotel.id) ? 'currentColor' : 'none'} stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
-                        </svg>
-                      </button>
-
-                      {/* Carousel Arrow Left */}
-                      <div className="absolute inset-y-0 left-2 hidden sm:flex items-center opacity-0 group-hover:opacity-100 transition-opacity">
-                        <button
-                          onClick={(e) => handlePrevImage(e, hotel.id, hotel.images.length)}
-                          className="w-7 h-7 bg-white/90 dark:bg-slate-900/90 hover:bg-white rounded-full flex items-center justify-center shadow-md text-gray-700 dark:text-gray-200 cursor-pointer"
-                          type="button"
-                          aria-label="Previous Image"
-                        >
-                          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7" /></svg>
-                        </button>
-                      </div>
-
-                      {/* Carousel Arrow Right */}
-                      <div className="absolute inset-y-0 right-2 hidden sm:flex items-center opacity-0 group-hover:opacity-100 transition-opacity">
-                        <button
-                          onClick={(e) => handleNextImage(e, hotel.id, hotel.images.length)}
-                          className="w-7 h-7 bg-white/90 dark:bg-slate-900/90 hover:bg-white rounded-full flex items-center justify-center shadow-md text-gray-700 dark:text-gray-200 cursor-pointer"
-                          type="button"
-                          aria-label="Next Image"
-                        >
-                          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" /></svg>
-                        </button>
-                      </div>
-
-                      {/* Image Count Pill */}
-                      <div className="absolute bottom-2 left-2 bg-black/60 text-white text-[9px] sm:text-[10px] px-2 py-0.5 rounded-full font-medium tracking-wide">
-                        {activeImageIndex + 1}/{hotel.images.length}
-                      </div>
-                    </div>
-
-                    {/* Middle & Right Content Wrapper */}
-                    <div className="flex-grow flex flex-row p-3 sm:p-4 gap-3 h-full min-w-0">
-
-                      {/* Middle Info */}
-                      <div className="flex-grow min-w-0 flex flex-col justify-between">
-                        <div>
-                          {/* Title & Mobile Rating */}
-                          <div className="flex items-start justify-between gap-2 mb-1">
-                            <h3 className="text-xs sm:text-base md:text-lg font-bold text-gray-900 dark:text-white leading-snug cursor-pointer hover:text-[#2563eb] transition-colors line-clamp-1 sm:line-clamp-2">
-                              {hotel.name}
-                            </h3>
-
-                            <div className="sm:hidden flex items-center gap-0.5 bg-blue-50 dark:bg-blue-950/60 text-[#2563eb] dark:text-blue-400 px-1.5 py-0.5 rounded-md shrink-0">
-                              <span className="font-extrabold text-[10px]">{hotel.ratingScore}</span>
-                              <span className="text-[9px] font-bold">★</span>
-                            </div>
-                          </div>
-
-                          {/* Stars & Reviews */}
-                          <div className="flex items-center gap-1.5 mb-2 flex-wrap">
-                            <div className="flex text-amber-400 shrink-0">
-                              {[...Array(hotel.stars)].map((_, i) => (
-                                <svg key={i} className="w-3 h-3 sm:w-3.5 sm:h-3.5" fill="currentColor" viewBox="0 0 20 20">
-                                  <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                                </svg>
-                              ))}
-                            </div>
-                            <span className="text-gray-400 dark:text-gray-500 text-[10px] sm:text-xs font-medium truncate">
-                              ({hotel.reviews})
-                            </span>
-                          </div>
-
-                          {/* Location Data */}
-                          <div className="flex items-start gap-1 mb-2 text-[10px] sm:text-xs min-w-0">
-                            <svg className="w-3.5 h-3.5 text-[#2563eb] flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
-                              <path fillRule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clipRule="evenodd" />
-                            </svg>
-                            <div className="leading-tight min-w-0 flex-grow">
-                              <div className="text-[#2563eb] dark:text-blue-400 font-semibold hover:underline cursor-pointer truncate">
-                                {hotel.location}
-                              </div>
-                              <div className="text-gray-400 dark:text-gray-500 text-[9px] sm:text-[11px] truncate mt-0.5">
-                                {hotel.subLocation}
-                              </div>
-                            </div>
-                          </div>
-
-                          {/* Amenities Chips */}
-                          <div className="flex flex-wrap gap-1 sm:gap-1.5 mb-2 text-[9px] sm:text-[11px] text-gray-600 dark:text-gray-300">
-                            {hotel.amenities.map((amenity) => (
-                              <div key={amenity} className="flex items-center gap-1 bg-gray-50 dark:bg-slate-800 px-1.5 py-0.5 rounded-md border border-gray-150 dark:border-slate-700">
-                                {renderAmenityIcon(amenity)}
-                                <span>{amenity}</span>
-                              </div>
-                            ))}
-                          </div>
-
-                          {/* Description Features */}
-                          <div className="hidden sm:block mt-1 space-y-1">
-                            {hotel.features.map((feat, idx) => (
-                              <div key={idx} className="flex items-start gap-1.5 text-xs text-gray-600 dark:text-gray-300 leading-snug">
-                                <span className="text-[#2563eb] mt-0.5 text-[10px]">✦</span>
-                                {feat}
-                              </div>
-                            ))}
-                          </div>
-                        </div>
-
-                        {/* Promo Tags */}
-                        <div className="hidden sm:flex flex-wrap gap-1.5 mt-2">
-                          {hotel.promoTags.map((tag, idx) => (
-                            <span key={idx} className="bg-blue-50 dark:bg-blue-950/60 text-[#2563eb] dark:text-blue-400 text-[10px] sm:text-[11px] px-2 py-0.5 rounded-md font-semibold">
-                              {tag}
-                            </span>
-                          ))}
-                        </div>
-                      </div>
-
-                      {/* Right: Rating & Pricing (Desktop) */}
-                      <div className="hidden sm:flex w-[160px] md:w-[180px] flex-col justify-between items-end border-l border-gray-100 dark:border-slate-800 pl-3 sm:pl-4 text-right shrink-0">
-
-                        {/* Ratings */}
-                        <div className="flex flex-col items-end w-full">
-                          <div className="flex items-center justify-end gap-2 mb-0.5">
-                            <span className="text-[#2563eb] dark:text-blue-400 font-bold text-sm sm:text-base">{hotel.ratingText}</span>
-                            <span className="bg-[#2563eb] text-white font-extrabold text-xs px-2 py-1 rounded-lg shadow-xs">{hotel.ratingScore}</span>
-                          </div>
-                          <div className="text-gray-400 dark:text-gray-500 text-[11px]">{hotel.reviews}</div>
-                          <div className="text-slate-800 dark:text-slate-200 font-semibold text-xs mt-1">{hotel.locationScore}</div>
-                        </div>
-
-                        {/* Pricing */}
-                        <div className="flex flex-col items-end w-full mt-3">
-                          <div className="text-gray-400 text-[10px] mb-0.5">{hotel.pricingLabel}</div>
-                          <div className="flex items-center justify-end gap-1.5">
-                            <span className="text-gray-400 line-through text-xs">{hotel.oldPrice}</span>
-                            <span className="text-rose-600 font-bold text-xs">{hotel.discount}</span>
-                          </div>
-                          <div className="text-[#2563eb] dark:text-blue-400 text-xl sm:text-2xl font-extrabold leading-none mt-1">
-                            {hotel.price}
-                          </div>
-                          <div className="text-gray-400 text-[10px] mt-1">
-                            + taxes & fees
-                          </div>
-
-                          <button
-                            type="button"
-                            className="mt-3 w-full bg-[#2563eb] hover:bg-blue-700 text-white font-bold text-xs py-2 rounded-xl transition-colors shadow-xs"
-                          >
-                            View Deal
-                          </button>
-                        </div>
-
-                      </div>
-
-                    </div>
-                  </div>
+            {/* High Demand Alert Banner */}
+            {!onlyShowFavorites && (
+              <div className="mb-2 w-full bg-[#fff7ed] dark:bg-orange-950/20 border border-orange-100 dark:border-orange-900/40 rounded-xl shadow-sm px-3 sm:px-4 py-2.5 sm:py-3 flex items-start gap-2.5 sm:gap-3">
+                <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-orange-500 dark:bg-orange-500 flex items-center justify-center flex-shrink-0 mt-0.5">
+                  <svg className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-white" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
                 </div>
-              );
-            })}
+                <div className="min-w-0 flex-1">
+                  <h3 className="text-sm sm:text-[15px] font-extrabold text-orange-600 dark:text-orange-400 mb-0.5 leading-snug">
+                    Hurry! 44% of properties on our site are fully booked!
+                  </h3>
+                  <p className="text-[12px] sm:text-xs text-gray-700 dark:text-gray-300 leading-snug">
+                    Rooms in {destination || 'Hyderabad'} are in high demand on your selected dates. Reserve yours now before prices go up.
+                  </p>
+                </div>
+              </div>
+            )}
+
+            {displayedHotels.map((hotel) => (
+              <Card
+                key={hotel.id}
+                hotel={hotel}
+                favorites={favorites}
+                toggleFavorite={toggleFavorite}
+              />
+            ))}
           </div>
 
         </div>
