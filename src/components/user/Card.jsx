@@ -153,6 +153,11 @@ export default function Card({ hotel, favorites, toggleFavorite }) {
           {/* Middle Info */}
           <div className="flex-grow min-w-0 flex flex-col justify-between">
             <div>
+              {/* Property Type */}
+              <p className="text-[9px] sm:text-[10px] font-bold text-gray-400 dark:text-gray-500 uppercase tracking-wider mb-0.5">
+                {hotel.propertyType || 'Hotel'}
+              </p>
+
               {/* Title & Mobile Rating */}
               <div className="flex items-start justify-between gap-2 mb-1 min-w-0 w-full">
                 <h3 className="flex-1 min-w-0 text-xs sm:text-base md:text-lg font-bold text-gray-900 dark:text-white leading-snug cursor-pointer hover:text-[#2563eb] transition-colors line-clamp-1 sm:line-clamp-2">

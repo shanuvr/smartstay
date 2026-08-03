@@ -723,7 +723,7 @@ export default function DetailedView() {
         </div>
 
     
-        <div className="w-full px-2 sm:px-0 mb-6 sm:mb-8 sticky top-16 sm:top-20 z-30 bg-white dark:bg-slate-950 py-1">
+        <div className="w-full px-2 sm:px-0 mb-6 sm:mb-8 sticky top-20 z-30 bg-white dark:bg-slate-950 py-1">
           <nav className="flex items-center justify-between sm:justify-start gap-1.5 sm:gap-8 whitespace-nowrap border border-gray-200 dark:border-slate-800 rounded-full px-3 sm:px-10 shadow-sm bg-white dark:bg-slate-900 w-full sm:w-max">
             <a className="py-2 sm:py-3.5 font-bold text-[10px] sm:text-sm text-[#2563eb] border-b-2 border-[#2563eb] transition-all" href="#overview">Overview</a>
             <a className="py-2 sm:py-3.5 font-bold text-[10px] sm:text-sm text-gray-500 hover:text-[#2563eb] transition-all" href="#rooms">Rooms</a>
@@ -951,42 +951,42 @@ export default function DetailedView() {
 
       {/* Facilities Modal */}
       {showFacilitiesModal && (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6 bg-slate-900/60 backdrop-blur-sm transition-opacity">
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-3 sm:p-6 bg-slate-900/60 backdrop-blur-sm transition-opacity">
           <div className="bg-white dark:bg-slate-900 rounded-2xl shadow-2xl w-full max-w-2xl max-h-[85vh] flex flex-col overflow-hidden border border-gray-200 dark:border-slate-800 relative animate-in fade-in zoom-in-95 duration-200">
             {/* Header */}
-            <div className="flex items-center justify-between p-4 sm:p-5 sm:px-6 border-b border-gray-100 dark:border-slate-800 shrink-0">
-              <h2 className="text-xl font-extrabold text-gray-900 dark:text-white">All Facilities</h2>
+            <div className="flex items-center justify-between p-3 sm:p-5 sm:px-6 border-b border-gray-100 dark:border-slate-800 shrink-0">
+              <h2 className="text-lg sm:text-xl font-extrabold text-gray-900 dark:text-white">All Facilities</h2>
               <button 
                 onClick={() => setShowFacilitiesModal(false)}
                 className="p-1.5 sm:p-2 rounded-full hover:bg-gray-100 dark:hover:bg-slate-800 text-gray-500 transition-colors"
               >
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M6 18L18 6M6 6l12 12" /></svg>
+                <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M6 18L18 6M6 6l12 12" /></svg>
               </button>
             </div>
             
             {/* Body */}
-            <div className="flex-1 overflow-y-auto p-4 sm:p-5 sm:px-6 custom-scrollbar">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6 pb-6">
+            <div className="flex-1 overflow-y-auto p-3 sm:p-5 sm:px-6 custom-scrollbar">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-4 sm:gap-y-6 pb-4 sm:pb-6">
                 {allFacilities.map((facility, index) => (
                   <div key={index} className="flex flex-col">
-                    <div className="flex items-center gap-2.5 mb-2.5">
-                      <div className="flex items-center justify-center w-7 h-7 rounded-lg bg-blue-50 dark:bg-blue-900/20 text-[#2563eb] dark:text-blue-400">
-                        <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <div className="flex items-center gap-2 sm:gap-2.5 mb-1.5 sm:mb-2.5">
+                      <div className="flex items-center justify-center w-6 h-6 sm:w-7 sm:h-7 rounded-lg bg-blue-50 dark:bg-blue-900/20 text-[#2563eb] dark:text-blue-400">
+                        <svg className="w-3 h-3 sm:w-3.5 sm:h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d={facility.icon} />
                         </svg>
                       </div>
-                      <h3 className="text-base sm:text-lg font-bold text-gray-900 dark:text-white">{facility.category}</h3>
+                      <h3 className="text-sm sm:text-lg font-bold text-gray-900 dark:text-white">{facility.category}</h3>
                     </div>
-                    <ul className="grid grid-cols-1 gap-y-1.5 text-sm text-gray-600 dark:text-gray-400 ml-[38px]">
+                    <ul className="grid grid-cols-1 gap-y-1 sm:gap-y-1.5 text-xs sm:text-sm text-gray-600 dark:text-gray-400 ml-8 sm:ml-[38px]">
                       {facility.items.slice(0, 5).map((item, idx) => (
                         <li key={idx} className="flex items-start gap-1.5 leading-tight">
-                          <span className="text-[#2563eb] dark:text-blue-400 mt-[3px] shrink-0">•</span>
+                          <span className="text-[#2563eb] dark:text-blue-400 mt-[2px] sm:mt-[3px] shrink-0">•</span>
                           <span>{item}</span>
                         </li>
                       ))}
                       {facility.items.length > 5 && (
-                        <li className="flex items-start gap-1.5 leading-tight text-xs text-gray-400 italic mt-0.5">
-                          <span className="text-gray-300 dark:text-slate-600 mt-[3px] shrink-0">•</span>
+                        <li className="flex items-start gap-1.5 leading-tight text-[10px] sm:text-xs text-gray-400 italic mt-0.5">
+                          <span className="text-gray-300 dark:text-slate-600 mt-[2px] sm:mt-[3px] shrink-0">•</span>
                           <span>+ {facility.items.length - 5} more options</span>
                         </li>
                       )}
@@ -994,6 +994,88 @@ export default function DetailedView() {
                   </div>
                 ))}
               </div>
+            </div>
+          </div>
+        </div>
+      )}
+      {/* Location Modal */}
+      {showLocationModal && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6 bg-slate-900/60 backdrop-blur-sm transition-opacity">
+          <div className="bg-white dark:bg-slate-900 rounded-3xl shadow-2xl w-full max-w-[600px] flex flex-col overflow-hidden border border-gray-200 dark:border-slate-800 relative animate-in fade-in zoom-in-95 duration-200">
+            
+            <div className="p-5 sm:p-7">
+              {/* Header */}
+              <div className="flex items-start justify-between mb-5">
+                <div>
+                  <h2 className="text-xl sm:text-2xl font-extrabold text-gray-900 dark:text-white leading-tight">Property Location</h2>
+                  <p className="text-[13px] sm:text-sm text-gray-500 mt-1">Kondapur, HITEC City, Hyderabad</p>
+                </div>
+                <button 
+                  onClick={() => setShowLocationModal(false)}
+                  className="p-2 sm:p-2.5 bg-gray-50 dark:bg-slate-800 rounded-full hover:bg-gray-100 dark:hover:bg-slate-700 text-gray-600 dark:text-gray-400 transition-colors shrink-0 border border-gray-200 dark:border-slate-700 shadow-sm"
+                >
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M6 18L18 6M6 6l12 12" /></svg>
+                </button>
+              </div>
+              
+              {/* Map View */}
+              <div className="w-full h-[180px] sm:h-[220px] rounded-2xl overflow-hidden border border-gray-200 dark:border-slate-800 relative bg-gray-100 dark:bg-slate-800 shadow-inner mb-6">
+                <iframe 
+                  width="100%" 
+                  height="100%" 
+                  frameBorder="0" 
+                  scrolling="no" 
+                  marginHeight="0" 
+                  marginWidth="0" 
+                  src="https://www.openstreetmap.org/export/embed.html?bbox=78.3616%2C17.4506%2C78.3916%2C17.4706&amp;layer=mapnik&amp;marker=17.4616%2C78.3746" 
+                  className="absolute inset-0"
+                  title="Location Map"
+                  style={{ filter: 'var(--tw-backdrop-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia)' }}
+                ></iframe>
+              </div>
+
+              {/* Information Rows */}
+              <div className="space-y-5 mb-8">
+                {/* Address */}
+                <div className="flex items-start gap-4">
+                  <div className="w-9 h-9 rounded-full bg-blue-50 dark:bg-blue-900/20 flex items-center justify-center text-[#2563eb] dark:text-blue-400 shrink-0 mt-0.5 border border-blue-100 dark:border-blue-800/30">
+                    <svg className="w-4.5 h-4.5" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clipRule="evenodd" />
+                    </svg>
+                  </div>
+                  <div>
+                    <h4 className="text-[13px] sm:text-sm font-bold text-gray-900 dark:text-white">Address</h4>
+                    <p className="text-[12px] sm:text-[13px] text-gray-600 dark:text-gray-400 mt-0.5 leading-snug">Gachibowli, Hyderabad - 8.3 km to center</p>
+                  </div>
+                </div>
+
+                {/* Connectivity */}
+                <div className="flex items-start gap-4">
+                  <div className="w-9 h-9 rounded-full bg-blue-50 dark:bg-blue-900/20 flex items-center justify-center text-[#2563eb] dark:text-blue-400 shrink-0 mt-0.5 border border-blue-100 dark:border-blue-800/30">
+                    <svg className="w-4.5 h-4.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 7h8M8 11h8M12 15h.01M5.25 4.5h13.5c.828 0 1.5.672 1.5 1.5v12c0 .828-.672 1.5-1.5 1.5H5.25c-.828 0-1.5-.672-1.5-1.5v-12c0-.828.672-1.5 1.5-1.5z" />
+                    </svg>
+                  </div>
+                  <div>
+                    <h4 className="text-[13px] sm:text-sm font-bold text-gray-900 dark:text-white">Connectivity & Parking</h4>
+                    <p className="text-[12px] sm:text-[13px] text-gray-600 dark:text-gray-400 mt-0.5 leading-snug">• 800 meters from HITEC City Metro Station (5-min walk)</p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Action Buttons */}
+              <div className="flex items-center justify-between gap-4 pt-1">
+                <button className="px-5 sm:px-6 py-2.5 sm:py-3 rounded-xl border border-gray-300 dark:border-slate-700 text-sm font-bold text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-slate-800 transition-colors whitespace-nowrap">
+                  Get Directions
+                </button>
+                <button 
+                  onClick={() => setShowLocationModal(false)}
+                  className="px-5 sm:px-6 py-2.5 sm:py-3 rounded-xl bg-[#2563eb] hover:bg-blue-700 text-white text-sm font-bold transition-colors whitespace-nowrap shadow-md shadow-blue-500/20"
+                >
+                  Close Location
+                </button>
+              </div>
+
             </div>
           </div>
         </div>

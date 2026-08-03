@@ -157,6 +157,7 @@ export default function Listing({ onlyShowFavorites = false }) {
     {
       id: 1,
       name: "Taj Falaknuma Palace - Hyderabad",
+      propertyType: "Palace Hotel",
       stars: 5,
       location: "Engine Bowli, Falaknuma, Hyderabad",
       subLocation: "5 km from Charminar • 15 km from Rajiv Gandhi Int'l Airport",
@@ -188,6 +189,7 @@ export default function Listing({ onlyShowFavorites = false }) {
     {
       id: 2,
       name: "ITC Kohenur, A Luxury Collection Hotel",
+      propertyType: "Luxury Resort",
       stars: 5,
       location: "HITEC City, Hyderabad",
       subLocation: "Overlooking Durgam Cheruvu Lake • 800 m from Mindspace IT Park",
@@ -422,7 +424,7 @@ export default function Listing({ onlyShowFavorites = false }) {
       <section className="max-w-[1320px] mx-auto px-3 sm:px-6 pt-24 sm:pt-28 pb-16">
 
         {/* Search Bar Widget (from Home) */}
-        <div className="mb-8 relative">
+        <div className="mb-8 relative max-w-4xl mx-auto">
 
           {/* Backdrop overlay to close calendar or occupancy popover on click-outside */}
           {(showCalendar || showOccupancy) && (
@@ -437,66 +439,71 @@ export default function Listing({ onlyShowFavorites = false }) {
 
           {/* Outer Responsive Container */}
           <div className="relative z-40">
-            <div className="bg-white dark:bg-slate-900 rounded-full border border-gray-200 dark:border-slate-800 p-1.5 sm:p-2 shadow-sm w-full grid grid-cols-4 divide-x divide-gray-200 dark:divide-slate-700 min-w-0">
+            <div className="flex flex-col lg:flex-row items-stretch lg:items-center lg:bg-white lg:dark:bg-slate-900 lg:rounded-full lg:border lg:border-gray-200 lg:dark:border-slate-800 lg:p-1.5 lg:shadow-sm">
               
-              {/* Destination */}
-              <div className="px-2 sm:px-4 py-1.5 sm:py-1 rounded-l-full min-w-0">
-                <p className="text-[8px] sm:text-[10px] font-bold text-gray-500 uppercase tracking-wider mb-0.5">Destination</p>
-                <input
-                  type="text"
-                  value={destination}
-                  onChange={(e) => setDestination(e.target.value)}
-                  placeholder="Where to?"
-                  className="w-full text-[10px] sm:text-sm font-semibold text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none bg-transparent truncate"
-                />
+              {/* Inputs */}
+              <div className="bg-white dark:bg-slate-900 rounded-full border border-gray-200 dark:border-slate-800 p-1.5 sm:p-2 shadow-sm lg:bg-transparent lg:border-none lg:p-0 lg:shadow-none w-full grid grid-cols-4 divide-x divide-gray-200 dark:divide-slate-700 min-w-0 lg:flex-1">
+                
+                {/* Destination */}
+                <div className="px-2 sm:px-4 py-1.5 sm:py-1 rounded-l-full min-w-0">
+                  <p className="text-[8px] sm:text-[10px] font-bold text-gray-500 uppercase tracking-wider mb-0.5">Destination</p>
+                  <input
+                    type="text"
+                    value={destination}
+                    onChange={(e) => setDestination(e.target.value)}
+                    placeholder="Where to?"
+                    className="w-full text-[10px] sm:text-sm font-semibold text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none bg-transparent truncate"
+                  />
+                </div>
+
+                {/* Check-in */}
+                <div 
+                  className="px-2 sm:px-4 py-1.5 sm:py-1 cursor-pointer hover:bg-gray-50 dark:hover:bg-slate-800 transition-colors min-w-0"
+                  onClick={() => {
+                    setShowCalendar(!showCalendar);
+                    setShowOccupancy(false);
+                  }}
+                >
+                  <p className="text-[8px] sm:text-[10px] font-bold text-gray-500 uppercase tracking-wider mb-0.5">Check-in</p>
+                  <p className="text-[10px] sm:text-sm font-semibold text-gray-900 dark:text-white truncate">{checkIn ? formatDateDisplay(checkIn) : 'Add date'}</p>
+                </div>
+
+                {/* Check-out */}
+                <div 
+                  className="px-2 sm:px-4 py-1.5 sm:py-1 cursor-pointer hover:bg-gray-50 dark:hover:bg-slate-800 transition-colors min-w-0"
+                  onClick={() => {
+                    setShowCalendar(!showCalendar);
+                    setShowOccupancy(false);
+                  }}
+                >
+                  <p className="text-[8px] sm:text-[10px] font-bold text-gray-500 uppercase tracking-wider mb-0.5">Check-out</p>
+                  <p className="text-[10px] sm:text-sm font-semibold text-gray-900 dark:text-white truncate">{checkOut ? formatDateDisplay(checkOut) : 'Add date'}</p>
+                </div>
+
+                {/* Guests */}
+                <div 
+                  className="px-2 sm:px-4 py-1.5 sm:py-1 cursor-pointer hover:bg-gray-50 dark:hover:bg-slate-800 lg:rounded-r-full transition-colors min-w-0"
+                  onClick={() => {
+                    setShowOccupancy(!showOccupancy);
+                    setShowCalendar(false);
+                  }}
+                >
+                  <p className="text-[8px] sm:text-[10px] font-bold text-gray-500 uppercase tracking-wider mb-0.5">Guests</p>
+                  <p className="text-[10px] sm:text-sm font-semibold text-gray-900 dark:text-white truncate">
+                    {adults} Adults {children > 0 ? `· ${children} Kids` : ''}
+                  </p>
+                </div>
               </div>
 
-              {/* Check-in */}
-              <div 
-                className="px-2 sm:px-4 py-1.5 sm:py-1 cursor-pointer hover:bg-gray-50 dark:hover:bg-slate-800 transition-colors min-w-0"
-                onClick={() => {
-                  setShowCalendar(!showCalendar);
-                  setShowOccupancy(false);
-                }}
-              >
-                <p className="text-[8px] sm:text-[10px] font-bold text-gray-500 uppercase tracking-wider mb-0.5">Check-in</p>
-                <p className="text-[10px] sm:text-sm font-semibold text-gray-900 dark:text-white truncate">{checkIn ? formatDateDisplay(checkIn) : 'Add date'}</p>
+              {/* Search Button */}
+              <div className="mt-3 lg:mt-0 lg:ml-2 flex justify-center lg:justify-end shrink-0">
+                <button
+                  onClick={() => window.scrollTo({ top: document.getElementById('listing-results')?.offsetTop - 80 || 0, behavior: 'smooth' })}
+                  className="bg-[#2563eb] hover:bg-blue-700 text-white px-8 py-2.5 rounded-full font-bold text-xs sm:text-sm transition-all shadow-md w-full lg:w-auto"
+                >
+                  Search
+                </button>
               </div>
-
-              {/* Check-out */}
-              <div 
-                className="px-2 sm:px-4 py-1.5 sm:py-1 cursor-pointer hover:bg-gray-50 dark:hover:bg-slate-800 transition-colors min-w-0"
-                onClick={() => {
-                  setShowCalendar(!showCalendar);
-                  setShowOccupancy(false);
-                }}
-              >
-                <p className="text-[8px] sm:text-[10px] font-bold text-gray-500 uppercase tracking-wider mb-0.5">Check-out</p>
-                <p className="text-[10px] sm:text-sm font-semibold text-gray-900 dark:text-white truncate">{checkOut ? formatDateDisplay(checkOut) : 'Add date'}</p>
-              </div>
-
-              {/* Guests */}
-              <div 
-                className="px-2 sm:px-4 py-1.5 sm:py-1 cursor-pointer hover:bg-gray-50 dark:hover:bg-slate-800 rounded-r-full transition-colors min-w-0"
-                onClick={() => {
-                  setShowOccupancy(!showOccupancy);
-                  setShowCalendar(false);
-                }}
-              >
-                <p className="text-[8px] sm:text-[10px] font-bold text-gray-500 uppercase tracking-wider mb-0.5">Guests</p>
-                <p className="text-[10px] sm:text-sm font-semibold text-gray-900 dark:text-white truncate">
-                  {adults} Adults {children > 0 ? `· ${children} Kids` : ''}
-                </p>
-              </div>
-            </div>
-
-            <div className="mt-3 flex justify-center lg:justify-end">
-              <button
-                onClick={() => window.scrollTo({ top: document.getElementById('listing-results')?.offsetTop - 80 || 0, behavior: 'smooth' })}
-                className="bg-[#2563eb] hover:bg-blue-700 text-white px-8 py-2.5 rounded-full font-bold text-xs sm:text-sm transition-all shadow-md w-full sm:w-auto"
-              >
-                Search
-              </button>
             </div>
           </div>          {/* Calendar Popover */}
           {showCalendar && (
