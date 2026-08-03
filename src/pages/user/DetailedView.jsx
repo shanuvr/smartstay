@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import UserLayout from '../../laybouts/Userlayout';
 
 const galleryImages = [
@@ -255,6 +256,7 @@ const getFirstDayOfMonth = (year, month) => {
 };
 
 export default function DetailedView() {
+  const navigate = useNavigate();
   const [activePhotoIndex, setActivePhotoIndex] = useState(0);
   const [showReviewsModal, setShowReviewsModal] = useState(false);
   const [showAmenitiesModal, setShowAmenitiesModal] = useState(false);
@@ -907,7 +909,10 @@ export default function DetailedView() {
                       </span>
                     </div>
                     
-                    <button className="w-full bg-[#2563eb] hover:bg-blue-700 text-white py-3 sm:py-3.5 rounded-xl font-bold text-sm sm:text-base transition-all shadow-sm shadow-blue-500/30 mb-4 sm:mb-5">
+                    <button 
+                      onClick={() => navigate('/book/1')}
+                      className="w-full bg-[#2563eb] hover:bg-blue-700 text-white py-3 sm:py-3.5 rounded-xl font-bold text-sm sm:text-base transition-all shadow-sm shadow-blue-500/30 mb-4 sm:mb-5"
+                    >
                       Continue to Booking
                     </button>
                     <div className="flex items-center justify-between sm:justify-center gap-3 sm:gap-4 text-[10px] sm:text-xs font-semibold text-gray-500 dark:text-gray-400">

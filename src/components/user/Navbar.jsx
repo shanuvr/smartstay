@@ -1,9 +1,23 @@
-import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { useState, useEffect, useRef } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { User, LogOut, FileText } from 'lucide-react';
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  
+  const dropdownRef = useRef(null);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const loggedInStatus = localStorage.getItem('isLoggedIn');
+    if (loggedInStatus === 'true') {
+      setIsLoggedIn(true);
+    }
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -16,6 +30,23 @@ export default function Navbar() {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setIsDropdownOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  const handleLogout = () => {
+    localStorage.removeItem('isLoggedIn');
+    setIsLoggedIn(false);
+    setIsDropdownOpen(false);
+    navigate('/');
+  };
 
   return (
     <nav className={`sticky top-0 z-50 -mb-20 transition-all duration-300 ease-in-out ${
@@ -36,32 +67,61 @@ export default function Navbar() {
             </Link>
           </div>
 
-          {/* Right: List your place, Sign in, Create account */}
+          {/* Right: Actions */}
           <div className="flex items-center gap-3 sm:gap-6">
             
             {/* List your place link */}
             <Link
               to="/list-your-place"
-              className="hidden md:inline-flex items-center text-sm font-semibold text-slate-800 hover:text-[#2563eb] transition-colors"
+              className="hidden md:inline-flex items-center text-xs font-bold text-slate-700 hover:text-slate-900 bg-slate-100/50 hover:bg-slate-100 px-4 py-2 rounded-full transition-all border border-transparent hover:border-slate-200"
             >
               List your place
             </Link>
 
-            {/* Sign in link */}
-            <Link
-              to="/signin"
-              className="text-sm font-semibold text-slate-800 hover:text-[#2563eb] transition-colors px-2 py-1"
-            >
-              Sign in
-            </Link>
+            {isLoggedIn ? (
+              <div className="relative" ref={dropdownRef}>
+                <button 
+                  onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                  className="hidden sm:flex items-center justify-center w-10 h-10 rounded-full bg-slate-100 hover:bg-slate-200 transition-colors border border-slate-200 text-slate-700 shadow-sm"
+                >
+                  <User className="w-5 h-5" />
+                </button>
+                
+                {isDropdownOpen && (
+                  <div className="absolute right-0 mt-2 w-48 bg-white rounded-xl shadow-lg shadow-slate-200/50 border border-slate-100 py-1.5 overflow-hidden origin-top-right">
+                    <Link to="/profile" onClick={() => setIsDropdownOpen(false)} className="flex items-center gap-2.5 px-4 py-2.5 text-sm text-slate-700 hover:bg-slate-50 transition-colors">
+                      <User className="w-4 h-4 text-slate-400" />
+                      My Profile
+                    </Link>
+                    <Link to="/bookings" onClick={() => setIsDropdownOpen(false)} className="flex items-center gap-2.5 px-4 py-2.5 text-sm text-slate-700 hover:bg-slate-50 transition-colors">
+                      <FileText className="w-4 h-4 text-slate-400" />
+                      My Bookings
+                    </Link>
+                    <div className="h-px bg-slate-100 my-1"></div>
+                    <button onClick={handleLogout} className="w-full flex items-center gap-2.5 px-4 py-2.5 text-sm font-medium text-red-600 hover:bg-red-50 transition-colors text-left">
+                      <LogOut className="w-4 h-4 text-red-400" />
+                      Logout
+                    </button>
+                  </div>
+                )}
+              </div>
+            ) : (
+              <>
+                <Link
+                  to="/signin"
+                  className="text-xs font-bold text-slate-800 hover:text-[#2563eb] bg-white border border-slate-200 hover:border-blue-200 hover:bg-blue-50/50 px-5 py-2.5 rounded-full transition-all shadow-sm"
+                >
+                  Sign in
+                </Link>
 
-            {/* Create account button */}
-            <Link
-              to="/signup"
-              className="hidden sm:inline-flex items-center justify-center px-5 py-2.5 bg-[#2563eb] hover:bg-blue-700 text-white rounded-full font-semibold text-sm transition-colors shadow-xs"
-            >
-              Create account
-            </Link>
+                <Link
+                  to="/signup"
+                  className="hidden sm:inline-flex items-center justify-center px-5 py-2.5 bg-[#2563eb] hover:bg-blue-700 text-white rounded-full font-semibold text-sm transition-colors shadow-xs"
+                >
+                  Create account
+                </Link>
+              </>
+            )}
 
             {/* Hamburger menu button for mobile */}
             <button
@@ -116,20 +176,54 @@ export default function Navbar() {
           >
             List your place
           </Link>
-          <Link
-            to="/signin"
-            onClick={() => setIsOpen(false)}
-            className="text-base font-medium text-gray-700 hover:text-[#5392F9] transition-colors py-2 border-b border-gray-50"
-          >
-            Sign in
-          </Link>
-          <Link
-            to="/signup"
-            onClick={() => setIsOpen(false)}
-            className="inline-flex items-center justify-center w-full px-5 py-2.5 border border-[#5392F9] hover:bg-blue-50 text-[#5392F9] rounded-full font-semibold text-sm transition-all duration-150 mt-4"
-          >
-            Create account
-          </Link>
+          
+          {isLoggedIn ? (
+            <>
+              <Link
+                to="/profile"
+                onClick={() => setIsOpen(false)}
+                className="text-base font-medium text-gray-700 hover:text-[#5392F9] transition-colors py-2 border-b border-gray-50 flex items-center gap-3"
+              >
+                <User className="w-5 h-5 text-gray-500" />
+                My Profile
+              </Link>
+              <Link
+                to="/bookings"
+                onClick={() => setIsOpen(false)}
+                className="text-base font-medium text-gray-700 hover:text-[#5392F9] transition-colors py-2 border-b border-gray-50 flex items-center gap-3"
+              >
+                <FileText className="w-5 h-5 text-gray-500" />
+                My Bookings
+              </Link>
+              <button
+                onClick={() => {
+                  handleLogout();
+                  setIsOpen(false);
+                }}
+                className="text-base font-medium text-red-600 hover:text-red-700 transition-colors py-2 flex items-center gap-3 text-left w-full mt-2"
+              >
+                <LogOut className="w-5 h-5 text-red-400" />
+                Logout
+              </button>
+            </>
+          ) : (
+            <>
+              <Link
+                to="/signin"
+                onClick={() => setIsOpen(false)}
+                className="text-base font-medium text-gray-700 hover:text-[#5392F9] transition-colors py-2 border-b border-gray-50"
+              >
+                Sign in
+              </Link>
+              <Link
+                to="/signup"
+                onClick={() => setIsOpen(false)}
+                className="inline-flex items-center justify-center w-full px-5 py-2.5 border border-[#5392F9] hover:bg-blue-50 text-[#5392F9] rounded-full font-semibold text-sm transition-all duration-150 mt-4"
+              >
+                Create account
+              </Link>
+            </>
+          )}
         </div>
       </div>
     </nav>

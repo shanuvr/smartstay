@@ -436,107 +436,69 @@ export default function Listing({ onlyShowFavorites = false }) {
           )}
 
           {/* Outer Responsive Container */}
-          <div className="bg-white dark:bg-slate-900 rounded-2xl lg:rounded-full shadow-lg border border-gray-200/60 dark:border-slate-800 p-2 sm:p-2.5 flex flex-col lg:flex-row items-stretch lg:items-center relative z-40">
-
-            {/* Where are you going? */}
-            <div className="lg:flex-[1.4] flex items-center gap-2.5 px-3.5 sm:px-4 py-2.5 border-b lg:border-b-0 lg:border-r border-gray-200 dark:border-slate-700">
-              <svg className="w-4.5 h-4.5 text-gray-500 flex-shrink-0" fill="none" stroke="currentColor" strokeWidth="1.8" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" />
-                <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" />
-              </svg>
-              <div className="flex-grow min-w-0">
-                <label className="block text-[11px] font-bold text-gray-900 dark:text-white cursor-pointer leading-tight">Where are you going?</label>
+          <div className="relative z-40">
+            <div className="bg-white dark:bg-slate-900 rounded-full border border-gray-200 dark:border-slate-800 p-1.5 sm:p-2 shadow-sm w-full grid grid-cols-4 divide-x divide-gray-200 dark:divide-slate-700 min-w-0">
+              
+              {/* Destination */}
+              <div className="px-2 sm:px-4 py-1.5 sm:py-1 rounded-l-full min-w-0">
+                <p className="text-[8px] sm:text-[10px] font-bold text-gray-500 uppercase tracking-wider mb-0.5">Destination</p>
                 <input
                   type="text"
                   value={destination}
                   onChange={(e) => setDestination(e.target.value)}
-                  placeholder="City, hotel or destination"
-                  className="w-full text-xs text-gray-600 dark:text-gray-200 font-medium placeholder-gray-400 focus:outline-none bg-transparent"
+                  placeholder="Where to?"
+                  className="w-full text-[10px] sm:text-sm font-semibold text-gray-900 dark:text-white placeholder-gray-400 focus:outline-none bg-transparent truncate"
                 />
               </div>
-            </div>
-
-            {/* Check-in & Check-out Container */}
-            <div className="lg:flex-[2.1] grid grid-cols-2 lg:flex lg:flex-row border-b lg:border-b-0 lg:border-r border-gray-200 dark:border-slate-700 divide-x divide-gray-200 dark:divide-slate-700">
 
               {/* Check-in */}
-              <div
-                className="lg:flex-1 flex items-center gap-2 px-3 sm:px-3.5 py-2.5 cursor-pointer select-none"
+              <div 
+                className="px-2 sm:px-4 py-1.5 sm:py-1 cursor-pointer hover:bg-gray-50 dark:hover:bg-slate-800 transition-colors min-w-0"
                 onClick={() => {
                   setShowCalendar(!showCalendar);
                   setShowOccupancy(false);
                 }}
               >
-                <svg className="w-4.5 h-4.5 text-gray-500 flex-shrink-0" fill="none" stroke="currentColor" strokeWidth="1.8" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5" />
-                </svg>
-                <div className="flex-grow min-w-0">
-                  <label className="block text-[11px] font-bold text-gray-900 dark:text-white cursor-pointer leading-tight">Check-in</label>
-                  <span className="text-xs text-gray-600 dark:text-gray-300 font-medium block truncate">
-                    {checkIn ? formatDateDisplay(checkIn) : 'Add dates'}
-                  </span>
-                </div>
+                <p className="text-[8px] sm:text-[10px] font-bold text-gray-500 uppercase tracking-wider mb-0.5">Check-in</p>
+                <p className="text-[10px] sm:text-sm font-semibold text-gray-900 dark:text-white truncate">{checkIn ? formatDateDisplay(checkIn) : 'Add date'}</p>
               </div>
 
               {/* Check-out */}
-              <div
-                className="lg:flex-1 flex items-center gap-2 px-3 sm:px-3.5 py-2.5 cursor-pointer select-none"
+              <div 
+                className="px-2 sm:px-4 py-1.5 sm:py-1 cursor-pointer hover:bg-gray-50 dark:hover:bg-slate-800 transition-colors min-w-0"
                 onClick={() => {
                   setShowCalendar(!showCalendar);
                   setShowOccupancy(false);
                 }}
               >
-                <svg className="w-4.5 h-4.5 text-gray-500 flex-shrink-0" fill="none" stroke="currentColor" strokeWidth="1.8" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5" />
-                </svg>
-                <div className="flex-grow min-w-0">
-                  <label className="block text-[11px] font-bold text-gray-900 dark:text-white cursor-pointer leading-tight">Check-out</label>
-                  <span className="text-xs text-gray-600 dark:text-gray-300 font-medium block truncate">
-                    {checkOut ? formatDateDisplay(checkOut) : 'Add dates'}
-                  </span>
-                </div>
+                <p className="text-[8px] sm:text-[10px] font-bold text-gray-500 uppercase tracking-wider mb-0.5">Check-out</p>
+                <p className="text-[10px] sm:text-sm font-semibold text-gray-900 dark:text-white truncate">{checkOut ? formatDateDisplay(checkOut) : 'Add date'}</p>
               </div>
 
-            </div>
-
-            {/* Guests */}
-            <div
-              className="lg:flex-[0.75] flex items-center justify-between gap-2 px-3.5 py-2.5 cursor-pointer select-none border-b lg:border-b-0 border-gray-200 dark:border-slate-700"
-              onClick={() => {
-                setShowOccupancy(!showOccupancy);
-                setShowCalendar(false);
-              }}
-            >
-              <div className="flex items-center gap-2 min-w-0">
-                <svg className="w-4.5 h-4.5 text-gray-500 flex-shrink-0" fill="none" stroke="currentColor" strokeWidth="1.8" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
-                </svg>
-                <div className="min-w-0">
-                  <label className="block text-[11px] font-bold text-gray-900 dark:text-white cursor-pointer leading-tight">Guests</label>
-                  <span className="text-xs text-gray-600 dark:text-gray-300 font-medium block truncate">
-                    {adults + children} Guests
-                  </span>
-                </div>
+              {/* Guests */}
+              <div 
+                className="px-2 sm:px-4 py-1.5 sm:py-1 cursor-pointer hover:bg-gray-50 dark:hover:bg-slate-800 rounded-r-full transition-colors min-w-0"
+                onClick={() => {
+                  setShowOccupancy(!showOccupancy);
+                  setShowCalendar(false);
+                }}
+              >
+                <p className="text-[8px] sm:text-[10px] font-bold text-gray-500 uppercase tracking-wider mb-0.5">Guests</p>
+                <p className="text-[10px] sm:text-sm font-semibold text-gray-900 dark:text-white truncate">
+                  {adults} Adults {children > 0 ? `· ${children} Kids` : ''}
+                </p>
               </div>
-              <svg className="w-3.5 h-3.5 text-gray-500 flex-shrink-0" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
-              </svg>
             </div>
 
-            {/* Search Button */}
-            <button
-              onClick={() => window.scrollTo({ top: document.getElementById('listing-results')?.offsetTop - 80 || 0, behavior: 'smooth' })}
-              className="w-full lg:w-auto bg-[#2563eb] hover:bg-blue-700 text-white font-semibold text-xs sm:text-sm px-7 py-3 rounded-xl lg:rounded-full transition-colors flex items-center justify-center gap-2 shadow-md flex-shrink-0 mt-2 lg:mt-0 cursor-pointer"
-            >
-              <svg className="w-4 h-4 lg:hidden" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
-              </svg>
-              <span>Search</span>
-            </button>
-
-          </div>
-
-          {/* Calendar Popover */}
+            <div className="mt-3 flex justify-center lg:justify-end">
+              <button
+                onClick={() => window.scrollTo({ top: document.getElementById('listing-results')?.offsetTop - 80 || 0, behavior: 'smooth' })}
+                className="bg-[#2563eb] hover:bg-blue-700 text-white px-8 py-2.5 rounded-full font-bold text-xs sm:text-sm transition-all shadow-md w-full sm:w-auto"
+              >
+                Search
+              </button>
+            </div>
+          </div>          {/* Calendar Popover */}
           {showCalendar && (
             <div className="absolute top-full left-1/2 -translate-x-1/2 lg:translate-x-0 lg:left-auto lg:right-10 lg:w-[580px] w-[94vw] max-w-[580px] mt-2 bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 rounded-2xl shadow-2xl p-3 sm:p-4 z-50">
               <div className="flex border-b border-gray-150 dark:border-slate-800 mb-3 select-none">

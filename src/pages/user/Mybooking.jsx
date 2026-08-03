@@ -1,0 +1,212 @@
+import React, { useState, useEffect } from 'react';
+import { Calendar, MapPin, Star, QrCode, ChevronRight, CheckCircle2 } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+
+const mockBookings = [
+  {
+    id: 'BKG-9928-XY',
+    hotelName: 'Novotel Hyderabad Convention Centre',
+    location: 'Kondapur, Hyderabad',
+    image: 'https://images.unsplash.com/photo-1566073771259-6a8506099945?q=80&w=1000&auto=format&fit=crop',
+    dates: 'Aug 3 – Aug 6',
+    nights: '3 nights',
+    guests: '2 Guests',
+    price: '₹12,450',
+    status: 'today', // Can check in today
+  },
+  {
+    id: 'BKG-4412-AB',
+    hotelName: 'Taj Mahal Palace',
+    location: 'Colaba, Mumbai',
+    image: 'https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?q=80&w=1000&auto=format&fit=crop',
+    dates: 'Sep 15 – Sep 20',
+    nights: '5 nights',
+    guests: '2 Guests',
+    price: '₹24,890',
+    status: 'upcoming',
+  },
+  {
+    id: 'BKG-1102-ZX',
+    hotelName: 'ITC Grand Chola',
+    location: 'Guindy, Chennai',
+    image: 'https://images.unsplash.com/photo-1590490360182-c33d57733427?q=80&w=1000&auto=format&fit=crop',
+    dates: 'May 10 – May 12',
+    nights: '2 nights',
+    guests: '1 Guest',
+    price: '₹8,900',
+    status: 'past',
+  }
+];
+
+const Mybooking = () => {
+  const [activeTab, setActiveTab] = useState('All');
+  const navigate = useNavigate();
+  const [checkedInStays, setCheckedInStays] = useState({});
+
+  useEffect(() => {
+    const statuses = {};
+    mockBookings.forEach(booking => {
+      const isCheckedIn = localStorage.getItem(`checkin_status_${booking.id}`) === 'true';
+      if (isCheckedIn) {
+        statuses[booking.id] = true;
+      }
+    });
+    setCheckedInStays(statuses);
+  }, []);
+
+  const filteredBookings = mockBookings.filter(b => {
+    if (activeTab === 'All') return true;
+    if (activeTab === 'Upcoming' && (b.status === 'upcoming' || b.status === 'today')) return true;
+    if (activeTab === 'Completed' && b.status === 'past') return true;
+    return false;
+  });
+
+  return (
+    <div className="min-h-screen bg-slate-50 py-4 sm:py-8 font-sans text-slate-800">
+      <div className="max-w-3xl mx-auto px-3 sm:px-6">
+        
+        {/* Header - Compact */}
+        <div className="mb-4 sm:mb-6">
+          <h1 className="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight">My Bookings</h1>
+          <p className="text-slate-500 text-xs sm:text-sm">Manage your stays and check-in statuses.</p>
+        </div>
+
+        {/* Filter Pills - Compact */}
+        <div className="flex items-center gap-2 mb-4">
+          {['All', 'Upcoming', 'Completed'].map(tab => (
+            <button
+              key={tab}
+              onClick={() => setActiveTab(tab)}
+              className={`px-3 py-1.5 rounded-full text-xs font-semibold transition-all ${
+                activeTab === tab 
+                  ? 'bg-blue-600 text-white shadow-xs' 
+                  : 'bg-white text-slate-600 border border-slate-200 hover:bg-slate-50'
+              }`}
+            >
+              {tab}
+            </button>
+          ))}
+        </div>
+
+        {/* Compact Horizontal Booking Cards */}
+        <div className="space-y-3">
+          {filteredBookings.map((booking) => (
+            <div 
+              key={booking.id} 
+              className="bg-white rounded-xl border border-slate-200/80 shadow-2xs hover:shadow-xs transition-all overflow-hidden flex flex-row items-stretch"
+            >
+              
+              {/* Left Image Thumbnail - Scaled Proportions */}
+              <div className="w-24 sm:w-36 md:w-44 shrink-0 relative bg-slate-100 overflow-hidden">
+                <img 
+                  src={booking.image} 
+                  alt={booking.hotelName} 
+                  className="w-full h-full object-cover"
+                />
+                {(booking.status === 'today' || checkedInStays[booking.id]) && (
+                  <span className={`absolute top-1.5 left-1.5 text-white text-[9px] font-bold px-1.5 py-0.5 rounded shadow-xs flex items-center gap-1 ${
+                    checkedInStays[booking.id] ? 'bg-blue-600' : 'bg-emerald-600'
+                  }`}>
+                    {checkedInStays[booking.id] ? (
+                      <>
+                        <CheckCircle2 className="w-2.5 h-2.5" />
+                        Checked In
+                      </>
+                    ) : (
+                      <>
+                        <span className="w-1.5 h-1.5 rounded-full bg-white animate-pulse"></span>
+                        Check-in
+                      </>
+                    )}
+                  </span>
+                )}
+              </div>
+
+              {/* Right Details Section - Compact padding & sizes */}
+              <div className="flex-1 p-2.5 sm:p-3.5 flex flex-col justify-between min-w-0">
+                
+                <div>
+                  {/* ID & Status */}
+                  <div className="flex items-center justify-between text-[10px] text-slate-400 font-medium mb-0.5">
+                    <span>ID: {booking.id}</span>
+                    <span className="hidden sm:inline-block font-semibold text-slate-500">{booking.guests}</span>
+                  </div>
+
+                  {/* Title */}
+                  <h3 className="text-xs sm:text-base font-bold text-slate-900 truncate leading-snug">
+                    {booking.hotelName}
+                  </h3>
+
+                  {/* Location */}
+                  <p className="text-slate-500 text-[10px] sm:text-xs flex items-center gap-1 mt-0.5 truncate">
+                    <MapPin className="w-3 h-3 text-slate-400 shrink-0" />
+                    <span className="truncate">{booking.location}</span>
+                  </p>
+
+                  {/* Single Line Date Tag */}
+                  <div className="mt-1.5 inline-flex items-center gap-1.5 text-[10px] sm:text-xs text-slate-600 bg-slate-50 px-2 py-0.5 rounded border border-slate-150 font-medium">
+                    <Calendar className="w-3 h-3 text-blue-600 shrink-0" />
+                    <span className="whitespace-nowrap">{booking.dates}</span>
+                    <span className="text-slate-300">•</span>
+                    <span className="text-slate-500 whitespace-nowrap">{booking.nights}</span>
+                  </div>
+                </div>
+
+                {/* Footer: Price & Action */}
+                <div className="mt-2 pt-1.5 border-t border-slate-100 flex items-center justify-between gap-1">
+                  <div>
+                    <span className="text-xs sm:text-sm font-bold text-slate-900">{booking.price}</span>
+                    <span className="text-[9px] text-slate-400 ml-1 hidden sm:inline">total</span>
+                  </div>
+
+                  <div className="flex items-center gap-1.5">
+                    {booking.status === 'today' && (
+                      checkedInStays[booking.id] ? (
+                        <button 
+                          onClick={() => navigate('/check-in', { state: { bookingId: booking.id, hotelName: booking.hotelName } })}
+                          className="whitespace-nowrap bg-blue-600 hover:bg-blue-700 text-white text-[10px] sm:text-xs font-bold px-2.5 py-1.5 rounded-lg transition-all flex items-center gap-1 active:scale-95 shadow-2xs"
+                        >
+                          <QrCode className="w-3 h-3" />
+                          <span>View Key</span>
+                        </button>
+                      ) : (
+                        <button 
+                          onClick={() => navigate('/check-in', { state: { bookingId: booking.id, hotelName: booking.hotelName } })}
+                          className="whitespace-nowrap bg-emerald-600 hover:bg-emerald-700 text-white text-[10px] sm:text-xs font-bold px-2.5 py-1.5 rounded-lg transition-all flex items-center gap-1 active:scale-95 shadow-2xs"
+                        >
+                          <QrCode className="w-3 h-3" />
+                          <span>Check In</span>
+                        </button>
+                      )
+                    )}
+
+                    {booking.status === 'past' && (
+                      <button className="whitespace-nowrap bg-blue-600 hover:bg-blue-700 text-white text-[10px] sm:text-xs font-semibold px-2.5 py-1.5 rounded-lg transition-all flex items-center gap-1 shadow-2xs">
+                        <Star className="w-3 h-3 fill-white/20" />
+                        <span>Rate & Review</span>
+                      </button>
+                    )}
+
+                    {booking.status === 'upcoming' && (
+                      <button className="whitespace-nowrap bg-slate-900 hover:bg-slate-800 text-white text-[10px] sm:text-xs font-semibold px-2.5 py-1.5 rounded-lg transition-colors">
+                        Manage
+                      </button>
+                    )}
+
+                    <button className="p-1 text-slate-400 hover:text-slate-600">
+                      <ChevronRight className="w-3.5 h-3.5" />
+                    </button>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+          ))}
+        </div>
+
+      </div>
+    </div>
+  );
+};
+
+export default Mybooking;

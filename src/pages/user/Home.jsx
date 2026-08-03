@@ -639,48 +639,52 @@ export default function Home() {
                         Exclusive loyalty rewards
                     </h2>
 
-                    <div className="relative flex flex-col lg:flex-row rounded-2xl shadow-md border border-slate-200/80 dark:border-slate-800 overflow-hidden bg-white dark:bg-slate-900">
+                    <div className="relative flex flex-col lg:flex-row rounded-xl shadow-sm border border-slate-200/80 dark:border-slate-800 overflow-hidden bg-white dark:bg-slate-900">
 
                         {/* Main stub */}
-                        <div className="flex-1 p-5 sm:p-6">
-                            <p className="text-[10px] text-[#2563eb]/70 dark:text-blue-400/70 mb-2">
-                                LOYALTY CIRCLE — BOOKING PASS
-                            </p>
-                            <h3 className="text-xl sm:text-3xl font-bold text-slate-900 dark:text-white mb-2 leading-tight max-w-md">
-                                Book 3 stays, get 50% off your 4th
-                            </h3>
-                            <p className="text-xs sm:text-sm text-slate-500 dark:text-slate-400 mb-4 max-w-md leading-relaxed">
-                                Every booking earns a stamp. Complete three at any SmartStay partner property and your fourth reservation unlocks instantly at half price.
-                            </p>
-
-                            {/* Stamp trail */}
-                            <div className="flex items-center gap-2 sm:gap-3 mb-5">
-                                {[1, 2, 3].map((n, i) => (
-                                    <div key={n} className="flex items-center gap-2 sm:gap-3">
-                                        <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-[#2563eb] dark:bg-blue-600 flex items-center justify-center shrink-0 shadow-xs">
-                                            <svg className="w-4.5 h-4.5 text-white" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
-                                                <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
-                                            </svg>
+                        <div className="flex-1 p-4 sm:p-5">
+                            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                                <div>
+                                    <p className="text-[9px] font-bold tracking-widest text-[#2563eb]/70 dark:text-blue-400/70 mb-1">
+                                        LOYALTY CIRCLE — BOOKING PASS
+                                    </p>
+                                    <h3 className="text-lg sm:text-xl font-extrabold text-slate-900 dark:text-white leading-tight">
+                                        Book 3 stays, get 50% off your 4th
+                                    </h3>
+                                    <p className="text-[11px] sm:text-xs text-slate-500 dark:text-slate-400 mt-1 max-w-lg leading-snug">
+                                        Every booking earns a stamp. Complete three at any SmartStay partner property and your fourth reservation unlocks instantly at half price.
+                                    </p>
+                                </div>
+                                
+                                {/* Stamp trail */}
+                                <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
+                                    {[1, 2, 3].map((n, i) => (
+                                        <div key={n} className="flex items-center gap-1.5 sm:gap-2">
+                                            <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-[#2563eb] dark:bg-blue-600 flex items-center justify-center shadow-xs">
+                                                <svg className="w-3.5 h-3.5 text-white" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
+                                                    <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+                                                </svg>
+                                            </div>
+                                            {i < 2 && <div className="w-3 sm:w-4 border-t border-dashed border-slate-300 dark:border-slate-700" />}
                                         </div>
-                                        {i < 2 && <div className="w-4 sm:w-6 border-t border-dashed border-slate-300 dark:border-slate-700" />}
+                                    ))}
+                                    <div className="w-3 sm:w-4 border-t border-dashed border-slate-300 dark:border-slate-700" />
+                                    <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-full border-2 border-dashed border-slate-300 dark:border-slate-700 flex items-center justify-center text-slate-300 dark:text-slate-600 text-[9px] font-bold">
+                                        04
                                     </div>
-                                ))}
-                                <div className="w-4 sm:w-6 border-t border-dashed border-slate-300 dark:border-slate-700" />
-                                <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-full border-2 border-dashed border-slate-300 dark:border-slate-700 flex items-center justify-center shrink-0 text-slate-300 dark:text-slate-600 text-[10px]">
-                                    04
                                 </div>
                             </div>
 
-                            <div className="flex items-center gap-5">
+                            <div className="flex items-center gap-4 mt-4">
                                 <Link
                                     to="/signin"
-                                    className="bg-[#2563eb] hover:bg-blue-700 text-white font-semibold text-xs sm:text-sm px-6 py-3 rounded-full transition-colors whitespace-nowrap shadow-xs"
+                                    className="bg-slate-900 hover:bg-slate-800 dark:bg-white dark:hover:bg-slate-100 text-white dark:text-slate-900 font-bold text-[10px] sm:text-xs px-5 py-2 rounded-lg transition-colors whitespace-nowrap shadow-sm"
                                 >
                                     Join loyalty circle
                                 </Link>
                                 <Link
                                     to="/listing"
-                                    className="text-[#2563eb] dark:text-blue-400 hover:underline font-semibold text-xs sm:text-sm whitespace-nowrap"
+                                    className="text-slate-600 dark:text-slate-300 hover:text-[#2563eb] dark:hover:text-blue-400 font-semibold text-[10px] sm:text-xs whitespace-nowrap transition-colors"
                                 >
                                     Find hotels
                                 </Link>
@@ -692,17 +696,17 @@ export default function Home() {
                             <div className="hidden lg:block absolute inset-y-0 left-1/2 -translate-x-1/2 border-l border-dashed border-slate-300 dark:border-slate-700" />
                             <div className="lg:hidden absolute inset-x-0 top-1/2 -translate-y-1/2 border-t border-dashed border-slate-300 dark:border-slate-700" />
                             {/* notch circles */}
-                            <div className="hidden lg:block absolute -top-3 left-1/2 -translate-x-1/2 w-6 h-6 rounded-full bg-white dark:bg-slate-950" />
-                            <div className="hidden lg:block absolute -bottom-3 left-1/2 -translate-x-1/2 w-6 h-6 rounded-full bg-white dark:bg-slate-950" />
-                            <div className="lg:hidden absolute -left-3 top-1/2 -translate-y-1/2 w-6 h-6 rounded-full bg-white dark:bg-slate-950" />
-                            <div className="lg:hidden absolute -right-3 top-1/2 -translate-y-1/2 w-6 h-6 rounded-full bg-white dark:bg-slate-950" />
+                            <div className="hidden lg:block absolute -top-2 left-1/2 -translate-x-1/2 w-4 h-4 rounded-full bg-white dark:bg-slate-950" />
+                            <div className="hidden lg:block absolute -bottom-2 left-1/2 -translate-x-1/2 w-4 h-4 rounded-full bg-white dark:bg-slate-950" />
+                            <div className="lg:hidden absolute -left-2 top-1/2 -translate-y-1/2 w-4 h-4 rounded-full bg-white dark:bg-slate-950" />
+                            <div className="lg:hidden absolute -right-2 top-1/2 -translate-y-1/2 w-4 h-4 rounded-full bg-white dark:bg-slate-950" />
                         </div>
 
                         {/* Reward panel — the "torn stub" */}
-                        <div className="lg:w-[220px] bg-[#0F172A] flex flex-col items-center justify-center gap-2 py-8 lg:py-0 px-6">
-                            <span className="text-[10px] text-white/40 tracking-widest">VALUE</span>
-                            <span className="text-4xl sm:text-5xl font-bold text-[#D98E3E]">50%</span>
-                            <span className="text-[10px] text-white/50 tracking-widest">OFF STAY 04</span>
+                        <div className="lg:w-[160px] bg-gradient-to-br from-[#0F172A] to-slate-800 flex flex-col items-center justify-center gap-1 py-4 lg:py-0 px-4">
+                            <span className="text-[9px] font-bold text-white/40 tracking-widest">VALUE</span>
+                            <span className="text-3xl font-black text-[#D98E3E]">50%</span>
+                            <span className="text-[9px] font-bold text-white/50 tracking-widest">OFF STAY 04</span>
                         </div>
                     </div>
                 </section>
