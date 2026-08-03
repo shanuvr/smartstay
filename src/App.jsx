@@ -16,6 +16,11 @@ import PropertyType from './pages/user/partner/PropertyType';
 import PropertyDetails from './pages/user/partner/PropertyDetails';
 import Payment from './pages/user/partner/Payment';
 
+// Admin / Partner Portal
+import AdminLogin from './pages/admin/Login';
+import AdminLayout from './laybouts/AdminLayout';
+import AdminDashboard from './pages/admin/Dashboard';
+
 function ScrollToTop() {
   const { pathname } = useLocation();
 
@@ -48,6 +53,15 @@ function App() {
           <Route path="type" element={<PropertyType />} />
           <Route path="details" element={<PropertyDetails />} />
           <Route path="payment" element={<Payment />} />
+        </Route>
+
+        {/* Admin / Partner Dashboard */}
+        <Route path="/admin/login" element={<AdminLogin />} />
+        
+        <Route path="/admin" element={<AdminLayout />}>
+          <Route index element={<AdminDashboard />} />
+          {/* <Route path="properties" element={<AdminProperties />} /> */}
+          {/* <Route path="bookings" element={<AdminBookings />} /> */}
         </Route>
       </Routes>
     </>

@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { User, LogOut, FileText } from 'lucide-react';
+import { User, LogOut, FileText, Plus } from 'lucide-react';
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -70,13 +70,16 @@ export default function Navbar() {
           {/* Right: Actions */}
           <div className="flex items-center gap-3 sm:gap-6">
             
-            {/* List your place link */}
-            <Link
-              to="/list-your-place"
-              className="hidden md:inline-flex items-center text-xs font-bold text-slate-700 hover:text-slate-900 bg-slate-100/50 hover:bg-slate-100 px-4 py-2 rounded-full transition-all border border-transparent hover:border-slate-200"
-            >
-              List your place
-            </Link>
+            {/* List your place link with Gradient Border */}
+            <div className="hidden md:flex p-[2.5px] rounded-full bg-gradient-to-r from-[#d4e157] via-[#26c6da] to-[#1e88e5] shadow-sm hover:shadow-md transition-shadow cursor-pointer">
+              <Link
+                to="/list-your-place"
+                className="flex items-center gap-1.5 px-5 py-1.5 bg-white rounded-full transition-colors hover:bg-slate-50/80"
+              >
+                <Plus className="w-4 h-4 text-slate-800" strokeWidth={2} />
+                <span className="text-[13px] font-semibold tracking-wide text-[#1e88e5] uppercase">List your place</span>
+              </Link>
+            </div>
 
             {isLoggedIn ? (
               <div className="relative" ref={dropdownRef}>

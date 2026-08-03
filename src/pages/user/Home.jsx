@@ -1,5 +1,6 @@
 import { useState, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 import UserLayout from '../../laybouts/Userlayout';
 
 const getDaysInMonth = (year, month) => {
@@ -62,6 +63,13 @@ const WHY_CARDS = [
     },
 ];
 
+const PREMIUM_PARTNERS = [
+    { name: 'Taj Hotels Limited', img: 'https://images.unsplash.com/photo-1566073771259-6a8506099945?w=500&q=80', logo: 'T' },
+    { name: 'Oberoi Resorts & Spas', img: 'https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=500&q=80', logo: 'O' },
+    { name: 'ITC Luxury Collection', img: 'https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=500&q=80', logo: 'ITC' },
+    { name: 'Leela Palaces & Hotels', img: 'https://images.unsplash.com/photo-1571003123894-1f0594d2b5d9?w=500&q=80', logo: 'L' },
+];
+
 export default function Home() {
     const navigate = useNavigate();
     const [destination, setDestination] = useState('');
@@ -76,10 +84,16 @@ export default function Home() {
     const [withPets, setWithPets] = useState(false);
 
     const propertyScrollRef = useRef(null);
+    const premiumScrollRef = useRef(null);
 
     const scrollProperties = (dir) => {
         if (!propertyScrollRef.current) return;
         propertyScrollRef.current.scrollBy({ left: dir * 320, behavior: 'smooth' });
+    };
+
+    const scrollPremium = (dir) => {
+        if (!premiumScrollRef.current) return;
+        premiumScrollRef.current.scrollBy({ left: dir * 300, behavior: 'smooth' });
     };
 
     const formatDateDisplay = (dateString) => {
@@ -203,7 +217,7 @@ export default function Home() {
                     <div className="relative z-10 max-w-[1280px] w-full mx-auto px-4 sm:px-6 lg:px-8 flex flex-col justify-between flex-grow">
                         
                         {/* Top Hero Content: Title & Subtitle */}
-                        <div className="max-w-2xl">
+                        <div className="max-w-2xl animate-fade-in-up">
                             <h1 className="text-2xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-slate-900 leading-tight">
                                 Smarter Bookings.<br />
                                 <span className="text-[#2563eb]">Faster Check-ins.</span>
@@ -230,7 +244,7 @@ export default function Home() {
                             )}
 
                             {/* Outer Responsive Container */}
-                            <div className="bg-white/95 backdrop-blur-md rounded-2xl lg:rounded-full shadow-2xl border border-white/80 p-2 sm:p-2.5 flex flex-col lg:flex-row items-stretch lg:items-center relative z-40">
+                            <div className="bg-white/95 backdrop-blur-md rounded-2xl lg:rounded-full shadow-2xl border border-white/80 p-2 sm:p-2.5 flex flex-col lg:flex-row items-stretch lg:items-center relative z-40 animate-fade-in-up" style={{ animationDelay: '0.1s' }}>
 
                                 {/* Where are you going? */}
                                 <div className="lg:flex-[1.4] flex items-center gap-2.5 px-3.5 sm:px-4 py-2.5 border-b lg:border-b-0 lg:border-r border-gray-200">
@@ -710,6 +724,74 @@ export default function Home() {
                         </div>
                     </div>
                 </section>
+
+                {/* ============================================================ */}
+                {/* PREMIUM PARTNERS                                             */}
+                {/* ============================================================ */}
+                <section className="max-w-[1300px] mx-auto px-4 sm:px-6 mt-16 sm:mt-24">
+    <div className="bg-[#f0f7ff] dark:bg-[#12181D] border border-[#E7DFD2] dark:border-white/10 rounded-xl p-6 sm:p-8 lg:p-10 flex flex-col lg:flex-row items-start gap-6 sm:gap-10">
+
+        {/* Title side */}
+        <div className="w-full lg:w-1/4 shrink-0 text-center lg:text-left lg:pt-1">
+            <p className="text-[11px] font-bold tracking-[0.2em] text-[#0E5C53] dark:text-[#4FB8A8] uppercase mb-2">
+                Curated by SmartStay
+            </p>
+            <h2 className="font-serif text-2xl sm:text-[26px] text-[#16232E] dark:text-white leading-tight">
+                Flagship hotel stores
+            </h2>
+            <p className="hidden lg:block text-xs text-[#8A8272] dark:text-white/40 mt-3 leading-relaxed max-w-[200px]">
+                A short list of properties we vouch for, hand-picked each season.
+            </p>
+        </div>
+
+        {/* Cards side */}
+        <div className="w-full lg:w-3/4 min-w-0 relative group">
+            {/* Left Scroll Arrow */}
+            <button 
+                onClick={() => scrollPremium(-1)}
+                className="flex absolute -left-3 sm:-left-4 top-1/2 -translate-y-1/2 z-10 w-8 h-8 sm:w-9 sm:h-9 bg-white border border-slate-200 rounded-full items-center justify-center shadow-lg text-slate-700 hover:text-[#2563eb] opacity-90 lg:opacity-0 group-hover:opacity-100 transition-opacity"
+            >
+                <ChevronLeft className="w-4 h-4 sm:w-5 sm:h-5" />
+            </button>
+
+            <div ref={premiumScrollRef} className="flex gap-4 sm:gap-5 overflow-x-auto pb-3 -mx-1 px-1 scrollbar-none snap-x snap-mandatory scroll-smooth">
+                {PREMIUM_PARTNERS.map((partner, idx) => (
+                    <div
+                        key={idx}
+                        className="relative w-[15.5rem] sm:w-64 h-40 sm:h-44 shrink-0 rounded-lg overflow-hidden group snap-start cursor-pointer border border-[#E7DFD2] dark:border-white/10"
+                    >
+                        <img
+                            src={partner.img}
+                            alt={partner.name}
+                            className="w-full h-full object-cover group-hover:scale-[1.04] transition-transform duration-700"
+                        />
+
+                        {/* Gradient + plaque text */}
+                        <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-[#16232E]/95 via-[#16232E]/50 to-transparent pt-10 pb-3.5 px-4">
+                            <div className="w-6 h-[1.5px] bg-[#C9A227] mb-2" />
+                            <h3 className="text-white font-serif text-sm sm:text-base leading-tight">
+                                {partner.name}
+                            </h3>
+                        </div>
+                    </div>
+                ))}
+                {/* Spacer to ensure the last card clears the fade gradient */}
+                <div className="shrink-0 w-6 sm:w-10 h-px" />
+            </div>
+
+            {/* Right Scroll Arrow */}
+            <button 
+                onClick={() => scrollPremium(1)}
+                className="flex absolute -right-3 sm:right-4 top-1/2 -translate-y-1/2 z-10 w-8 h-8 sm:w-9 sm:h-9 bg-white border border-slate-200 rounded-full items-center justify-center shadow-lg text-slate-700 hover:text-[#2563eb] opacity-90 lg:opacity-0 group-hover:opacity-100 transition-opacity"
+            >
+                <ChevronRight className="w-4 h-4 sm:w-5 sm:h-5" />
+            </button>
+
+            {/* Edge fade cues so the overflow reads as scrollable, not clipped */}
+            <div className="hidden lg:block pointer-events-none absolute top-0 right-0 h-40 sm:h-44 w-10 bg-gradient-to-l from-[#f0f7ff] dark:from-[#12181D] to-transparent" />
+        </div>
+    </div>
+</section>
 
                 {/* ============================================================ */}
                 {/* WHY SMARTSTAY?                                                */}

@@ -125,7 +125,7 @@ const PartnerLayout = () => {
           <span className="text-xl tracking-tight font-extrabold text-slate-900">SmartStay<span className="text-[#2563eb]">.</span></span>
         </Link>
         <nav className="flex items-center gap-6">
-          <Link to="/signin" className="px-5 py-2 border-2 border-slate-200 text-slate-700 hover:border-slate-300 font-bold rounded-xl text-sm transition-all shadow-sm">
+          <Link to="/admin/login" className="px-5 py-2 border-2 border-slate-200 text-slate-700 hover:border-slate-300 font-bold rounded-xl text-sm transition-all shadow-sm">
             Sign In
           </Link>
         </nav>
