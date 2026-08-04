@@ -68,7 +68,7 @@ const MetricCard = ({ title, value, icon: Icon, trend, isPositive }) => (
 
 const Dashboard = () => {
   return (
-    <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500 max-w-7xl mx-auto">
+    <div className="p-4 md:p-8 space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500 max-w-7xl mx-auto">
       
       {/* Header */}
       <div className="flex items-center justify-between">

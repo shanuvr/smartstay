@@ -9,6 +9,7 @@ import Signin from './pages/user/Signin';
 import Mybooking from './pages/user/Mybooking';
 import Checkin from './pages/user/Checkin';
 import Register from './pages/user/Register';
+import Profile from './pages/user/Profile';
 import PartnerLayout from './pages/user/partner/PartnerLayout';
 import BusinessDetails from './pages/user/partner/BusinessDetails';
 import SelectPackage from './pages/user/partner/SelectPackage';
@@ -20,6 +21,21 @@ import Payment from './pages/user/partner/Payment';
 import AdminLogin from './pages/admin/Login';
 import AdminLayout from './laybouts/AdminLayout';
 import AdminDashboard from './pages/admin/Dashboard';
+import AdminPropertyList from './pages/admin/PropertyList';
+import AdminRooms from './pages/admin/Rooms';
+import AdminRatesAndAvailability from './pages/admin/RatesAndAvailability';
+import AdminFacilities from './pages/admin/Facilities';
+import AdminBookings from './pages/admin/Bookings';
+import AdminFinance from './pages/admin/Finance';
+import SettingsLayout from './pages/admin/settings/SettingsLayout';
+import PropertyInformation from './pages/admin/settings/PropertyInformation';
+import ListingBadges from './pages/admin/settings/ListingBadges';
+import PropertyLocation from './pages/admin/settings/PropertyLocation';
+import PaymentSettings from './pages/admin/settings/PaymentSettings';
+import ContactInfo from './pages/admin/settings/ContactInfo';
+import Policies from './pages/admin/settings/Policies';
+import ManagePhotos from './pages/admin/settings/ManagePhotos';
+import SubscriptionPlan from './pages/admin/settings/SubscriptionPlan';
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -45,6 +61,7 @@ function App() {
         <Route path="/bookings" element={<Mybooking />} />
         <Route path="/check-in" element={<Checkin />} />
         <Route path="/signup" element={<Register />} />
+        <Route path="/profile" element={<Profile />} />
         
         {/* Partner / List Your Place Onboarding */}
         <Route path="/list-your-place" element={<PartnerLayout />}>
@@ -59,7 +76,23 @@ function App() {
         <Route path="/admin/login" element={<AdminLogin />} />
         
         <Route path="/admin" element={<AdminLayout />}>
-          <Route index element={<AdminDashboard />} />
+          <Route index element={<AdminPropertyList />} />
+          <Route path="dashboard" element={<AdminDashboard />} />
+          <Route path="rooms" element={<AdminRooms />} />
+          <Route path="rates" element={<AdminRatesAndAvailability />} />
+          <Route path="facilities" element={<AdminFacilities />} />
+          <Route path="bookings" element={<AdminBookings />} />
+          <Route path="finance" element={<AdminFinance />} />
+          <Route path="settings" element={<SettingsLayout />}>
+            <Route index element={<PropertyInformation />} />
+            <Route path="photos" element={<ManagePhotos />} />
+            <Route path="badges" element={<ListingBadges />} />
+            <Route path="location" element={<PropertyLocation />} />
+            <Route path="payment" element={<PaymentSettings />} />
+            <Route path="contact" element={<ContactInfo />} />
+            <Route path="policies" element={<Policies />} />
+            <Route path="plan" element={<SubscriptionPlan />} />
+          </Route>
           {/* <Route path="properties" element={<AdminProperties />} /> */}
           {/* <Route path="bookings" element={<AdminBookings />} /> */}
         </Route>

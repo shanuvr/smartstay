@@ -173,7 +173,8 @@ export default function Checkin() {
         isVerified: true
       };
       localStorage.setItem('smartstay_guest_profile', JSON.stringify(profileData));
-      localStorage.setItem(`checkin_status_${bookingId}`, 'true');
+      // Mark digital check-in as completed (admin must still confirm to hand over key)
+      localStorage.setItem(`digital_checkin_completed_${bookingId}`, 'true');
       setIsSubmitting(false);
       setStep('success');
     }, 1500);

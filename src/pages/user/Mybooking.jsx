@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { Calendar, MapPin, Star, QrCode, ChevronRight, CheckCircle2 } from 'lucide-react';
+import { Calendar, MapPin, Star, QrCode, ChevronRight, CheckCircle2, Clock } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import UserLayout from '../../laybouts/Userlayout';
 
 const mockBookings = [
   {
@@ -42,16 +43,23 @@ const Mybooking = () => {
   const [activeTab, setActiveTab] = useState('All');
   const navigate = useNavigate();
   const [checkedInStays, setCheckedInStays] = useState({});
+  const [digitalCheckinDone, setDigitalCheckinDone] = useState({});
 
   useEffect(() => {
-    const statuses = {};
+    const adminConfirmed = {};
+    const digitalDone = {};
     mockBookings.forEach(booking => {
-      const isCheckedIn = localStorage.getItem(`checkin_status_${booking.id}`) === 'true';
-      if (isCheckedIn) {
-        statuses[booking.id] = true;
+      // Admin confirmed check-in (key handed over)
+      if (localStorage.getItem(`checkin_status_${booking.id}`) === 'true') {
+        adminConfirmed[booking.id] = true;
+      }
+      // Guest completed digital check-in (awaiting admin confirmation)
+      if (localStorage.getItem(`digital_checkin_completed_${booking.id}`) === 'true') {
+        digitalDone[booking.id] = true;
       }
     });
-    setCheckedInStays(statuses);
+    setCheckedInStays(adminConfirmed);
+    setDigitalCheckinDone(digitalDone);
   }, []);
 
   const filteredBookings = mockBookings.filter(b => {
@@ -62,8 +70,9 @@ const Mybooking = () => {
   });
 
   return (
-    <div className="min-h-screen bg-slate-50 py-4 sm:py-8 font-sans text-slate-800">
-      <div className="max-w-3xl mx-auto px-3 sm:px-6">
+    <UserLayout>
+      <div className="min-h-[calc(100vh-80px)] bg-slate-50 py-4 sm:py-8 font-sans text-slate-800">
+        <div className="max-w-3xl mx-auto px-3 sm:px-6 mt-16 md:mt-24">
         
         {/* Header - Compact */}
         <div className="mb-4 sm:mb-6">
@@ -103,14 +112,19 @@ const Mybooking = () => {
                   alt={booking.hotelName} 
                   className="w-full h-full object-cover"
                 />
-                {(booking.status === 'today' || checkedInStays[booking.id]) && (
+                {(booking.status === 'today' || checkedInStays[booking.id] || digitalCheckinDone[booking.id]) && (
                   <span className={`absolute top-1.5 left-1.5 text-white text-[9px] font-bold px-1.5 py-0.5 rounded shadow-xs flex items-center gap-1 ${
-                    checkedInStays[booking.id] ? 'bg-blue-600' : 'bg-emerald-600'
+                    checkedInStays[booking.id] ? 'bg-blue-600' : digitalCheckinDone[booking.id] ? 'bg-amber-500' : 'bg-emerald-600'
                   }`}>
                     {checkedInStays[booking.id] ? (
                       <>
                         <CheckCircle2 className="w-2.5 h-2.5" />
                         Checked In
+                      </>
+                    ) : digitalCheckinDone[booking.id] ? (
+                      <>
+                        <Clock className="w-2.5 h-2.5" />
+                        At Reception
                       </>
                     ) : (
                       <>
@@ -169,6 +183,13 @@ const Mybooking = () => {
                           <QrCode className="w-3 h-3" />
                           <span>View Key</span>
                         </button>
+                      ) : digitalCheckinDone[booking.id] ? (
+                        <button 
+                          className="whitespace-nowrap bg-amber-500 hover:bg-amber-600 text-white text-[10px] sm:text-xs font-bold px-2.5 py-1.5 rounded-lg transition-all flex items-center gap-1 cursor-default shadow-2xs"
+                        >
+                          <Clock className="w-3 h-3" />
+                          <span>Key at Reception</span>
+                        </button>
                       ) : (
                         <button 
                           onClick={() => navigate('/check-in', { state: { bookingId: booking.id, hotelName: booking.hotelName } })}
@@ -204,8 +225,9 @@ const Mybooking = () => {
           ))}
         </div>
 
+        </div>
       </div>
-    </div>
+    </UserLayout>
   );
 };
 

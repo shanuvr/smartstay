@@ -262,6 +262,7 @@ export default function DetailedView() {
   const [showAmenitiesModal, setShowAmenitiesModal] = useState(false);
   const [showFacilitiesModal, setShowFacilitiesModal] = useState(false);
   const [showLocationModal, setShowLocationModal] = useState(false);
+  const [showPoliciesModal, setShowPoliciesModal] = useState(false);
   const [openFaqIndex, setOpenFaqIndex] = useState(null);
   const [showCalendar, setShowCalendar] = useState(false);
   const [showOccupancy, setShowOccupancy] = useState(false);
@@ -739,7 +740,12 @@ export default function DetailedView() {
             >
               Location
             </button>
-            <a className="py-2 sm:py-3.5 font-bold text-[10px] sm:text-sm text-gray-500 hover:text-[#2563eb] transition-all" href="#policies">Policies</a>
+            <button
+              onClick={() => setShowPoliciesModal(true)}
+              className="py-2 sm:py-3.5 font-bold text-[10px] sm:text-sm text-gray-500 hover:text-[#2563eb] transition-all cursor-pointer"
+            >
+              Policies
+            </button>
           </nav>
         </div>
 
@@ -1076,6 +1082,101 @@ export default function DetailedView() {
                 </button>
               </div>
 
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Policies Modal */}
+      {showPoliciesModal && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6 bg-slate-900/60 backdrop-blur-sm transition-opacity">
+          <div className="bg-white dark:bg-slate-900 rounded-3xl shadow-2xl w-full max-w-[600px] flex flex-col max-h-[90vh] overflow-hidden border border-gray-200 dark:border-slate-800 relative animate-in fade-in zoom-in-95 duration-200">
+            
+            <div className="p-5 sm:p-7 flex-1 overflow-y-auto custom-scrollbar">
+              {/* Header */}
+              <div className="flex items-start justify-between mb-6 sticky top-0 bg-white dark:bg-slate-900 z-10 pt-1 pb-4 border-b border-gray-100 dark:border-slate-800">
+                <div>
+                  <h2 className="text-xl sm:text-2xl font-extrabold text-gray-900 dark:text-white leading-tight">Property Policies</h2>
+                  <p className="text-[13px] sm:text-sm text-gray-500 mt-1">Please review the rules before booking</p>
+                </div>
+                <button 
+                  onClick={() => setShowPoliciesModal(false)}
+                  className="p-2 sm:p-2.5 bg-gray-50 dark:bg-slate-800 rounded-full hover:bg-gray-100 dark:hover:bg-slate-700 text-gray-600 dark:text-gray-400 transition-colors shrink-0 border border-gray-200 dark:border-slate-700 shadow-sm"
+                >
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M6 18L18 6M6 6l12 12" /></svg>
+                </button>
+              </div>
+
+              {/* Policies List */}
+              <div className="space-y-6">
+                
+                {/* Check-in / Check-out */}
+                <div className="flex items-start gap-4 border-b border-gray-100 dark:border-slate-800 pb-5">
+                  <div className="w-10 h-10 rounded-full bg-blue-50 dark:bg-blue-900/20 flex items-center justify-center text-[#2563eb] dark:text-blue-400 shrink-0 mt-0.5 border border-blue-100 dark:border-blue-800/30">
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                  </div>
+                  <div>
+                    <h4 className="text-[14px] sm:text-base font-bold text-gray-900 dark:text-white">Check-in / Check-out</h4>
+                    <div className="mt-2 text-[13px] sm:text-sm text-gray-600 dark:text-gray-400 leading-relaxed grid grid-cols-2 gap-4">
+                      <div>
+                        <span className="font-bold text-gray-800 dark:text-gray-200 block">Check-in</span>
+                        From 2:00 PM
+                      </div>
+                      <div>
+                        <span className="font-bold text-gray-800 dark:text-gray-200 block">Check-out</span>
+                        Until 12:00 PM
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Cancellation */}
+                <div className="flex items-start gap-4 border-b border-gray-100 dark:border-slate-800 pb-5">
+                  <div className="w-10 h-10 rounded-full bg-blue-50 dark:bg-blue-900/20 flex items-center justify-center text-[#2563eb] dark:text-blue-400 shrink-0 mt-0.5 border border-blue-100 dark:border-blue-800/30">
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                    </svg>
+                  </div>
+                  <div>
+                    <h4 className="text-[14px] sm:text-base font-bold text-gray-900 dark:text-white">Cancellation & Prepayment</h4>
+                    <p className="mt-2 text-[13px] sm:text-sm text-gray-600 dark:text-gray-400 leading-relaxed">
+                      Cancellation and prepayment policies vary according to accommodation type. Free cancellation is available on most rooms up to 24 hours prior to check-in.
+                    </p>
+                  </div>
+                </div>
+
+                {/* Children & Beds */}
+                <div className="flex items-start gap-4 border-b border-gray-100 dark:border-slate-800 pb-5">
+                  <div className="w-10 h-10 rounded-full bg-blue-50 dark:bg-blue-900/20 flex items-center justify-center text-[#2563eb] dark:text-blue-400 shrink-0 mt-0.5 border border-blue-100 dark:border-blue-800/30">
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                    </svg>
+                  </div>
+                  <div>
+                    <h4 className="text-[14px] sm:text-base font-bold text-gray-900 dark:text-white">Children & Beds</h4>
+                    <p className="mt-2 text-[13px] sm:text-sm text-gray-600 dark:text-gray-400 leading-relaxed">
+                      Children of any age are welcome. Children aged 12 years and above are considered adults at this property. Extra beds are available upon request for ₹1,500 per person, per night.
+                    </p>
+                  </div>
+                </div>
+
+                {/* Pets */}
+                <div className="flex items-start gap-4 pb-2">
+                  <div className="w-10 h-10 rounded-full bg-blue-50 dark:bg-blue-900/20 flex items-center justify-center text-[#2563eb] dark:text-blue-400 shrink-0 mt-0.5 border border-blue-100 dark:border-blue-800/30">
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z" />
+                    </svg>
+                  </div>
+                  <div>
+                    <h4 className="text-[14px] sm:text-base font-bold text-gray-900 dark:text-white">Pets</h4>
+                    <p className="mt-2 text-[13px] sm:text-sm text-gray-600 dark:text-gray-400 leading-relaxed">
+                      Pets are not allowed. Guide dogs or assistance animals are permitted.
+                    </p>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
