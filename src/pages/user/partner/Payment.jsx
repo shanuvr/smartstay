@@ -1,16 +1,16 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { CreditCard, Wallet, Building, CheckCircle2, ShieldCheck, Lock } from 'lucide-react';
+import { Building2, CheckCircle2, ShieldCheck, ArrowRight, Wallet, Info } from 'lucide-react';
 
-const FloatingInput = ({ type = 'text', id, label, required = false, maxLength, pattern }) => (
+const FloatingInput = ({ type = 'text', id, label, required = false, value, onChange }) => (
   <div className="relative">
     <input
       type={type}
       id={id}
       name={id}
+      value={value}
+      onChange={onChange}
       required={required}
-      maxLength={maxLength}
-      pattern={pattern}
       placeholder=" "
       className="block px-2.5 pb-2.5 pt-3 w-full text-xs sm:text-sm font-semibold text-slate-800 bg-transparent rounded-lg border border-slate-200 appearance-none focus:outline-none focus:ring-0 focus:border-[#2563eb] peer transition-colors shadow-sm"
     />
@@ -25,47 +25,48 @@ const FloatingInput = ({ type = 'text', id, label, required = false, maxLength, 
 
 const Payment = () => {
   const navigate = useNavigate();
-  const [paymentMethod, setPaymentMethod] = useState('card');
-  const [isProcessing, setIsProcessing] = useState(false);
+  const [payoutMethod, setPayoutMethod] = useState('bank');
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
 
-  // Mock order details
-  const orderDetails = {
-    planName: '6 Months Listing Plan',
-    price: 1000,
-    gst: 180,
-    total: 1180
+  const [bankData, setBankData] = useState({
+    accountName: '',
+    accountNumber: '',
+    ifscCode: '',
+    bankName: '',
+    upiId: ''
+  });
+
+  const handleChange = (e) => {
+    setBankData({ ...bankData, [e.target.name]: e.target.value });
   };
 
-  const handlePayment = (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    setIsProcessing(true);
+    setIsSubmitting(true);
     
-    // Mock processing delay
+    // Mock processing
     setTimeout(() => {
-      setIsProcessing(false);
+      setIsSubmitting(false);
       setIsSuccess(true);
       
-      // Redirect after success
       setTimeout(() => {
-        navigate('/');
+        navigate('/admin/dashboard');
       }, 3000);
-    }, 2000);
+    }, 1500);
   };
-
-
 
   if (isSuccess) {
     return (
       <div className="p-6 sm:p-8 flex flex-col items-center justify-center h-full bg-white text-center">
-        <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mb-6">
-          <CheckCircle2 className="w-10 h-10 text-green-600" />
+        <div className="w-20 h-20 bg-emerald-100 rounded-full flex items-center justify-center mb-6 shadow-sm">
+          <CheckCircle2 className="w-10 h-10 text-emerald-600" />
         </div>
-        <h1 className="text-3xl font-extrabold text-slate-900 mb-2 tracking-tight">Payment Successful!</h1>
-        <p className="text-sm font-semibold text-slate-500 mb-8 max-w-sm">
-          Your property has been successfully submitted and your subscription is active. Welcome to SmartStay Partner!
+        <h1 className="text-3xl font-extrabold text-slate-900 mb-2 tracking-tight">Property Registration Complete!</h1>
+        <p className="text-sm font-semibold text-slate-500 mb-8 max-w-md">
+          Your property has been registered on SmartStay with zero upfront fees. Your payout bank account is linked for receiving 85% net payouts.
         </p>
-        <p className="text-xs font-bold animate-pulse text-[#2563eb]">Redirecting to dashboard...</p>
+        <p className="text-xs font-bold animate-pulse text-[#2563eb]">Redirecting to your Admin Dashboard...</p>
       </div>
     );
   }
@@ -76,144 +77,120 @@ const Payment = () => {
       {/* Header */}
       <div className="mb-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-100 pb-6">
         <div>
-          <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 mb-1 tracking-tight">Secure Checkout</h1>
+          <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 mb-1 tracking-tight">Payout Bank Setup</h1>
           <h2 className="text-[10px] sm:text-[11px] font-bold text-[#2563eb] uppercase tracking-wider mb-1">
             Step 5 of 5
           </h2>
           <p className="text-[11px] sm:text-xs font-semibold text-slate-400">
-            Complete your payment to activate your property listing
+            Provide bank details to receive guest booking payouts (85% net earnings)
           </p>
         </div>
-        <div className="flex items-center gap-2 text-green-600 bg-green-50 px-3 py-2 rounded-lg">
-          <ShieldCheck className="w-4 h-4" />
-          <span className="text-[10px] font-bold uppercase tracking-wider">100% Secure</span>
+        <div className="flex items-center gap-2 text-emerald-700 bg-emerald-50 px-3 py-2 rounded-xl border border-emerald-200">
+          <ShieldCheck className="w-4 h-4 text-emerald-600" />
+          <span className="text-[10px] font-extrabold uppercase tracking-wider">₹0 Upfront Registration</span>
         </div>
       </div>
 
       <div className="flex flex-col lg:flex-row gap-8">
         
-        {/* Payment Methods & Form */}
+        {/* Payout Form */}
         <div className="flex-1 space-y-6">
           <h3 className="text-xs font-bold text-slate-800 uppercase tracking-widest mb-4 border-b border-slate-100 pb-2">
-            Select Payment Method
+            Select Payout Transfer Method
           </h3>
           
-          <div className="grid grid-cols-3 gap-3">
+          <div className="grid grid-cols-2 gap-3">
             <div 
-              onClick={() => setPaymentMethod('card')}
-              className={`cursor-pointer p-4 rounded-xl border-2 flex flex-col items-center justify-center gap-2 transition-all duration-200 ${
-                paymentMethod === 'card' ? 'border-[#2563eb] bg-blue-50/50 shadow-sm' : 'border-slate-200 hover:border-slate-300'
+              onClick={() => setPayoutMethod('bank')}
+              className={`cursor-pointer p-4 rounded-xl border-2 flex items-center gap-3 transition-all duration-200 ${
+                payoutMethod === 'bank' ? 'border-[#2563eb] bg-blue-50/50 shadow-sm' : 'border-slate-200 hover:border-slate-300'
               }`}
             >
-              <CreditCard className={`w-6 h-6 ${paymentMethod === 'card' ? 'text-[#2563eb]' : 'text-slate-400'}`} />
-              <span className={`text-[11px] font-bold ${paymentMethod === 'card' ? 'text-[#2563eb]' : 'text-slate-500'}`}>Card</span>
+              <Building2 className={`w-6 h-6 ${payoutMethod === 'bank' ? 'text-[#2563eb]' : 'text-slate-400'}`} />
+              <div>
+                <span className={`text-xs font-bold block ${payoutMethod === 'bank' ? 'text-[#2563eb]' : 'text-slate-700'}`}>Direct Bank Transfer</span>
+                <span className="text-[10px] text-slate-400 font-semibold">NEFT / RTGS Weekly Payouts</span>
+              </div>
             </div>
             <div 
-              onClick={() => setPaymentMethod('upi')}
-              className={`cursor-pointer p-4 rounded-xl border-2 flex flex-col items-center justify-center gap-2 transition-all duration-200 ${
-                paymentMethod === 'upi' ? 'border-[#2563eb] bg-blue-50/50 shadow-sm' : 'border-slate-200 hover:border-slate-300'
+              onClick={() => setPayoutMethod('upi')}
+              className={`cursor-pointer p-4 rounded-xl border-2 flex items-center gap-3 transition-all duration-200 ${
+                payoutMethod === 'upi' ? 'border-[#2563eb] bg-blue-50/50 shadow-sm' : 'border-slate-200 hover:border-slate-300'
               }`}
             >
-              <Wallet className={`w-6 h-6 ${paymentMethod === 'upi' ? 'text-[#2563eb]' : 'text-slate-400'}`} />
-              <span className={`text-[11px] font-bold ${paymentMethod === 'upi' ? 'text-[#2563eb]' : 'text-slate-500'}`}>UPI</span>
-            </div>
-            <div 
-              onClick={() => setPaymentMethod('netbanking')}
-              className={`cursor-pointer p-4 rounded-xl border-2 flex flex-col items-center justify-center gap-2 transition-all duration-200 ${
-                paymentMethod === 'netbanking' ? 'border-[#2563eb] bg-blue-50/50 shadow-sm' : 'border-slate-200 hover:border-slate-300'
-              }`}
-            >
-              <Building className={`w-6 h-6 ${paymentMethod === 'netbanking' ? 'text-[#2563eb]' : 'text-slate-400'}`} />
-              <span className={`text-[11px] font-bold ${paymentMethod === 'netbanking' ? 'text-[#2563eb]' : 'text-slate-500'}`}>Net Banking</span>
+              <Wallet className={`w-6 h-6 ${payoutMethod === 'upi' ? 'text-[#2563eb]' : 'text-slate-400'}`} />
+              <div>
+                <span className={`text-xs font-bold block ${payoutMethod === 'upi' ? 'text-[#2563eb]' : 'text-slate-700'}`}>Instant UPI Transfer</span>
+                <span className="text-[10px] text-slate-400 font-semibold">VPA Instant Settlements</span>
+              </div>
             </div>
           </div>
 
-          <form onSubmit={handlePayment} className="mt-8 space-y-6">
+          <form onSubmit={handleSubmit} className="mt-8 space-y-4">
             
-            {paymentMethod === 'card' && (
+            {payoutMethod === 'bank' && (
               <div className="space-y-4 animate-in fade-in slide-in-from-bottom-2">
-                <FloatingInput id="cardNumber" label="Card Number" type="text" maxLength="19" required />
-                <div className="grid grid-cols-2 gap-4">
-                  <FloatingInput id="expiry" label="Expiry (MM/YY)" type="text" maxLength="5" required />
-                  <FloatingInput id="cvv" label="CVV" type="password" maxLength="3" required />
+                <FloatingInput id="accountName" label="Account Holder Name" value={bankData.accountName} onChange={handleChange} required />
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <FloatingInput id="bankName" label="Bank Name" value={bankData.bankName} onChange={handleChange} required />
+                  <FloatingInput id="ifscCode" label="IFSC Code" value={bankData.ifscCode} onChange={handleChange} required />
                 </div>
-                <FloatingInput id="cardName" label="Name on Card" type="text" required />
+                <FloatingInput id="accountNumber" label="Account Number" type="password" value={bankData.accountNumber} onChange={handleChange} required />
               </div>
             )}
 
-            {paymentMethod === 'upi' && (
+            {payoutMethod === 'upi' && (
               <div className="space-y-4 animate-in fade-in slide-in-from-bottom-2">
-                <FloatingInput id="upiId" label="Enter UPI ID" type="text" required />
-                <p className="text-[10px] font-semibold text-slate-400">A payment request will be sent to your UPI app.</p>
-              </div>
-            )}
-
-            {paymentMethod === 'netbanking' && (
-              <div className="space-y-4 animate-in fade-in slide-in-from-bottom-2">
-                <div className="relative">
-                  <select
-                    id="bankSelect"
-                    required
-                    className="block px-2.5 pb-2.5 pt-3 w-full text-xs sm:text-sm font-semibold text-slate-800 bg-transparent rounded-lg border border-slate-200 appearance-none focus:outline-none focus:ring-0 focus:border-[#2563eb] peer transition-colors shadow-sm"
-                  >
-                    <option value="" disabled selected hidden></option>
-                    <option value="sbi">State Bank of India</option>
-                    <option value="hdfc">HDFC Bank</option>
-                    <option value="icici">ICICI Bank</option>
-                    <option value="axis">Axis Bank</option>
-                  </select>
-                  <label
-                    htmlFor="bankSelect"
-                    className="absolute text-[10px] sm:text-xs font-bold uppercase tracking-wider text-slate-400 duration-300 transform -translate-y-3.5 scale-75 top-1.5 z-10 origin-[0] bg-white px-2 peer-focus:px-2 peer-focus:text-[#2563eb] left-1 cursor-text"
-                  >
-                    Select Bank
-                  </label>
-                </div>
+                <FloatingInput id="upiId" label="Enter UPI VPA ID (e.g. name@okhdfcbank)" value={bankData.upiId} onChange={handleChange} required />
+                <p className="text-[11px] font-semibold text-slate-400">Weekly payouts will be automatically credited to this UPI ID.</p>
               </div>
             )}
 
             <button
               type="submit"
-              disabled={isProcessing}
-              className="w-full bg-[#2563eb] hover:bg-blue-700 text-white text-sm font-bold px-8 py-3.5 rounded-xl transition-all shadow-md active:scale-[0.98] flex items-center justify-center gap-2 disabled:opacity-70"
+              disabled={isSubmitting}
+              className="w-full bg-[#2563eb] hover:bg-blue-700 text-white text-sm font-bold px-8 py-3.5 rounded-xl transition-all shadow-md active:scale-[0.98] flex items-center justify-center gap-2 disabled:opacity-70 mt-6"
             >
-              {isProcessing ? (
+              {isSubmitting ? (
                 <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
               ) : (
                 <>
-                  <Lock className="w-4 h-4" />
-                  Pay ₹{orderDetails.total} Securely
+                  <span>Save Bank & Finish Listing</span>
+                  <ArrowRight className="w-4 h-4" />
                 </>
               )}
             </button>
           </form>
         </div>
 
-        {/* Order Summary */}
+        {/* Breakdown Card */}
         <div className="w-full lg:w-80 bg-slate-50 border border-slate-200 rounded-2xl p-6 h-fit shrink-0">
-          <h3 className="text-xs font-bold text-slate-800 uppercase tracking-widest mb-6">
-            Order Summary
+          <h3 className="text-xs font-bold text-slate-800 uppercase tracking-widest mb-4">
+            Payout Model Summary
           </h3>
           
-          <div className="space-y-4 mb-6">
-            <div className="flex justify-between items-center text-sm">
-              <span className="font-semibold text-slate-600">{orderDetails.planName}</span>
-              <span className="font-bold text-slate-900">₹{orderDetails.price}</span>
+          <div className="space-y-3 mb-6 text-xs font-semibold text-slate-600">
+            <div className="flex justify-between items-center py-2 border-b border-slate-200">
+              <span>Registration Fee</span>
+              <span className="font-extrabold text-emerald-600 uppercase">FREE (₹0)</span>
             </div>
-            <div className="flex justify-between items-center text-sm">
-              <span className="font-semibold text-slate-600">GST (18%)</span>
-              <span className="font-bold text-slate-900">₹{orderDetails.gst}</span>
+            <div className="flex justify-between items-center py-2 border-b border-slate-200">
+              <span>SmartStay Commission</span>
+              <span className="font-bold text-slate-900">15% per booking</span>
             </div>
-          </div>
-          
-          <div className="border-t border-slate-200 pt-4 flex justify-between items-center mb-6">
-            <span className="text-sm font-bold text-slate-900 uppercase tracking-wider">Total Due</span>
-            <span className="text-xl font-extrabold text-[#2563eb]">₹{orderDetails.total}</span>
+            <div className="flex justify-between items-center py-2 border-b border-slate-200">
+              <span>Your Net Earnings</span>
+              <span className="font-bold text-slate-900">85% per booking</span>
+            </div>
+            <div className="flex justify-between items-center py-2">
+              <span>Payout Schedule</span>
+              <span className="font-bold text-slate-900">Weekly (Every Mon)</span>
+            </div>
           </div>
 
-          <div className="bg-blue-50 text-[#2563eb] text-[10px] font-bold p-3 rounded-lg flex gap-2">
-            <ShieldCheck className="w-4 h-4 shrink-0" />
-            <p>Your payment is processed through a secure 256-bit encrypted connection.</p>
+          <div className="bg-blue-50 text-[#2563eb] text-[11px] font-semibold p-3.5 rounded-xl flex gap-2 border border-blue-100">
+            <Info className="w-4 h-4 shrink-0 mt-0.5" />
+            <p>SmartStay handles online guest payment processing securely and remits your net payout automatically.</p>
           </div>
         </div>
 

@@ -95,66 +95,6 @@ const RatesAndAvailability = () => {
             Send feedback
           </button>
 
-          {/* Room Type Selector Trigger */}
-          <div className="relative">
-            <button 
-              onClick={() => setShowRoomDropdown(!showRoomDropdown)}
-              className="flex items-center gap-2 px-4 py-2 border border-blue-200 bg-blue-50 text-blue-700 hover:bg-blue-100 rounded-lg text-sm font-semibold transition-colors shadow-sm"
-            >
-              {selectedRoom.split(' (')[0]} <ChevronDown size={16} />
-            </button>
-
-            {/* Room Selector Dropdown */}
-            {showRoomDropdown && (
-              <div className="absolute right-0 mt-2 w-80 bg-white border border-slate-200 rounded-xl shadow-xl z-50 p-4 animate-in fade-in slide-in-from-top-2 duration-150">
-                <div className="relative mb-3">
-                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={16} />
-                  <input 
-                    type="text" 
-                    placeholder="Search room type" 
-                    className="w-full bg-slate-50 border border-slate-200 text-slate-800 placeholder-slate-400 rounded-lg pl-9 pr-4 py-2 text-xs focus:outline-none focus:border-blue-400 focus:bg-white"
-                  />
-                </div>
-
-                <div className="flex items-center gap-2 mb-3 px-2 py-1">
-                  <input type="checkbox" defaultChecked className="w-4 h-4 rounded border-slate-300 text-blue-600 cursor-pointer" />
-                  <span className="text-xs font-semibold text-slate-600">Select all (1/5)</span>
-                </div>
-
-                <div className="flex flex-col gap-1 max-h-48 overflow-y-auto mb-4 border-b border-slate-100 pb-3">
-                  {roomsList.map((room) => {
-                    const roomString = `${room.name} (${room.id})`;
-                    return (
-                      <label key={room.id} className="flex items-center gap-3 px-2 py-2 hover:bg-slate-50 rounded-lg cursor-pointer">
-                        <input 
-                          type="checkbox" 
-                          checked={tempSelectedRoom === roomString}
-                          onChange={() => setTempSelectedRoom(roomString)}
-                          className="w-4 h-4 rounded border-slate-300 text-blue-600 cursor-pointer"
-                        />
-                        <span className="text-xs font-medium text-slate-700">{room.name} <span className="text-[10px] text-slate-400 font-mono">({room.id})</span></span>
-                      </label>
-                    );
-                  })}
-                </div>
-
-                <div className="flex items-center justify-end gap-2">
-                  <button 
-                    onClick={() => setShowRoomDropdown(false)}
-                    className="px-4 py-1.5 text-xs font-medium text-slate-600 hover:text-slate-800 transition-colors"
-                  >
-                    Cancel
-                  </button>
-                  <button 
-                    onClick={handleApplyRoom}
-                    className="px-4 py-1.5 text-xs font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-lg transition-colors"
-                  >
-                    Apply
-                  </button>
-                </div>
-              </div>
-            )}
-          </div>
 
           <button className="p-2 border border-slate-200 hover:bg-slate-50 text-slate-600 rounded-lg transition-colors">
             <Settings size={16} />
@@ -192,6 +132,67 @@ const RatesAndAvailability = () => {
                   <option key={y} value={y}>{y}</option>
                 ))}
               </select>
+            </div>
+            
+            {/* Room Type Selector Trigger */}
+            <div className="relative">
+              <button 
+                onClick={() => setShowRoomDropdown(!showRoomDropdown)}
+                className="flex items-center gap-2 px-4 py-2 border border-blue-200 bg-blue-50 text-blue-700 hover:bg-blue-100 rounded-lg text-sm font-semibold transition-colors shadow-sm"
+              >
+                {selectedRoom.split(' (')[0]} <ChevronDown size={16} />
+              </button>
+
+              {/* Room Selector Dropdown */}
+              {showRoomDropdown && (
+                <div className="absolute right-0 mt-2 w-80 bg-white border border-slate-200 rounded-xl shadow-xl z-50 p-4 animate-in fade-in slide-in-from-top-2 duration-150">
+                  <div className="relative mb-3">
+                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={16} />
+                    <input 
+                      type="text" 
+                      placeholder="Search room type" 
+                      className="w-full bg-slate-50 border border-slate-200 text-slate-800 placeholder-slate-400 rounded-lg pl-9 pr-4 py-2 text-xs focus:outline-none focus:border-blue-400 focus:bg-white"
+                    />
+                  </div>
+
+                  <div className="flex items-center gap-2 mb-3 px-2 py-1">
+                    <input type="checkbox" defaultChecked className="w-4 h-4 rounded border-slate-300 text-blue-600 cursor-pointer" />
+                    <span className="text-xs font-semibold text-slate-600">Select all (1/5)</span>
+                  </div>
+
+                  <div className="flex flex-col gap-1 max-h-48 overflow-y-auto mb-4 border-b border-slate-100 pb-3">
+                    {roomsList.map((room) => {
+                      const roomString = `${room.name} (${room.id})`;
+                      return (
+                        <label key={room.id} className="flex items-center gap-3 px-2 py-2 hover:bg-slate-50 rounded-lg cursor-pointer">
+                          <input 
+                            type="checkbox" 
+                            checked={tempSelectedRoom === roomString}
+                            onChange={() => setTempSelectedRoom(roomString)}
+                            className="w-4 h-4 rounded border-slate-300 text-blue-600 cursor-pointer"
+                          />
+                          <span className="text-xs font-medium text-slate-700">{room.name} <span className="text-[10px] text-slate-400 font-mono">({room.id})</span></span>
+                        </label>
+                      );
+                    })}
+                  </div>
+
+                  <div className="flex items-center justify-end gap-2">
+                    <button 
+                      onClick={() => setShowRoomDropdown(false)}
+                      className="px-4 py-1.5 text-xs font-medium text-slate-600 hover:text-slate-800 transition-colors"
+                    >
+                      Cancel
+                    </button>
+                    <button 
+                      onClick={handleApplyRoom}
+                      className="px-4 py-1.5 text-xs font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-lg transition-colors"
+                    >
+                      Apply
+                    </button>
+                  </div>
+                </div>
+              )}
             </div>
           </div>
 

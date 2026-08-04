@@ -34,10 +34,30 @@ export default function Checkin() {
 
   // Dynamic Secondary Guests State
   const [coGuests, setCoGuests] = useState([]);
+  const [showExistingGuests, setShowExistingGuests] = useState(false);
+
+  const existingGuestsList = [
+    { name: 'Amit Kumar', phone: '9876543211', idType: 'Aadhaar', idNumber: '1234 5678 9012' },
+    { name: 'Priya Sharma', phone: '9876543212', idType: 'Passport', idNumber: 'L1234567' },
+    { name: 'Rohan Gupta', phone: '9876543213', idType: 'Driving Licence', idNumber: 'DL-142011001' }
+  ];
 
   // Video stream refs
   const [cameraStream, setCameraStream] = useState(null);
   const videoRef = useRef(null);
+  const dropdownRef = useRef(null);
+
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setShowExistingGuests(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -66,6 +86,22 @@ export default function Checkin() {
         idFile: null
       }
     ]);
+  };
+
+  const handleAddExistingGuest = (guest) => {
+    setCoGuests([
+      ...coGuests,
+      {
+        id: Date.now() + Math.random(),
+        name: guest.name,
+        phone: guest.phone,
+        idType: guest.idType,
+        idNumber: guest.idNumber,
+        idFileName: 'existing_id_front.jpg',
+        idFile: 'dummy_url'
+      }
+    ]);
+    setShowExistingGuests(false);
   };
 
   const handleRemoveCoGuest = (id) => {
@@ -441,7 +477,7 @@ export default function Checkin() {
 
                 {/* DYNAMIC SECONDARY GUESTS (CO-GUESTS) SECTION */}
                 <div className="pt-6 border-t border-slate-200/80">
-                  <div className="flex items-center justify-between mb-4">
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-4 gap-3">
                     <div>
                       <h3 className="text-sm font-bold text-slate-900 flex items-center gap-2">
                         <UsersIcon className="w-4 h-4 text-blue-600" />
@@ -449,14 +485,49 @@ export default function Checkin() {
                       </h3>
                       <p className="text-xs text-slate-500 mt-0.5">Add details of other guests staying in the same room.</p>
                     </div>
-                    <button
-                      type="button"
-                      onClick={handleAddCoGuest}
-                      className="inline-flex items-center gap-1 text-xs font-bold text-blue-600 bg-blue-50 hover:bg-blue-100 px-3.5 py-1.5 rounded-xl transition-colors border border-blue-150"
-                    >
-                      <UserPlus className="w-3.5 h-3.5" />
-                      Add Guest
-                    </button>
+                    <div className="flex items-center gap-2 relative z-20" ref={dropdownRef}>
+                      <button
+                        type="button"
+                        onClick={() => setShowExistingGuests(!showExistingGuests)}
+                        className="inline-flex items-center gap-1 text-xs font-bold text-slate-700 bg-white hover:bg-slate-50 px-3.5 py-1.5 rounded-xl transition-colors border border-slate-200 shadow-sm"
+                      >
+                        <UserPlus className="w-3.5 h-3.5 text-slate-400" />
+                        Add Existing Guest
+                      </button>
+                      
+                      {showExistingGuests && (
+                        <div className="absolute right-0 top-10 mt-1 w-64 bg-white border border-slate-200 rounded-xl shadow-xl z-50 p-2 animate-in fade-in slide-in-from-top-2">
+                          <div className="flex items-center justify-between mb-2 px-2 border-b border-slate-100 pb-2">
+                            <h4 className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Select from previous stays</h4>
+                            <button type="button" onClick={() => setShowExistingGuests(false)} className="text-slate-400 hover:text-slate-700 p-0.5 rounded hover:bg-slate-100 transition-colors">
+                              <X size={12} />
+                            </button>
+                          </div>
+                          <div className="flex flex-col gap-1">
+                            {existingGuestsList.map((g, i) => (
+                              <button
+                                key={i}
+                                type="button"
+                                onClick={() => handleAddExistingGuest(g)}
+                                className="flex flex-col text-left px-3 py-2 hover:bg-slate-50 rounded-lg transition-colors"
+                              >
+                                <span className="text-xs font-bold text-slate-800">{g.name}</span>
+                                <span className="text-[10px] text-slate-500 font-semibold">{g.phone} • {g.idType}</span>
+                              </button>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+
+                      <button
+                        type="button"
+                        onClick={handleAddCoGuest}
+                        className="inline-flex items-center gap-1 text-xs font-bold text-blue-600 bg-blue-50 hover:bg-blue-100 px-3.5 py-1.5 rounded-xl transition-colors border border-blue-150"
+                      >
+                        <UserPlus className="w-3.5 h-3.5" />
+                        Add New Guest
+                      </button>
+                    </div>
                   </div>
 
                   {coGuests.length === 0 ? (

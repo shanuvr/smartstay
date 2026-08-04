@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { NavLink, Outlet, useLocation } from 'react-router-dom';
-import { Building2, MapPin, Phone, ShieldCheck, CreditCard, Bell, Tag, ChevronDown, Camera, Package } from 'lucide-react';
+import { Building2, MapPin, Phone, ShieldCheck, CreditCard, Bell, Tag, ChevronDown, Camera, Package, Percent } from 'lucide-react';
 
 const SettingsLayout = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -37,7 +37,7 @@ const SettingsLayout = () => {
     { name: 'Contact Info', path: '/admin/settings/contact', icon: Phone },
     { name: 'Policies', path: '/admin/settings/policies', icon: ShieldCheck },
     { name: 'Payment Options', path: '/admin/settings/payment', icon: CreditCard },
-    { name: 'Subscription Plan', path: '/admin/settings/plan', icon: Package },
+    { name: 'Commission & Payouts', path: '/admin/settings/plan', icon: Percent },
     { name: 'Notifications', path: '/admin/settings/notifications', icon: Bell },
   ];
 

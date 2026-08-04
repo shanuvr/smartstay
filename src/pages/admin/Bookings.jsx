@@ -584,7 +584,7 @@ const Bookings = () => {
                       </button>
                     </div>
                   </div>
-                ) : digitalCheckins[selectedBooking.id] ? (
+                ) : selectedBooking.status === 'Confirmed' || digitalCheckins[selectedBooking.id] ? (
                   <div className="border border-amber-200 bg-amber-50/30 rounded-2xl p-4 flex flex-col gap-3">
                     <div className="flex items-center gap-2 text-amber-700 text-xs font-bold">
                       <Clock size={16} /> Guest Digital Check-In Completed — Awaiting Key Handover
@@ -652,7 +652,7 @@ const Bookings = () => {
                         </div>
 
                         {/* Co-guest Check-in Docs */}
-                        {(selectedBooking.status === 'Checked In' || selectedBooking.status === 'Completed' || digitalCheckins[selectedBooking.id]) && (
+                        {(selectedBooking.status === 'Checked In' || selectedBooking.status === 'Completed' || selectedBooking.status === 'Confirmed' || digitalCheckins[selectedBooking.id]) && (
                           <div className="flex gap-4 pt-2.5 border-t border-slate-200/50">
                             {/* Co-guest Selfie */}
                             <button

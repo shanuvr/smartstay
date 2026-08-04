@@ -3,10 +3,10 @@ import { Outlet, Link, useLocation } from 'react-router-dom';
 
 const steps = [
   { id: 1, path: '/list-your-place', title: 'Business Details', subtitle: 'Owner information' },
-  { id: 2, path: '/list-your-place/package', title: 'Select Package', subtitle: 'Choose pricing plan' },
+  { id: 2, path: '/list-your-place/package', title: 'Commission Model', subtitle: '15% Pay-per-booking' },
   { id: 3, path: '/list-your-place/type', title: 'Property Type', subtitle: 'Category of property' },
   { id: 4, path: '/list-your-place/details', title: 'Property Details', subtitle: 'Amenities and operations' },
-  { id: 5, path: '/list-your-place/payment', title: 'Payment', subtitle: 'Secure registration' },
+  { id: 5, path: '/list-your-place/payment', title: 'Payout Account', subtitle: 'Bank details for payouts' },
 ];
 
 const PartnerLayout = () => {

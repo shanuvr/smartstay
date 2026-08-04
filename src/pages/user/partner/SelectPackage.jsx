@@ -1,149 +1,95 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Calendar, CheckCircle2 } from 'lucide-react';
+import { CheckCircle2, ShieldCheck, Zap, ArrowRight, Percent, Sparkles, Building2 } from 'lucide-react';
 
 const SelectPackage = () => {
   const navigate = useNavigate();
 
-  const plans = [
-    {
-      id: '1-month',
-      title: '1 Month',
-      price: '2,000',
-      duration: 'for 30 days',
-      features: ['List your property globally', 'Basic customer support', 'Instant booking notifications'],
-      recommended: false,
-      savings: null
-    },
-    {
-      id: '3-months',
-      title: '3 Months',
-      price: '5,000',
-      duration: 'for 90 days',
-      features: ['List your property globally', 'Priority customer support', 'Instant booking notifications'],
-      recommended: false,
-      savings: 'Save ₹1,000'
-    },
-    {
-      id: '6-months',
-      title: '6 Months',
-      price: '9,000',
-      duration: 'for 180 days',
-      features: ['List your property globally', '24/7 dedicated support', 'Advanced analytics dashboard', 'Top search placement'],
-      recommended: true,
-      savings: 'Save ₹3,000'
-    },
-    {
-      id: '12-months',
-      title: '1 Year',
-      price: '15,000',
-      duration: 'for 365 days',
-      features: ['List your property globally', '24/7 dedicated support', 'Advanced analytics dashboard', 'Premium search placement', 'No booking commissions'],
-      recommended: false,
-      savings: 'Save ₹9,000'
-    }
-  ];
-
-  const handleSelectPlan = (planId) => {
-    // Navigate to next step
+  const handleContinue = () => {
     navigate('/list-your-place/type');
   };
 
+  const highlights = [
+    {
+      icon: Percent,
+      title: '15% Pay-Per-Booking',
+      desc: 'Zero monthly fees or listing charges. You only pay a flat 15% commission when a guest successfully books.'
+    },
+    {
+      icon: Zap,
+      title: 'Instant Global Exposure',
+      desc: 'Get listed on SmartStay instantly with zero upfront investment. Reach thousands of verified travelers.'
+    },
+    {
+      icon: ShieldCheck,
+      title: 'Automated Weekly Payouts',
+      desc: 'SmartStay collects guest payments directly and deposits your 85% net earnings directly into your bank account every Monday.'
+    }
+  ];
+
   return (
-    <div className="p-6 sm:p-8 md:p-10 flex flex-col justify-start overflow-y-auto h-full scrollbar-thin scrollbar-thumb-slate-200 bg-white">
+    <div className="p-4 sm:p-6 md:p-8 flex flex-col justify-start overflow-y-auto h-full scrollbar-thin scrollbar-thumb-slate-200 bg-white">
       
       {/* Header */}
-      <div className="mb-10 text-center sm:text-left">
-        <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 mb-2 tracking-tight">Choose Your Plan</h1>
-        <p className="text-xs font-semibold text-slate-500">
-          Select a duration to list your property on SmartStay. Simple, transparent pricing with no hidden fees.
+      <div className="mb-4">
+        <h1 className="text-xl sm:text-2xl font-extrabold text-slate-900 mb-1 tracking-tight">Simple Commission Model</h1>
+        <p className="text-xs font-semibold text-slate-500 max-w-xl">
+          List your property completely free. We only earn when you earn.
         </p>
       </div>
 
-      {/* Pricing Cards Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4 xl:gap-6">
-        {plans.map((plan) => (
-          <div 
-            key={plan.id}
-            className={`relative flex flex-col rounded-2xl bg-white border transition-all duration-300 hover:shadow-xl hover:-translate-y-1 ${
-              plan.recommended 
-                ? 'border-[#2563eb] shadow-lg shadow-blue-900/5' 
-                : 'border-slate-200 hover:border-slate-300 shadow-sm'
-            }`}
-          >
-            {/* Recommended Badge */}
-            {plan.recommended && (
-              <div className="absolute -top-3 left-0 right-0 flex justify-center">
-                <span className="bg-[#2563eb] text-white text-[9px] font-extrabold uppercase tracking-widest px-3 py-1 rounded-full shadow-sm">
-                  Most Popular
-                </span>
+      {/* Highlights Grid */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-3 mb-5">
+        {highlights.map((h, idx) => {
+          const Icon = h.icon;
+          return (
+            <div key={idx} className="bg-slate-50/70 border border-slate-200/80 rounded-2xl p-4 hover:border-slate-300 transition-all">
+              <div className="w-8 h-8 rounded-xl bg-blue-50 text-[#2563eb] flex items-center justify-center mb-2">
+                <Icon size={16} />
               </div>
-            )}
-            
-            {/* Savings Badge */}
-            {plan.savings && !plan.recommended && (
-              <div className="absolute top-3 right-3">
-                <span className="bg-green-100 text-green-700 text-[8px] font-extrabold uppercase px-2 py-1 rounded-md">
-                  {plan.savings}
-                </span>
-              </div>
-            )}
-            
-            {plan.savings && plan.recommended && (
-              <div className="absolute top-3 right-3">
-                <span className="bg-blue-100 text-[#2563eb] text-[8px] font-extrabold uppercase px-2 py-1 rounded-md">
-                  {plan.savings}
-                </span>
-              </div>
-            )}
-
-            <div className="p-5 flex-grow flex flex-col">
-              <div className="flex items-center gap-2 mb-3">
-                <Calendar className={`w-4 h-4 ${plan.recommended ? 'text-[#2563eb]' : 'text-slate-400'}`} />
-                <h3 className="text-xs font-extrabold text-slate-900 uppercase tracking-widest">
-                  {plan.title}
-                </h3>
-              </div>
-
-              <div className="mb-5">
-                <div className="flex items-start">
-                  <span className="text-sm font-bold text-slate-500 mt-1 mr-1">₹</span>
-                  <span className="text-3xl font-black text-slate-900 tracking-tight">{plan.price}</span>
-                </div>
-                <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider mt-1">
-                  {plan.duration}
-                </p>
-              </div>
-
-              <div className="space-y-3 flex-grow mb-8">
-                {plan.features.map((feat, idx) => (
-                  <div key={idx} className="flex items-start gap-2">
-                    <CheckCircle2 className={`w-4 h-4 shrink-0 mt-0.5 ${plan.recommended ? 'text-[#2563eb]' : 'text-slate-300'}`} />
-                    <span className="text-xs font-semibold text-slate-600 leading-snug">
-                      {feat}
-                    </span>
-                  </div>
-                ))}
-              </div>
-
-              <button
-                onClick={() => handleSelectPlan(plan.id)}
-                className={`w-full py-3 rounded-xl text-xs font-bold transition-all shadow-sm active:scale-[0.98] ${
-                  plan.recommended
-                    ? 'bg-[#2563eb] hover:bg-blue-700 text-white shadow-blue-600/30'
-                    : 'bg-slate-100 hover:bg-slate-200 text-slate-800'
-                }`}
-              >
-                Select Plan
-              </button>
+              <h3 className="text-sm font-bold text-slate-900 mb-1">{h.title}</h3>
+              <p className="text-[11px] text-slate-500 leading-relaxed font-semibold">{h.desc}</p>
             </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
-      
-      {/* Spacer to ensure scrolling room at bottom */}
-      <div className="h-8 shrink-0"></div>
 
+      {/* Summary Bullet Points */}
+      <div className="bg-white border border-slate-200 rounded-2xl p-4 space-y-2 mb-4">
+        <h4 className="text-[10px] font-bold uppercase tracking-wider text-slate-400">Included with your Free Partner Listing</h4>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs font-bold text-slate-700">
+          <div className="flex items-center gap-1.5">
+            <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+            <span>Unlimited room & rate management</span>
+          </div>
+          <div className="flex items-center gap-1.5">
+            <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+            <span>Digital guest ID check-in tool</span>
+          </div>
+          <div className="flex items-center gap-1.5">
+            <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+            <span>Integrated earnings analytics</span>
+          </div>
+          <div className="flex items-center gap-1.5">
+            <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+            <span>24/7 SmartStay partner support</span>
+          </div>
+        </div>
+      </div>
+
+      {/* Action Footer */}
+      <div className="sticky bottom-0 bg-white border-t border-slate-200 mt-auto -mx-4 sm:-mx-6 md:-mx-8 px-4 sm:px-6 md:px-8 py-3 flex flex-col sm:flex-row justify-between items-center gap-3 z-20">
+        <div className="text-[11px] font-semibold text-slate-500 text-center sm:text-left">
+          Free registration. Cancel anytime.
+        </div>
+        <button
+          onClick={handleContinue}
+          className="w-full sm:w-auto bg-[#2563eb] hover:bg-blue-700 text-white font-bold text-xs px-6 py-2.5 rounded-xl transition-all shadow-lg shadow-blue-600/30 flex items-center justify-center gap-2 group active:scale-[0.98]"
+        >
+          <span>Accept & Continue</span>
+          <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
+        </button>
+      </div>
     </div>
   );
 };
