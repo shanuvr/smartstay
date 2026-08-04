@@ -652,7 +652,7 @@ const Bookings = () => {
                         </div>
 
                         {/* Co-guest Check-in Docs */}
-                        {(selectedBooking.status === 'Checked In' || selectedBooking.status === 'Completed') && (
+                        {(selectedBooking.status === 'Checked In' || selectedBooking.status === 'Completed' || digitalCheckins[selectedBooking.id]) && (
                           <div className="flex gap-4 pt-2.5 border-t border-slate-200/50">
                             {/* Co-guest Selfie */}
                             <button
