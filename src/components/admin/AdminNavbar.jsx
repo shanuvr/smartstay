@@ -31,31 +31,31 @@ const AdminNavbar = () => {
     <header className="h-16 bg-white border-b border-slate-200 flex items-center justify-between px-4 md:px-8 shrink-0 relative z-50 shadow-sm">
       
       {/* Logo and Nav Links */}
-      <div className="flex items-center gap-2 md:gap-10 h-full">
+      <div className="flex items-center gap-2 lg:gap-8 h-full">
         {/* Mobile Menu Toggle */}
         <button 
-          className="md:hidden p-1.5 -ml-1.5 text-slate-600 hover:bg-slate-100 rounded-lg transition-colors"
+          className="lg:hidden p-1.5 -ml-1.5 text-slate-600 hover:bg-slate-100 rounded-lg transition-colors shrink-0"
           onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
         >
           {isMobileMenuOpen ? <X size={22} /> : <Menu size={22} />}
         </button>
 
         {/* Logo */}
-        <Link to="/admin" className="flex items-center gap-3">
-           <h1 className="text-xl font-bold text-slate-800 tracking-tight hidden sm:block">
+        <Link to="/admin" className="flex items-center gap-3 shrink-0">
+           <h1 className="text-xl font-bold text-slate-800 tracking-tight hidden sm:block whitespace-nowrap">
               SmartStay <span className="font-normal text-slate-500">Partner Portal</span>
            </h1>
         </Link>
 
         {/* Nav Links */}
-        <nav className="hidden md:flex h-full">
+        <nav className="hidden lg:flex h-full">
           {navItems.map((item) => (
             <div key={item.name} className="relative h-full flex items-center group">
               <NavLink
                 to={item.path}
                 end={item.path === '/admin'}
                 className={({ isActive }) => `
-                  h-full flex items-center px-4 text-[14.5px] font-medium transition-colors cursor-pointer
+                  h-full flex items-center px-3 xl:px-4 text-[13.5px] xl:text-[14.5px] font-medium transition-colors cursor-pointer whitespace-nowrap
                   ${isActive 
                     ? 'text-blue-600' 
                     : 'text-slate-500 hover:text-slate-800'
@@ -102,11 +102,10 @@ const AdminNavbar = () => {
       <div className="flex items-center gap-2 md:gap-6">
         <div className="flex items-center gap-3 border-l border-slate-200 pl-4 md:pl-6">
           <div className="text-right hidden sm:block">
-            <p className="text-sm font-semibold text-slate-800">Admin User</p>
-            <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mt-0.5">Super Admin</p>
+            <p className="text-sm font-semibold text-slate-800 whitespace-nowrap">Admin</p>
           </div>
-          <div className="w-8 h-8 md:w-9 md:h-9 rounded-full bg-blue-50 text-blue-600 flex items-center justify-center font-bold border border-blue-100 text-xs md:text-sm">
-            AU
+          <div className="w-8 h-8 md:w-9 md:h-9 rounded-full bg-blue-50 text-blue-600 flex items-center justify-center font-bold border border-blue-100 text-xs md:text-sm shrink-0">
+            A
           </div>
         </div>
         <button className="text-slate-400 hover:text-red-500 transition-colors p-2 hover:bg-red-50 rounded-full" title="Sign Out">

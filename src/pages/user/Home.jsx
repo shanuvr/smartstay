@@ -2,6 +2,7 @@ import { useState, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import UserLayout from '../../layouts/Userlayout';
+import TawkToChat from '../../components/user/TawkToChat';
 
 const getDaysInMonth = (year, month) => {
     return new Date(year, month + 1, 0).getDate();
@@ -207,6 +208,7 @@ export default function Home() {
 
     return (
         <UserLayout>
+            <TawkToChat />
             <div className="w-full bg-white dark:bg-slate-950 font-sans pb-16">
 
                 {/* ============================================================ */}

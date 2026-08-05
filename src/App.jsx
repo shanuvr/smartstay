@@ -52,6 +52,7 @@ import ContactInfo from './pages/admin/settings/ContactInfo';
 import Policies from './pages/admin/settings/Policies';
 import ManagePhotos from './pages/admin/settings/ManagePhotos';
 import SubscriptionPlan from './pages/admin/settings/SubscriptionPlan';
+import Notifications from './pages/admin/settings/Notifications';
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -113,6 +114,7 @@ function App() {
             <Route path="contact" element={<ContactInfo />} />
             <Route path="policies" element={<Policies />} />
             <Route path="plan" element={<SubscriptionPlan />} />
+            <Route path="notifications" element={<Notifications />} />
           </Route>
           {/* <Route path="properties" element={<AdminProperties />} /> */}
           {/* <Route path="bookings" element={<AdminBookings />} /> */}
