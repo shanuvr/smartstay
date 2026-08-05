@@ -114,12 +114,12 @@ const ListingBadges = () => {
     <div className="flex flex-col gap-6 animate-in fade-in duration-300">
       
       {/* Header Info */}
-      <div className="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 sm:p-8">
-        <h2 className="text-xl font-bold text-slate-800 flex items-center gap-2">
-          <Tag className="text-blue-600" size={22} />
+      <div className="bg-white rounded-xl md:rounded-2xl shadow-sm border border-slate-200 p-4 md:p-6 lg:p-8">
+        <h2 className="text-lg md:text-xl font-bold text-slate-800 flex items-center gap-2">
+          <Tag className="text-blue-600 w-5 h-5 md:w-[22px] md:h-[22px]" />
           Listing Badges & Highlights
         </h2>
-        <p className="text-sm text-slate-500 mt-1">
+        <p className="text-[11px] md:text-sm text-slate-500 mt-1">
           Manage promotional text, highlights, and policies shown on search result cards. These help attract guests.
         </p>
       </div>
@@ -138,8 +138,8 @@ const ListingBadges = () => {
         <div className="lg:col-span-2 flex flex-col gap-6">
           
           {/* Create / Edit Badge Form */}
-          <div className="bg-white rounded-2xl shadow-sm border border-slate-200 p-6">
-            <h3 className="text-base font-bold text-slate-800 mb-4">
+          <div className="bg-white rounded-xl md:rounded-2xl shadow-sm border border-slate-200 p-4 md:p-6">
+            <h3 className="text-sm md:text-base font-bold text-slate-800 mb-3 md:mb-4">
               {editingId ? 'Edit Highlight Badge' : 'Add New Highlight Badge'}
             </h3>
             
@@ -157,7 +157,7 @@ const ListingBadges = () => {
                   value={inputText}
                   onChange={(e) => setInputText(e.target.value)}
                   placeholder="e.g. Free Cancellation, Breakfast Included"
-                  className="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 text-slate-800 font-medium"
+                  className="w-full px-3 py-2 md:px-4 md:py-2.5 bg-slate-50 border border-slate-200 rounded-lg md:rounded-xl text-xs md:text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 text-slate-800 font-medium"
                 />
               </div>
 
@@ -183,9 +183,9 @@ const ListingBadges = () => {
                 <button
                   type="submit"
                   disabled={!inputText.trim()}
-                  className="flex-1 flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white disabled:bg-slate-100 disabled:text-slate-400 disabled:cursor-not-allowed px-5 py-2.5 rounded-xl text-sm font-semibold transition-all shadow-sm"
+                  className="flex-1 flex items-center justify-center gap-1.5 md:gap-2 bg-blue-600 hover:bg-blue-700 text-white disabled:bg-slate-100 disabled:text-slate-400 disabled:cursor-not-allowed px-4 py-2 md:px-5 md:py-2.5 rounded-lg md:rounded-xl text-xs md:text-sm font-semibold transition-all shadow-sm"
                 >
-                  {editingId ? <Check size={16} /> : <Plus size={16} />}
+                  {editingId ? <Check className="w-4 h-4 md:w-[16px] md:h-[16px]" /> : <Plus className="w-4 h-4 md:w-[16px] md:h-[16px]" />}
                   {editingId ? 'Update Badge' : 'Add Badge'}
                 </button>
                 
@@ -206,10 +206,10 @@ const ListingBadges = () => {
           </div>
 
           {/* List of Badges */}
-          <div className="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 flex flex-col gap-4">
-            <div className="flex items-center justify-between border-b border-slate-100 pb-3">
-              <h3 className="text-base font-bold text-slate-800">Existing Badges</h3>
-              <span className="text-xs text-slate-500 font-semibold">{badges.length} items</span>
+          <div className="bg-white rounded-xl md:rounded-2xl shadow-sm border border-slate-200 p-4 md:p-6 flex flex-col gap-3 md:gap-4">
+            <div className="flex items-center justify-between border-b border-slate-100 pb-2 md:pb-3">
+              <h3 className="text-sm md:text-base font-bold text-slate-800">Existing Badges</h3>
+              <span className="text-[10px] md:text-xs text-slate-500 font-semibold">{badges.length} items</span>
             </div>
             
             <div className="space-y-3">
@@ -268,13 +268,13 @@ const ListingBadges = () => {
 
         {/* Right Column: Live Card Preview */}
         <div className="lg:col-span-1">
-          <div className="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 sticky top-6">
-            <h3 className="text-base font-bold text-slate-800 mb-4 flex items-center gap-1.5">
-              <Sparkles size={16} className="text-yellow-500" />
+          <div className="bg-white rounded-xl md:rounded-2xl shadow-sm border border-slate-200 p-4 md:p-6 sticky top-6">
+            <h3 className="text-sm md:text-base font-bold text-slate-800 mb-3 md:mb-4 flex items-center gap-1.5">
+              <Sparkles className="w-4 h-4 md:w-[16px] md:h-[16px] text-yellow-500" />
               Live Listing Preview
             </h3>
             
-            <div className="border border-slate-100 rounded-2xl overflow-hidden shadow-md bg-white">
+            <div className="border border-slate-100 rounded-xl md:rounded-2xl overflow-hidden shadow-md bg-white">
               {/* Hotel image mockup */}
               <div className="h-36 bg-gradient-to-tr from-slate-200 to-slate-100 relative flex items-center justify-center">
                 <span className="text-xs font-bold text-slate-400 uppercase tracking-widest">Hotel Cover Image</span>

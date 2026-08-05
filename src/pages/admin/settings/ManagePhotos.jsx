@@ -109,7 +109,7 @@ const ManagePhotos = () => {
   };
 
   return (
-    <div className="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 sm:p-8 animate-in fade-in duration-300">
+    <div className="bg-white rounded-xl md:rounded-2xl shadow-sm border border-slate-200 p-4 md:p-6 lg:p-8 animate-in fade-in duration-300">
       
       {/* Hidden file input */}
       <input 
@@ -121,25 +121,25 @@ const ManagePhotos = () => {
       />
 
       {/* Header */}
-      <div className="mb-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-100 pb-5">
+      <div className="mb-5 md:mb-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-100 pb-4 md:pb-5">
         <div>
-          <h2 className="text-xl font-bold text-slate-800 flex items-center gap-2">
-            <Camera className="text-blue-600" size={22} />
+          <h2 className="text-lg md:text-xl font-bold text-slate-800 flex items-center gap-2">
+            <Camera className="text-blue-600 w-5 h-5 md:w-[22px] md:h-[22px]" />
             Manage Photos
           </h2>
-          <p className="text-sm text-slate-500 mt-1">Upload up to 7 photos of your property. Ensure exactly one photo is marked as the primary cover photo.</p>
+          <p className="text-[11px] md:text-sm text-slate-500 mt-1">Upload up to 7 photos of your property. Ensure exactly one photo is marked as the primary cover photo.</p>
         </div>
         <button 
           onClick={handleSubmit}
-          className="flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-5 py-2.5 rounded-xl text-sm font-semibold transition-colors self-start shadow-sm"
+          className="flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 md:px-5 md:py-2.5 rounded-lg md:rounded-xl text-xs md:text-sm font-semibold transition-colors self-start shadow-sm"
         >
-          <Save size={16} />
+          <Save className="w-4 h-4 md:w-5 md:h-5" />
           Save Changes
         </button>
       </div>
 
       {successMessage && (
-        <div className="mb-6 bg-green-50 border-l-4 border-green-500 p-4 rounded-xl text-green-800 text-xs font-semibold flex items-center gap-2 animate-in slide-in-from-top-2 duration-300">
+        <div className="mb-5 md:mb-6 bg-green-50 border-l-4 border-green-500 p-3 md:p-4 rounded-lg md:rounded-xl text-green-800 text-[11px] md:text-xs font-semibold flex items-center gap-2 animate-in slide-in-from-top-2 duration-300">
           <CheckCircle2 size={16} className="shrink-0" />
           <span>{successMessage}</span>
         </div>
@@ -147,7 +147,7 @@ const ManagePhotos = () => {
 
       {/* Warning alert if limit is reached */}
       {photos.length >= 7 && (
-        <div className="mb-6 bg-amber-50 border-l-4 border-amber-500 p-4 rounded-xl text-amber-800 text-xs font-semibold flex items-start gap-2 animate-in slide-in-from-top-2 duration-300">
+        <div className="mb-5 md:mb-6 bg-amber-50 border-l-4 border-amber-500 p-3 md:p-4 rounded-lg md:rounded-xl text-amber-800 text-[11px] md:text-xs font-semibold flex items-start gap-2 animate-in slide-in-from-top-2 duration-300">
           <AlertCircle size={16} className="shrink-0 mt-0.5" />
           <div>
             <span className="font-bold">Gallery Limit Reached:</span> You have uploaded the maximum limit of 7 photos. Delete an existing image if you wish to upload a new one.
@@ -156,20 +156,20 @@ const ManagePhotos = () => {
       )}
 
       {/* Photos Management Section */}
-      <div className="bg-slate-50/50 border border-slate-200 rounded-2xl p-5 md:p-6 space-y-4">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-slate-200/60 pb-3">
+      <div className="bg-slate-50/50 border border-slate-200 rounded-xl md:rounded-2xl p-4 md:p-6 space-y-4">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 md:gap-2 border-b border-slate-200/60 pb-3">
           <div>
-            <h3 className="text-xs font-bold text-slate-800 uppercase tracking-widest">
+            <h3 className="text-[10px] md:text-xs font-bold text-slate-800 uppercase tracking-widest">
               Property Gallery ({photos.length} / 7)
             </h3>
-            <p className="text-[10px] text-slate-500 mt-0.5">Use horizontal orientation images. Supported formats: JPG, PNG, WebP.</p>
+            <p className="text-[9px] md:text-[10px] text-slate-500 mt-0.5">Use horizontal orientation images. Supported formats: JPG, PNG, WebP.</p>
           </div>
           
           {photos.length < 7 && (
             <button
               type="button"
               onClick={triggerFileUpload}
-              className="flex items-center justify-center gap-1.5 bg-blue-600 hover:bg-blue-700 text-white px-3.5 py-2 rounded-xl text-xs font-bold transition-all self-start shadow-sm"
+              className="flex items-center justify-center gap-1.5 bg-blue-600 hover:bg-blue-700 text-white px-3 md:px-3.5 py-1.5 md:py-2 rounded-lg md:rounded-xl text-[10px] md:text-xs font-bold transition-all self-start shadow-sm"
             >
               <Plus size={14} />
               Upload New Photo
@@ -194,8 +194,8 @@ const ManagePhotos = () => {
                 
                 {/* Status Overlay Badges */}
                 {photo.isPrimary && (
-                  <div className="absolute top-2.5 left-2.5 bg-blue-600 text-white px-2 py-0.5 rounded-md text-[9px] font-extrabold uppercase tracking-wider flex items-center gap-1 shadow-sm">
-                    <Star size={10} fill="currentColor" /> Primary Cover
+                  <div className="absolute top-1.5 left-1.5 md:top-2.5 md:left-2.5 bg-blue-600 text-white px-1.5 py-0.5 md:px-2 md:py-0.5 rounded md:rounded-md text-[7px] md:text-[9px] font-extrabold uppercase tracking-wider flex items-center gap-0.5 md:gap-1 shadow-sm">
+                    <Star className="w-2 h-2 md:w-2.5 md:h-2.5" fill="currentColor" /> Primary Cover
                   </div>
                 )}
 
@@ -232,17 +232,17 @@ const ManagePhotos = () => {
             <button
               type="button"
               onClick={triggerFileUpload}
-              className="aspect-[4/3] bg-white border-2 border-dashed border-slate-300 hover:border-blue-500 rounded-xl flex flex-col items-center justify-center p-4 text-slate-400 hover:text-blue-500 transition-all cursor-pointer group"
+              className="aspect-[4/3] bg-white border-2 border-dashed border-slate-300 hover:border-blue-500 rounded-xl flex flex-col items-center justify-center p-2 md:p-4 text-slate-400 hover:text-blue-500 transition-all cursor-pointer group"
             >
-              <UploadCloud size={28} className="group-hover:scale-105 transition-transform" />
-              <span className="text-xs font-bold mt-2">Upload Photo</span>
-              <span className="text-[10px] text-slate-400 mt-1">{7 - photos.length} slots remaining</span>
+              <UploadCloud className="w-5 h-5 md:w-7 md:h-7 group-hover:scale-105 transition-transform" />
+              <span className="text-[9px] md:text-xs font-bold mt-1.5 md:mt-2">Upload Photo</span>
+              <span className="text-[8px] md:text-[10px] text-slate-400 mt-0.5 md:mt-1">{7 - photos.length} slots remaining</span>
             </button>
           ) : (
-            <div className="aspect-[4/3] bg-slate-100 border border-slate-200 rounded-xl flex flex-col items-center justify-center p-4 text-slate-400 text-center">
-              <Ban size={24} className="text-slate-400" />
-              <span className="text-xs font-bold mt-2 text-slate-500">Upload Limit Reached</span>
-              <span className="text-[10px] text-slate-400 mt-1">Maximum 7 photos allowed</span>
+            <div className="aspect-[4/3] bg-slate-100 border border-slate-200 rounded-xl flex flex-col items-center justify-center p-2 md:p-4 text-slate-400 text-center">
+              <Ban className="w-5 h-5 md:w-6 md:h-6 text-slate-400" />
+              <span className="text-[9px] md:text-xs font-bold mt-1.5 md:mt-2 text-slate-500">Upload Limit Reached</span>
+              <span className="text-[8px] md:text-[10px] text-slate-400 mt-0.5 md:mt-1">Maximum 7 photos allowed</span>
             </div>
           )}
         </div>

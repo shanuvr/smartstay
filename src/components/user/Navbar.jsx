@@ -100,6 +100,10 @@ export default function Navbar() {
                       <FileText className="w-4 h-4 text-slate-400" />
                       My Bookings
                     </Link>
+                    <Link to="/saved" onClick={() => setIsDropdownOpen(false)} className="flex items-center gap-2.5 px-4 py-2.5 text-sm text-slate-700 hover:bg-slate-50 transition-colors">
+                      <svg className="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" /></svg>
+                      Saved
+                    </Link>
                     <div className="h-px bg-slate-100 my-1"></div>
                     <button onClick={handleLogout} className="w-full flex items-center gap-2.5 px-4 py-2.5 text-sm font-medium text-red-600 hover:bg-red-50 transition-colors text-left">
                       <LogOut className="w-4 h-4 text-red-400" />
@@ -197,6 +201,14 @@ export default function Navbar() {
               >
                 <FileText className="w-5 h-5 text-gray-500" />
                 My Bookings
+              </Link>
+              <Link
+                to="/saved"
+                onClick={() => setIsOpen(false)}
+                className="text-base font-medium text-gray-700 hover:text-[#5392F9] transition-colors py-2 border-b border-gray-50 flex items-center gap-3"
+              >
+                <svg className="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" /></svg>
+                Saved
               </Link>
               <button
                 onClick={() => {

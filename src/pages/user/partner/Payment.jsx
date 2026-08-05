@@ -64,7 +64,7 @@ const Payment = () => {
         </div>
         <h1 className="text-3xl font-extrabold text-slate-900 mb-2 tracking-tight">Property Registration Complete!</h1>
         <p className="text-sm font-semibold text-slate-500 mb-8 max-w-md">
-          Your property has been registered on SmartStay with zero upfront fees. Your payout bank account is linked for receiving 85% net payouts.
+          Your property has been registered on SmartStay with zero upfront fees. Your billing account is linked for automatic commission payments.
         </p>
         <p className="text-xs font-bold animate-pulse text-[#2563eb]">Redirecting to your Admin Dashboard...</p>
       </div>
@@ -77,12 +77,12 @@ const Payment = () => {
       {/* Header */}
       <div className="mb-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-100 pb-6">
         <div>
-          <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 mb-1 tracking-tight">Payout Bank Setup</h1>
+          <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 mb-1 tracking-tight">Commission Billing Setup</h1>
           <h2 className="text-[10px] sm:text-[11px] font-bold text-[#2563eb] uppercase tracking-wider mb-1">
             Step 5 of 5
           </h2>
           <p className="text-[11px] sm:text-xs font-semibold text-slate-400">
-            Provide bank details to receive guest booking payouts (85% net earnings)
+            Provide a payment method to automatically pay your 15% monthly commission invoices
           </p>
         </div>
         <div className="flex items-center gap-2 text-emerald-700 bg-emerald-50 px-3 py-2 rounded-xl border border-emerald-200">
@@ -96,7 +96,7 @@ const Payment = () => {
         {/* Payout Form */}
         <div className="flex-1 space-y-6">
           <h3 className="text-xs font-bold text-slate-800 uppercase tracking-widest mb-4 border-b border-slate-100 pb-2">
-            Select Payout Transfer Method
+            Select Billing Method
           </h3>
           
           <div className="grid grid-cols-2 gap-3">
@@ -108,8 +108,8 @@ const Payment = () => {
             >
               <Building2 className={`w-6 h-6 ${payoutMethod === 'bank' ? 'text-[#2563eb]' : 'text-slate-400'}`} />
               <div>
-                <span className={`text-xs font-bold block ${payoutMethod === 'bank' ? 'text-[#2563eb]' : 'text-slate-700'}`}>Direct Bank Transfer</span>
-                <span className="text-[10px] text-slate-400 font-semibold">NEFT / RTGS Weekly Payouts</span>
+                <span className={`text-xs font-bold block ${payoutMethod === 'bank' ? 'text-[#2563eb]' : 'text-slate-700'}`}>Direct Bank Mandate</span>
+                <span className="text-[10px] text-slate-400 font-semibold">Monthly NACH Auto-Debit</span>
               </div>
             </div>
             <div 
@@ -120,8 +120,8 @@ const Payment = () => {
             >
               <Wallet className={`w-6 h-6 ${payoutMethod === 'upi' ? 'text-[#2563eb]' : 'text-slate-400'}`} />
               <div>
-                <span className={`text-xs font-bold block ${payoutMethod === 'upi' ? 'text-[#2563eb]' : 'text-slate-700'}`}>Instant UPI Transfer</span>
-                <span className="text-[10px] text-slate-400 font-semibold">VPA Instant Settlements</span>
+                <span className={`text-xs font-bold block ${payoutMethod === 'upi' ? 'text-[#2563eb]' : 'text-slate-700'}`}>UPI AutoPay</span>
+                <span className="text-[10px] text-slate-400 font-semibold">Monthly UPI Mandate</span>
               </div>
             </div>
           </div>
@@ -142,7 +142,7 @@ const Payment = () => {
             {payoutMethod === 'upi' && (
               <div className="space-y-4 animate-in fade-in slide-in-from-bottom-2">
                 <FloatingInput id="upiId" label="Enter UPI VPA ID (e.g. name@okhdfcbank)" value={bankData.upiId} onChange={handleChange} required />
-                <p className="text-[11px] font-semibold text-slate-400">Weekly payouts will be automatically credited to this UPI ID.</p>
+                <p className="text-[11px] font-semibold text-slate-400">Monthly commission invoices will be automatically debited from this UPI ID.</p>
               </div>
             )}
 
@@ -155,7 +155,7 @@ const Payment = () => {
                 <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
               ) : (
                 <>
-                  <span>Save Bank & Finish Listing</span>
+                  <span>Save Billing Details & Finish Listing</span>
                   <ArrowRight className="w-4 h-4" />
                 </>
               )}
@@ -166,7 +166,7 @@ const Payment = () => {
         {/* Breakdown Card */}
         <div className="w-full lg:w-80 bg-slate-50 border border-slate-200 rounded-2xl p-6 h-fit shrink-0">
           <h3 className="text-xs font-bold text-slate-800 uppercase tracking-widest mb-4">
-            Payout Model Summary
+            Commission Model Summary
           </h3>
           
           <div className="space-y-3 mb-6 text-xs font-semibold text-slate-600">
@@ -175,22 +175,22 @@ const Payment = () => {
               <span className="font-extrabold text-emerald-600 uppercase">FREE (₹0)</span>
             </div>
             <div className="flex justify-between items-center py-2 border-b border-slate-200">
+              <span>Your Revenue</span>
+              <span className="font-bold text-slate-900">Paid Directly to You</span>
+            </div>
+            <div className="flex justify-between items-center py-2 border-b border-slate-200">
               <span>SmartStay Commission</span>
               <span className="font-bold text-slate-900">15% per booking</span>
             </div>
-            <div className="flex justify-between items-center py-2 border-b border-slate-200">
-              <span>Your Net Earnings</span>
-              <span className="font-bold text-slate-900">85% per booking</span>
-            </div>
             <div className="flex justify-between items-center py-2">
-              <span>Payout Schedule</span>
-              <span className="font-bold text-slate-900">Weekly (Every Mon)</span>
+              <span>Billing Cycle</span>
+              <span className="font-bold text-slate-900">Monthly (End of Month)</span>
             </div>
           </div>
 
           <div className="bg-blue-50 text-[#2563eb] text-[11px] font-semibold p-3.5 rounded-xl flex gap-2 border border-blue-100">
             <Info className="w-4 h-4 shrink-0 mt-0.5" />
-            <p>SmartStay handles online guest payment processing securely and remits your net payout automatically.</p>
+            <p>You receive guest payments directly. SmartStay will automatically invoice and debit your 15% commission at the end of every month.</p>
           </div>
         </div>
 

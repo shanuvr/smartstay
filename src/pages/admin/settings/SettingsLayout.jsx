@@ -57,22 +57,22 @@ const SettingsLayout = () => {
           <button 
             type="button"
             onClick={() => setIsOpen(!isOpen)}
-            className="w-full flex items-center justify-between px-5 py-4 bg-white border border-slate-200 rounded-2xl shadow-sm font-bold text-slate-800 text-sm focus:outline-none"
+            className="w-full flex items-center justify-between px-4 py-3 bg-white border border-slate-200 rounded-xl shadow-sm font-bold text-slate-800 text-xs focus:outline-none"
           >
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-2.5">
               {(() => {
                 const ActiveIcon = currentActiveLink.icon;
-                return <ActiveIcon size={18} className="text-blue-600" />;
+                return <ActiveIcon size={16} className="text-blue-600" />;
               })()}
               <span>{currentActiveLink.name}</span>
             </div>
-            <ChevronDown size={18} className={`text-slate-500 transition-transform ${isOpen ? 'rotate-180' : ''}`} />
+            <ChevronDown size={16} className={`text-slate-500 transition-transform ${isOpen ? 'rotate-180' : ''}`} />
           </button>
           
           {isOpen && (
             <>
               <div className="fixed inset-0 z-40" onClick={() => setIsOpen(false)} />
-              <div className="absolute top-full left-0 right-0 mt-2 bg-white border border-slate-200 rounded-2xl shadow-xl z-50 overflow-hidden py-2 animate-in fade-in slide-in-from-top-2 duration-200">
+              <div className="absolute top-full left-0 right-0 mt-2 bg-white border border-slate-200 rounded-xl shadow-xl z-50 overflow-hidden py-1.5 animate-in fade-in slide-in-from-top-2 duration-200">
                 {sidebarLinks.map((link) => {
                   const LinkIcon = link.icon;
                   const isActive = link.end ? location.pathname === link.path : location.pathname.startsWith(link.path);
@@ -82,9 +82,9 @@ const SettingsLayout = () => {
                       to={link.path}
                       end={link.end}
                       onClick={() => setIsOpen(false)}
-                      className={`flex items-center gap-3 px-5 py-3.5 text-sm font-semibold transition-colors ${isActive ? 'bg-blue-50/50 text-blue-750 font-bold border-l-4 border-blue-600' : 'text-slate-655 hover:bg-slate-50'}`}
+                      className={`flex items-center gap-2.5 px-4 py-2.5 text-xs font-semibold transition-colors ${isActive ? 'bg-blue-50/50 text-blue-750 font-bold border-l-4 border-blue-600' : 'text-slate-655 hover:bg-slate-50'}`}
                     >
-                      <LinkIcon size={18} className={isActive ? 'text-blue-600' : 'text-slate-400'} />
+                      <LinkIcon size={16} className={isActive ? 'text-blue-600' : 'text-slate-400'} />
                       <span>{link.name}</span>
                     </NavLink>
                   );

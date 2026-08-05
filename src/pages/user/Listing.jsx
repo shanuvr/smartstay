@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import UserLayout from '../../laybouts/Userlayout';
+import UserLayout from '../../layouts/Userlayout';
 import Card from '../../components/user/Card';
 
 const getDaysInMonth = (year, month) => {
@@ -440,10 +440,10 @@ export default function Listing({ onlyShowFavorites = false }) {
           {/* Outer Responsive Container */}
           <div className="relative z-40">
             <div className="flex flex-col lg:flex-row items-stretch lg:items-center lg:bg-white lg:dark:bg-slate-900 lg:rounded-full lg:border lg:border-gray-200 lg:dark:border-slate-800 lg:p-1.5 lg:shadow-sm">
-              
+
               {/* Inputs */}
               <div className="bg-white dark:bg-slate-900 rounded-full border border-gray-200 dark:border-slate-800 p-1.5 sm:p-2 shadow-sm lg:bg-transparent lg:border-none lg:p-0 lg:shadow-none w-full grid grid-cols-4 divide-x divide-gray-200 dark:divide-slate-700 min-w-0 lg:flex-1">
-                
+
                 {/* Destination */}
                 <div className="px-2 sm:px-4 py-1.5 sm:py-1 rounded-l-full min-w-0">
                   <p className="text-[8px] sm:text-[10px] font-bold text-gray-500 uppercase tracking-wider mb-0.5">Destination</p>
@@ -457,7 +457,7 @@ export default function Listing({ onlyShowFavorites = false }) {
                 </div>
 
                 {/* Check-in */}
-                <div 
+                <div
                   className="px-2 sm:px-4 py-1.5 sm:py-1 cursor-pointer hover:bg-gray-50 dark:hover:bg-slate-800 transition-colors min-w-0"
                   onClick={() => {
                     setShowCalendar(!showCalendar);
@@ -469,7 +469,7 @@ export default function Listing({ onlyShowFavorites = false }) {
                 </div>
 
                 {/* Check-out */}
-                <div 
+                <div
                   className="px-2 sm:px-4 py-1.5 sm:py-1 cursor-pointer hover:bg-gray-50 dark:hover:bg-slate-800 transition-colors min-w-0"
                   onClick={() => {
                     setShowCalendar(!showCalendar);
@@ -481,7 +481,7 @@ export default function Listing({ onlyShowFavorites = false }) {
                 </div>
 
                 {/* Guests */}
-                <div 
+                <div
                   className="px-2 sm:px-4 py-1.5 sm:py-1 cursor-pointer hover:bg-gray-50 dark:hover:bg-slate-800 lg:rounded-r-full transition-colors min-w-0"
                   onClick={() => {
                     setShowOccupancy(!showOccupancy);
@@ -652,16 +652,14 @@ export default function Listing({ onlyShowFavorites = false }) {
 
         {/* Mobile Filter Drawer */}
         <div
-          className={`fixed inset-0 bg-black/40 z-40 transition-opacity duration-300 lg:hidden ${
-            filterOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'
-          }`}
+          className={`fixed inset-0 bg-black/40 z-40 transition-opacity duration-300 lg:hidden ${filterOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'
+            }`}
           onClick={() => setFilterOpen(false)}
         ></div>
 
         <div
-          className={`fixed top-0 right-0 h-full w-80 max-w-[85vw] bg-white dark:bg-slate-900 z-50 shadow-2xl transition-transform duration-300 ease-in-out lg:hidden flex flex-col ${
-            filterOpen ? 'translate-x-0' : 'translate-x-full'
-          }`}
+          className={`fixed top-0 right-0 h-full w-80 max-w-[85vw] bg-white dark:bg-slate-900 z-50 shadow-2xl transition-transform duration-300 ease-in-out lg:hidden flex flex-col ${filterOpen ? 'translate-x-0' : 'translate-x-full'
+            }`}
         >
           <div className="flex-shrink-0 flex items-center justify-between px-5 py-4 border-b border-gray-100 dark:border-slate-800">
             <h3 className="text-lg font-bold text-gray-900 dark:text-white">Filters</h3>

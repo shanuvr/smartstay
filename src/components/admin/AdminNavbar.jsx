@@ -20,6 +20,9 @@ const AdminNavbar = () => {
       ]
     }, 
     { name: 'Finance', path: '/admin/finance' },
+
+    { name: 'Support', path: '/admin/support' },
+    { name: 'Reviews', path: '/admin/reviews' },
     { name: 'Settings', path: '/admin/settings' },
   ];
 

@@ -1,7 +1,7 @@
 import { useState, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
-import UserLayout from '../../laybouts/Userlayout';
+import UserLayout from '../../layouts/Userlayout';
 
 const getDaysInMonth = (year, month) => {
     return new Date(year, month + 1, 0).getDate();
@@ -23,6 +23,9 @@ const PROPERTY_TYPES = [
     { code: 'PT · 02', name: 'Apartments', img: '/apartments.png', note: 'Live like a local' },
     { code: 'PT · 03', name: 'Resorts', img: '/resorts.png', note: 'All-in, all relaxed' },
     { code: 'PT · 04', name: 'Villas', img: '/villas.png', note: 'Private & spacious' },
+    { code: 'PT · 05', name: 'Lodges', img: 'https://images.unsplash.com/photo-1449844908441-8829872d2607?w=500&q=80', note: 'Nature & comfort' },
+    { code: 'PT · 06', name: 'Club Houses', img: 'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=500&q=80', note: 'Exclusive experiences' },
+    { code: 'PT · 07', name: 'Others', img: 'https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=500&q=80', note: 'Explore more' },
 ];
 
 const DESTINATIONS_MAIN = [
@@ -209,13 +212,13 @@ export default function Home() {
                 {/* ============================================================ */}
                 {/* HERO — unchanged                                              */}
                 {/* ============================================================ */}
-                <div 
+                <div
                     className="relative w-full min-h-[580px] lg:min-h-[640px] bg-cover bg-center bg-no-repeat flex flex-col justify-between pt-28 sm:pt-32 lg:pt-36 pb-12 sm:pb-16 lg:pb-24"
                     style={{ backgroundImage: "url('/hero-image.png')" }}
                 >
                     {/* Main Container */}
                     <div className="relative z-10 max-w-[1280px] w-full mx-auto px-4 sm:px-6 lg:px-8 flex flex-col justify-between flex-grow">
-                        
+
                         {/* Top Hero Content: Title & Subtitle */}
                         <div className="max-w-2xl animate-fade-in-up">
                             <h1 className="text-2xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-slate-900 leading-tight">
@@ -234,12 +237,12 @@ export default function Home() {
 
                             {/* Backdrop overlay to close calendar or occupancy popover on click-outside */}
                             {(showCalendar || showOccupancy) && (
-                                <div 
-                                    className="fixed inset-0 z-40 bg-transparent" 
+                                <div
+                                    className="fixed inset-0 z-40 bg-transparent"
                                     onClick={() => {
                                         setShowCalendar(false);
                                         setShowOccupancy(false);
-                                    }} 
+                                    }}
                                 />
                             )}
 
@@ -266,7 +269,7 @@ export default function Home() {
 
                                 {/* Check-in & Check-out Container (Grid on Mobile, Flex on Desktop) */}
                                 <div className="lg:flex-[2.1] grid grid-cols-2 lg:flex lg:flex-row border-b lg:border-b-0 lg:border-r border-gray-200 divide-x divide-gray-200">
-                                    
+
                                     {/* Check-in */}
                                     <div
                                         className="lg:flex-1 flex items-center gap-2 px-3 sm:px-3.5 py-2.5 cursor-pointer select-none"
@@ -469,7 +472,7 @@ export default function Home() {
 
                         {/* Below Search Bar: Feature Highlights & Glass Badge */}
                         <div className="flex flex-col gap-4">
-                            
+
                             {/* Feature Badges Displayed Below Search Bar */}
                             <div className="flex flex-wrap items-center gap-2 sm:gap-4 text-slate-800 text-[11px] sm:text-xs font-semibold">
                                 <div className="flex items-center gap-1.5 sm:gap-2 bg-white/85 backdrop-blur-sm px-2.5 sm:px-3.5 py-1 sm:py-1.5 rounded-full border border-slate-200/80 shadow-xs">
@@ -534,37 +537,37 @@ export default function Home() {
                             style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
                         >
                             {PROPERTY_TYPES.map((p) => (
-                            <div key={p.code} className="min-w-[240px] sm:min-w-[280px] flex-1 snap-start group cursor-pointer">
-                                <div className="relative bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/80 dark:border-slate-800 shadow-xs hover:shadow-lg transition-shadow duration-300 overflow-hidden">
-                                    {/* Image */}
-                                    <div className="overflow-hidden aspect-[4/3] w-full">
-                                        <img
-                                            src={p.img}
-                                            alt={p.name}
-                                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                                        />
-                                    </div>
-
-                                    {/* Perforated divider — the ticket-stub motif */}
-                                    <div className="relative h-0">
-                                        <div className="absolute -left-2.5 -top-2.5 w-5 h-5 rounded-full bg-white dark:bg-slate-950" />
-                                        <div className="absolute -right-2.5 -top-2.5 w-5 h-5 rounded-full bg-white dark:bg-slate-950" />
-                                        <div className="absolute left-4 right-4 top-0 border-t border-dashed border-slate-300 dark:border-slate-700" />
-                                    </div>
-
-                                    {/* Stub */}
-                                    <div className="flex items-center justify-between px-4 py-3.5">
-                                        <div>
-                                            <span className="font-semibold text-[15px] text-slate-900 dark:text-white block">
-                                                {p.name}
-                                            </span>
-                                            <span className="text-[11px] text-slate-400 dark:text-slate-500">{p.note}</span>
+                                <div key={p.code} className="min-w-[240px] sm:min-w-[280px] flex-1 snap-start group cursor-pointer">
+                                    <div className="relative bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/80 dark:border-slate-800 shadow-xs hover:shadow-lg transition-shadow duration-300 overflow-hidden">
+                                        {/* Image */}
+                                        <div className="overflow-hidden aspect-[4/3] w-full">
+                                            <img
+                                                src={p.img}
+                                                alt={p.name}
+                                                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                                            />
                                         </div>
-                                        <span className="text-[10px] text-slate-300 dark:text-slate-600">{p.code}</span>
+
+                                        {/* Perforated divider — the ticket-stub motif */}
+                                        <div className="relative h-0">
+                                            <div className="absolute -left-2.5 -top-2.5 w-5 h-5 rounded-full bg-white dark:bg-slate-950" />
+                                            <div className="absolute -right-2.5 -top-2.5 w-5 h-5 rounded-full bg-white dark:bg-slate-950" />
+                                            <div className="absolute left-4 right-4 top-0 border-t border-dashed border-slate-300 dark:border-slate-700" />
+                                        </div>
+
+                                        {/* Stub */}
+                                        <div className="flex items-center justify-between px-4 py-3.5">
+                                            <div>
+                                                <span className="font-semibold text-[15px] text-slate-900 dark:text-white block">
+                                                    {p.name}
+                                                </span>
+                                                <span className="text-[11px] text-slate-400 dark:text-slate-500">{p.note}</span>
+                                            </div>
+                                            <span className="text-[10px] text-slate-300 dark:text-slate-600">{p.code}</span>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        ))}
+                            ))}
                         </div>
                         <button
                             onClick={() => scrollProperties(-1)}
@@ -669,7 +672,7 @@ export default function Home() {
                                         Every booking earns a stamp. Complete three at any SmartStay partner property and your fourth reservation unlocks instantly at half price.
                                     </p>
                                 </div>
-                                
+
                                 {/* Stamp trail */}
                                 <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
                                     {[1, 2, 3].map((n, i) => (
@@ -729,69 +732,69 @@ export default function Home() {
                 {/* PREMIUM PARTNERS                                             */}
                 {/* ============================================================ */}
                 <section className="max-w-[1300px] mx-auto px-4 sm:px-6 mt-16 sm:mt-24">
-    <div className="bg-[#f0f7ff] dark:bg-[#12181D] border border-[#E7DFD2] dark:border-white/10 rounded-xl p-6 sm:p-8 lg:p-10 flex flex-col lg:flex-row items-start gap-6 sm:gap-10">
+                    <div className="bg-[#f0f7ff] dark:bg-[#12181D] border border-[#E7DFD2] dark:border-white/10 rounded-xl p-6 sm:p-8 lg:p-10 flex flex-col lg:flex-row items-start gap-6 sm:gap-10">
 
-        {/* Title side */}
-        <div className="w-full lg:w-1/4 shrink-0 text-center lg:text-left lg:pt-1">
-            <p className="text-[11px] font-bold tracking-[0.2em] text-[#0E5C53] dark:text-[#4FB8A8] uppercase mb-2">
-                Curated by SmartStay
-            </p>
-            <h2 className="font-serif text-2xl sm:text-[26px] text-[#16232E] dark:text-white leading-tight">
-                Flagship hotel stores
-            </h2>
-            <p className="hidden lg:block text-xs text-[#8A8272] dark:text-white/40 mt-3 leading-relaxed max-w-[200px]">
-                A short list of properties we vouch for, hand-picked each season.
-            </p>
-        </div>
+                        {/* Title side */}
+                        <div className="w-full lg:w-1/4 shrink-0 text-center lg:text-left lg:pt-1">
+                            <p className="text-[11px] font-bold tracking-[0.2em] text-[#0E5C53] dark:text-[#4FB8A8] uppercase mb-2">
+                                Curated by SmartStay
+                            </p>
+                            <h2 className="font-serif text-2xl sm:text-[26px] text-[#16232E] dark:text-white leading-tight">
+                                Flagship hotel stores
+                            </h2>
+                            <p className="hidden lg:block text-xs text-[#8A8272] dark:text-white/40 mt-3 leading-relaxed max-w-[200px]">
+                                A short list of properties we vouch for, hand-picked each season.
+                            </p>
+                        </div>
 
-        {/* Cards side */}
-        <div className="w-full lg:w-3/4 min-w-0 relative group">
-            {/* Left Scroll Arrow */}
-            <button 
-                onClick={() => scrollPremium(-1)}
-                className="flex absolute -left-3 sm:-left-4 top-1/2 -translate-y-1/2 z-10 w-8 h-8 sm:w-9 sm:h-9 bg-white border border-slate-200 rounded-full items-center justify-center shadow-lg text-slate-700 hover:text-[#2563eb] opacity-90 lg:opacity-0 group-hover:opacity-100 transition-opacity"
-            >
-                <ChevronLeft className="w-4 h-4 sm:w-5 sm:h-5" />
-            </button>
+                        {/* Cards side */}
+                        <div className="w-full lg:w-3/4 min-w-0 relative group">
+                            {/* Left Scroll Arrow */}
+                            <button
+                                onClick={() => scrollPremium(-1)}
+                                className="flex absolute -left-3 sm:-left-4 top-1/2 -translate-y-1/2 z-10 w-8 h-8 sm:w-9 sm:h-9 bg-white border border-slate-200 rounded-full items-center justify-center shadow-lg text-slate-700 hover:text-[#2563eb] opacity-90 lg:opacity-0 group-hover:opacity-100 transition-opacity"
+                            >
+                                <ChevronLeft className="w-4 h-4 sm:w-5 sm:h-5" />
+                            </button>
 
-            <div ref={premiumScrollRef} className="flex gap-4 sm:gap-5 overflow-x-auto pb-3 -mx-1 px-1 scrollbar-none snap-x snap-mandatory scroll-smooth">
-                {PREMIUM_PARTNERS.map((partner, idx) => (
-                    <div
-                        key={idx}
-                        className="relative w-[15.5rem] sm:w-64 h-40 sm:h-44 shrink-0 rounded-lg overflow-hidden group snap-start cursor-pointer border border-[#E7DFD2] dark:border-white/10"
-                    >
-                        <img
-                            src={partner.img}
-                            alt={partner.name}
-                            className="w-full h-full object-cover group-hover:scale-[1.04] transition-transform duration-700"
-                        />
+                            <div ref={premiumScrollRef} className="flex gap-4 sm:gap-5 overflow-x-auto pb-3 -mx-1 px-1 scrollbar-none snap-x snap-mandatory scroll-smooth">
+                                {PREMIUM_PARTNERS.map((partner, idx) => (
+                                    <div
+                                        key={idx}
+                                        className="relative w-[15.5rem] sm:w-64 h-40 sm:h-44 shrink-0 rounded-lg overflow-hidden group snap-start cursor-pointer border border-[#E7DFD2] dark:border-white/10"
+                                    >
+                                        <img
+                                            src={partner.img}
+                                            alt={partner.name}
+                                            className="w-full h-full object-cover group-hover:scale-[1.04] transition-transform duration-700"
+                                        />
 
-                        {/* Gradient + plaque text */}
-                        <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-[#16232E]/95 via-[#16232E]/50 to-transparent pt-10 pb-3.5 px-4">
-                            <div className="w-6 h-[1.5px] bg-[#C9A227] mb-2" />
-                            <h3 className="text-white font-serif text-sm sm:text-base leading-tight">
-                                {partner.name}
-                            </h3>
+                                        {/* Gradient + plaque text */}
+                                        <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-[#16232E]/95 via-[#16232E]/50 to-transparent pt-10 pb-3.5 px-4">
+                                            <div className="w-6 h-[1.5px] bg-[#C9A227] mb-2" />
+                                            <h3 className="text-white font-serif text-sm sm:text-base leading-tight">
+                                                {partner.name}
+                                            </h3>
+                                        </div>
+                                    </div>
+                                ))}
+                                {/* Spacer to ensure the last card clears the fade gradient */}
+                                <div className="shrink-0 w-6 sm:w-10 h-px" />
+                            </div>
+
+                            {/* Right Scroll Arrow */}
+                            <button
+                                onClick={() => scrollPremium(1)}
+                                className="flex absolute -right-3 sm:right-4 top-1/2 -translate-y-1/2 z-10 w-8 h-8 sm:w-9 sm:h-9 bg-white border border-slate-200 rounded-full items-center justify-center shadow-lg text-slate-700 hover:text-[#2563eb] opacity-90 lg:opacity-0 group-hover:opacity-100 transition-opacity"
+                            >
+                                <ChevronRight className="w-4 h-4 sm:w-5 sm:h-5" />
+                            </button>
+
+                            {/* Edge fade cues so the overflow reads as scrollable, not clipped */}
+                            <div className="hidden lg:block pointer-events-none absolute top-0 right-0 h-40 sm:h-44 w-10 bg-gradient-to-l from-[#f0f7ff] dark:from-[#12181D] to-transparent" />
                         </div>
                     </div>
-                ))}
-                {/* Spacer to ensure the last card clears the fade gradient */}
-                <div className="shrink-0 w-6 sm:w-10 h-px" />
-            </div>
-
-            {/* Right Scroll Arrow */}
-            <button 
-                onClick={() => scrollPremium(1)}
-                className="flex absolute -right-3 sm:right-4 top-1/2 -translate-y-1/2 z-10 w-8 h-8 sm:w-9 sm:h-9 bg-white border border-slate-200 rounded-full items-center justify-center shadow-lg text-slate-700 hover:text-[#2563eb] opacity-90 lg:opacity-0 group-hover:opacity-100 transition-opacity"
-            >
-                <ChevronRight className="w-4 h-4 sm:w-5 sm:h-5" />
-            </button>
-
-            {/* Edge fade cues so the overflow reads as scrollable, not clipped */}
-            <div className="hidden lg:block pointer-events-none absolute top-0 right-0 h-40 sm:h-44 w-10 bg-gradient-to-l from-[#f0f7ff] dark:from-[#12181D] to-transparent" />
-        </div>
-    </div>
-</section>
+                </section>
 
                 {/* ============================================================ */}
                 {/* WHY SMARTSTAY?                                                */}
@@ -837,116 +840,116 @@ export default function Home() {
                 {/* APP DOWNLOAD & NEWSLETTER PROMO                              */}
                 {/* ============================================================ */}
                 <section className="max-w-[1300px] mx-auto px-4 sm:px-6 mt-20 sm:mt-24 pb-8 sm:pb-12">
-    <div className="flex flex-col lg:flex-row gap-4 sm:gap-6">
+                    <div className="flex flex-col lg:flex-row gap-4 sm:gap-6">
 
-        {/* Newsletter / Deals (Left) */}
-        <div className="flex-1 bg-blue-50 dark:bg-blue-900/20 rounded-2xl p-5 sm:p-10 border border-blue-100 dark:border-blue-800/30 flex flex-col justify-center">
-            <p className="font-tag text-[10px] sm:text-[11px] text-[#2563eb] dark:text-blue-400 mb-2">INSIDER · ACCESS</p>
-            <h2 className="font-display text-xl sm:text-3xl font-bold text-slate-900 dark:text-white tracking-tight mb-2 sm:mb-3">
-                Subscribe for hidden deals
-            </h2>
-            <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 mb-5 sm:mb-7 max-w-sm leading-relaxed">
-                Get access to secret prices, last-minute discounts, and member-only promotions delivered straight to your inbox.
-            </p>
+                        {/* Newsletter / Deals (Left) */}
+                        <div className="flex-1 bg-blue-50 dark:bg-blue-900/20 rounded-2xl p-5 sm:p-10 border border-blue-100 dark:border-blue-800/30 flex flex-col justify-center">
+                            <p className="font-tag text-[10px] sm:text-[11px] text-[#2563eb] dark:text-blue-400 mb-2">INSIDER · ACCESS</p>
+                            <h2 className="font-display text-xl sm:text-3xl font-bold text-slate-900 dark:text-white tracking-tight mb-2 sm:mb-3">
+                                Subscribe for hidden deals
+                            </h2>
+                            <p className="text-xs sm:text-sm text-slate-600 dark:text-slate-400 mb-5 sm:mb-7 max-w-sm leading-relaxed">
+                                Get access to secret prices, last-minute discounts, and member-only promotions delivered straight to your inbox.
+                            </p>
 
-            {/* Merged capsule input — dashed tear-line stands in for the button border, keeping the ticket motif even here */}
-            <form
-                className="flex items-stretch max-w-md rounded-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 focus-within:ring-2 focus-within:ring-[#2563eb] overflow-hidden"
-                onSubmit={(e) => e.preventDefault()}
-            >
-                <input
-                    type="email"
-                    placeholder="Enter your email address"
-                    className="flex-1 min-w-0 px-4 sm:px-5 py-2.5 sm:py-3.5 bg-transparent focus:outline-none text-xs sm:text-sm text-slate-800 dark:text-white placeholder-slate-400"
-                    required
-                />
-                <div className="w-px my-2 border-l border-dashed border-slate-300 dark:border-slate-700" />
-                <button
-                    type="submit"
-                    className="bg-[#2563eb] hover:bg-blue-700 text-white font-semibold px-4 sm:px-7 text-xs sm:text-sm transition-colors whitespace-nowrap"
-                >
-                    Subscribe
-                </button>
-            </form>
-            <p className="font-tag text-[8px] sm:text-[9px] text-slate-400 dark:text-slate-500 mt-2 sm:mt-3">NO SPAM · UNSUBSCRIBE ANYTIME</p>
-        </div>
-
-        {/* Get the App (Right) — styled as a wallet boarding pass */}
-        <div className="flex-1 rounded-2xl border border-slate-800 bg-[#0F172A] relative overflow-hidden">
-            {/* ambient glow, kept subtle */}
-            <div className="absolute -right-24 -top-24 w-72 h-72 bg-[#2563eb] rounded-full blur-[90px] opacity-20 pointer-events-none" />
-
-            {/* pass header strip */}
-            <div className="relative z-10 flex items-center justify-between px-6 sm:px-8 pt-6 sm:pt-7">
-                <span className="font-tag text-[10px] text-blue-400 tracking-widest">BOARDING PASS</span>
-                <span className="font-tag text-[10px] text-white/40 tracking-widest">SS · APP</span>
-            </div>
-
-            <div className="relative z-10 flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-8 px-5 sm:px-8 pt-4 pb-6">
-                <div className="flex-1 w-full">
-                    <h2 className="font-display text-xl sm:text-3xl font-bold text-white tracking-tight mb-2 sm:mb-3">
-                        Get the SmartStay app
-                    </h2>
-                    <p className="text-xs sm:text-sm text-slate-400 mb-5 sm:mb-6 max-w-sm leading-relaxed">
-                        Book faster, manage your reservations on the go, and use your phone as a mobile room key.
-                    </p>
-                    <div className="flex flex-wrap items-center gap-2 sm:gap-3">
-                        <button className="flex items-center gap-2 sm:gap-2.5 bg-white/10 hover:bg-white/20 border border-white/10 transition-colors rounded-xl px-3 sm:px-4 py-2 sm:py-2.5">
-                            <svg className="w-4 sm:w-5 h-4 sm:h-5 text-white" viewBox="0 0 24 24" fill="currentColor">
-                                <path d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.21 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.69 4.08zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z"/>
-                            </svg>
-                            <div className="flex flex-col items-start leading-none">
-                                <span className="text-[7px] sm:text-[8px] text-white/60">Download on the</span>
-                                <span className="text-[10px] sm:text-[12px] font-semibold text-white mt-0.5">App Store</span>
-                            </div>
-                        </button>
-
-                        <button className="flex items-center gap-2 sm:gap-2.5 bg-white/10 hover:bg-white/20 border border-white/10 transition-colors rounded-xl px-3 sm:px-4 py-2 sm:py-2.5">
-                            <svg className="w-4 sm:w-5 h-4 sm:h-5 text-white" viewBox="0 0 24 24" fill="currentColor">
-                                <path d="M3.6 2.6c-.3.3-.5.7-.5 1.2v16.4c0 .5.2.9.5 1.2l.1.1L13 12.2v-.2L3.7 2.5l-.1.1z"/>
-                                <path d="M16.1 15.3l-3.1-3.1v-.2l3.1-3.1 6.9 3.9c.6.3.6 1.3 0 1.6l-6.9 3.9z"/>
-                                <path d="M13 12l3.1 3.1L3.7 22.5c-.4.3-1 .1-1.2-.4L13 12z"/>
-                                <path d="M13 12L2.5 1.9c.2-.5.8-.7 1.2-.4L16.1 8.7 13 12z"/>
-                            </svg>
-                            <div className="flex flex-col items-start leading-none">
-                                <span className="text-[7px] sm:text-[8px] text-white/60">GET IT ON</span>
-                                <span className="text-[10px] sm:text-[12px] font-semibold text-white mt-0.5">Google Play</span>
-                            </div>
-                        </button>
-                    </div>
-                </div>
-
-                {/* Perforated tear-line + barcode "boarding stub" */}
-                <div className="hidden lg:flex items-stretch shrink-0 self-stretch">
-                    <div className="relative mx-1">
-                        <div className="absolute -top-2 left-1/2 -translate-x-1/2 w-4 h-4 rounded-full bg-white dark:bg-slate-950" />
-                        <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-4 h-4 rounded-full bg-white dark:bg-slate-950" />
-                        <div className="h-full border-l border-dashed border-white/20" />
-                    </div>
-                    <div className="flex flex-col items-center justify-center gap-2 pl-5 pr-1">
-                        <div className="p-2.5 bg-white rounded-lg">
-                            <div className="w-16 h-16 grid grid-cols-5 grid-rows-5 gap-[2px]">
-                                {[1,1,1,0,1, 1,0,1,0,1, 1,1,1,0,0, 0,0,1,1,1, 1,1,0,1,1].map((on, i) => (
-                                    <div key={i} className={on ? 'bg-slate-900' : 'bg-transparent'} />
-                                ))}
-                            </div>
+                            {/* Merged capsule input — dashed tear-line stands in for the button border, keeping the ticket motif even here */}
+                            <form
+                                className="flex items-stretch max-w-md rounded-full bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 focus-within:ring-2 focus-within:ring-[#2563eb] overflow-hidden"
+                                onSubmit={(e) => e.preventDefault()}
+                            >
+                                <input
+                                    type="email"
+                                    placeholder="Enter your email address"
+                                    className="flex-1 min-w-0 px-4 sm:px-5 py-2.5 sm:py-3.5 bg-transparent focus:outline-none text-xs sm:text-sm text-slate-800 dark:text-white placeholder-slate-400"
+                                    required
+                                />
+                                <div className="w-px my-2 border-l border-dashed border-slate-300 dark:border-slate-700" />
+                                <button
+                                    type="submit"
+                                    className="bg-[#2563eb] hover:bg-blue-700 text-white font-semibold px-4 sm:px-7 text-xs sm:text-sm transition-colors whitespace-nowrap"
+                                >
+                                    Subscribe
+                                </button>
+                            </form>
+                            <p className="font-tag text-[8px] sm:text-[9px] text-slate-400 dark:text-slate-500 mt-2 sm:mt-3">NO SPAM · UNSUBSCRIBE ANYTIME</p>
                         </div>
-                        <span className="font-tag text-[8px] text-white/40 tracking-widest">SCAN TO BOARD</span>
+
+                        {/* Get the App (Right) — styled as a wallet boarding pass */}
+                        <div className="flex-1 rounded-2xl border border-slate-800 bg-[#0F172A] relative overflow-hidden">
+                            {/* ambient glow, kept subtle */}
+                            <div className="absolute -right-24 -top-24 w-72 h-72 bg-[#2563eb] rounded-full blur-[90px] opacity-20 pointer-events-none" />
+
+                            {/* pass header strip */}
+                            <div className="relative z-10 flex items-center justify-between px-6 sm:px-8 pt-6 sm:pt-7">
+                                <span className="font-tag text-[10px] text-blue-400 tracking-widest">BOARDING PASS</span>
+                                <span className="font-tag text-[10px] text-white/40 tracking-widest">SS · APP</span>
+                            </div>
+
+                            <div className="relative z-10 flex flex-col sm:flex-row items-start sm:items-center gap-4 sm:gap-8 px-5 sm:px-8 pt-4 pb-6">
+                                <div className="flex-1 w-full">
+                                    <h2 className="font-display text-xl sm:text-3xl font-bold text-white tracking-tight mb-2 sm:mb-3">
+                                        Get the SmartStay app
+                                    </h2>
+                                    <p className="text-xs sm:text-sm text-slate-400 mb-5 sm:mb-6 max-w-sm leading-relaxed">
+                                        Book faster, manage your reservations on the go, and use your phone as a mobile room key.
+                                    </p>
+                                    <div className="flex flex-wrap items-center gap-2 sm:gap-3">
+                                        <button className="flex items-center gap-2 sm:gap-2.5 bg-white/10 hover:bg-white/20 border border-white/10 transition-colors rounded-xl px-3 sm:px-4 py-2 sm:py-2.5">
+                                            <svg className="w-4 sm:w-5 h-4 sm:h-5 text-white" viewBox="0 0 24 24" fill="currentColor">
+                                                <path d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.21 7.31c1.35.07 2.29.74 3.08.8 1.18-.24 2.31-.93 3.57-.84 1.51.12 2.65.72 3.4 1.8-3.12 1.87-2.38 5.98.48 7.13-.57 1.5-1.31 2.99-2.69 4.08zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z" />
+                                            </svg>
+                                            <div className="flex flex-col items-start leading-none">
+                                                <span className="text-[7px] sm:text-[8px] text-white/60">Download on the</span>
+                                                <span className="text-[10px] sm:text-[12px] font-semibold text-white mt-0.5">App Store</span>
+                                            </div>
+                                        </button>
+
+                                        <button className="flex items-center gap-2 sm:gap-2.5 bg-white/10 hover:bg-white/20 border border-white/10 transition-colors rounded-xl px-3 sm:px-4 py-2 sm:py-2.5">
+                                            <svg className="w-4 sm:w-5 h-4 sm:h-5 text-white" viewBox="0 0 24 24" fill="currentColor">
+                                                <path d="M3.6 2.6c-.3.3-.5.7-.5 1.2v16.4c0 .5.2.9.5 1.2l.1.1L13 12.2v-.2L3.7 2.5l-.1.1z" />
+                                                <path d="M16.1 15.3l-3.1-3.1v-.2l3.1-3.1 6.9 3.9c.6.3.6 1.3 0 1.6l-6.9 3.9z" />
+                                                <path d="M13 12l3.1 3.1L3.7 22.5c-.4.3-1 .1-1.2-.4L13 12z" />
+                                                <path d="M13 12L2.5 1.9c.2-.5.8-.7 1.2-.4L16.1 8.7 13 12z" />
+                                            </svg>
+                                            <div className="flex flex-col items-start leading-none">
+                                                <span className="text-[7px] sm:text-[8px] text-white/60">GET IT ON</span>
+                                                <span className="text-[10px] sm:text-[12px] font-semibold text-white mt-0.5">Google Play</span>
+                                            </div>
+                                        </button>
+                                    </div>
+                                </div>
+
+                                {/* Perforated tear-line + barcode "boarding stub" */}
+                                <div className="hidden lg:flex items-stretch shrink-0 self-stretch">
+                                    <div className="relative mx-1">
+                                        <div className="absolute -top-2 left-1/2 -translate-x-1/2 w-4 h-4 rounded-full bg-white dark:bg-slate-950" />
+                                        <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-4 h-4 rounded-full bg-white dark:bg-slate-950" />
+                                        <div className="h-full border-l border-dashed border-white/20" />
+                                    </div>
+                                    <div className="flex flex-col items-center justify-center gap-2 pl-5 pr-1">
+                                        <div className="p-2.5 bg-white rounded-lg">
+                                            <div className="w-16 h-16 grid grid-cols-5 grid-rows-5 gap-[2px]">
+                                                {[1, 1, 1, 0, 1, 1, 0, 1, 0, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 1, 1].map((on, i) => (
+                                                    <div key={i} className={on ? 'bg-slate-900' : 'bg-transparent'} />
+                                                ))}
+                                            </div>
+                                        </div>
+                                        <span className="font-tag text-[8px] text-white/40 tracking-widest">SCAN TO BOARD</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* barcode strip along the bottom edge — no image asset, pure CSS */}
+                            <div
+                                className="relative z-10 h-3 w-full opacity-70"
+                                style={{
+                                    backgroundImage: 'repeating-linear-gradient(90deg, rgba(255,255,255,0.9) 0px, rgba(255,255,255,0.9) 2px, transparent 2px, transparent 5px, rgba(255,255,255,0.5) 5px, rgba(255,255,255,0.5) 6px, transparent 6px, transparent 10px)',
+                                }}
+                            />
+                        </div>
+
                     </div>
-                </div>
-            </div>
-
-            {/* barcode strip along the bottom edge — no image asset, pure CSS */}
-            <div
-                className="relative z-10 h-3 w-full opacity-70"
-                style={{
-                    backgroundImage: 'repeating-linear-gradient(90deg, rgba(255,255,255,0.9) 0px, rgba(255,255,255,0.9) 2px, transparent 2px, transparent 5px, rgba(255,255,255,0.5) 5px, rgba(255,255,255,0.5) 6px, transparent 6px, transparent 10px)',
-                }}
-            />
-        </div>
-
-    </div>
-</section>
+                </section>
 
             </div>
         </UserLayout>

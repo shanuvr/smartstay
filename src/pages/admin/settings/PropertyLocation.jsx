@@ -106,50 +106,50 @@ const PropertyLocation = () => {
 
       <form onSubmit={handleSubmit} className="space-y-6">
         {/* Location Form Fields */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5">
-          <div className="space-y-1.5">
-            <label className="text-xs font-semibold text-slate-600">Location</label>
-            <input type="text" name="location" value={formData.location} onChange={handleChange} required className="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 text-slate-800 font-medium" />
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 md:gap-4">
+          <div className="relative">
+            <input type="text" id="location" name="location" value={formData.location} onChange={handleChange} required className="block px-4 pb-2 pt-5 w-full text-sm text-slate-800 bg-slate-50 border border-slate-200 rounded-xl appearance-none focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 peer font-medium" placeholder=" " />
+            <label htmlFor="location" className="absolute text-xs text-slate-500 font-semibold duration-300 transform -translate-y-3 scale-75 top-3.5 z-10 origin-[0] left-4 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-3 peer-focus:text-blue-600">Location</label>
           </div>
 
-          <div className="space-y-1.5">
-            <label className="text-xs font-semibold text-slate-600">Sub Location</label>
-            <input type="text" name="subLocation" value={formData.subLocation} onChange={handleChange} className="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 text-slate-800 font-medium" />
+          <div className="relative">
+            <input type="text" id="subLocation" name="subLocation" value={formData.subLocation} onChange={handleChange} className="block px-4 pb-2 pt-5 w-full text-sm text-slate-800 bg-slate-50 border border-slate-200 rounded-xl appearance-none focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 peer font-medium" placeholder=" " />
+            <label htmlFor="subLocation" className="absolute text-xs text-slate-500 font-semibold duration-300 transform -translate-y-3 scale-75 top-3.5 z-10 origin-[0] left-4 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-3 peer-focus:text-blue-600">Sub Location</label>
           </div>
 
-          <div className="space-y-1.5">
-            <label className="text-xs font-semibold text-slate-600">Pincode</label>
-            <input type="text" name="pincode" value={formData.pincode} onChange={handleChange} required className="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 text-slate-800 font-medium" />
+          <div className="relative">
+            <input type="text" id="pincode" name="pincode" value={formData.pincode} onChange={handleChange} required className="block px-4 pb-2 pt-5 w-full text-sm text-slate-800 bg-slate-50 border border-slate-200 rounded-xl appearance-none focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 peer font-medium" placeholder=" " />
+            <label htmlFor="pincode" className="absolute text-xs text-slate-500 font-semibold duration-300 transform -translate-y-3 scale-75 top-3.5 z-10 origin-[0] left-4 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-3 peer-focus:text-blue-600">Pincode</label>
           </div>
 
-          <div className="space-y-1.5">
-            <label className="text-xs font-semibold text-slate-600">District</label>
-            <input type="text" name="district" value={formData.district} onChange={handleChange} required className="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 text-slate-800 font-medium" />
+          <div className="relative">
+            <input type="text" id="district" name="district" value={formData.district} onChange={handleChange} required className="block px-4 pb-2 pt-5 w-full text-sm text-slate-800 bg-slate-50 border border-slate-200 rounded-xl appearance-none focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 peer font-medium" placeholder=" " />
+            <label htmlFor="district" className="absolute text-xs text-slate-500 font-semibold duration-300 transform -translate-y-3 scale-75 top-3.5 z-10 origin-[0] left-4 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-3 peer-focus:text-blue-600">District</label>
           </div>
 
-          <div className="space-y-1.5">
-            <label className="text-xs font-semibold text-slate-600">State</label>
-            <input type="text" name="state" value={formData.state} onChange={handleChange} required className="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 text-slate-800 font-medium" />
+          <div className="relative">
+            <input type="text" id="state" name="state" value={formData.state} onChange={handleChange} required className="block px-4 pb-2 pt-5 w-full text-sm text-slate-800 bg-slate-50 border border-slate-200 rounded-xl appearance-none focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 peer font-medium" placeholder=" " />
+            <label htmlFor="state" className="absolute text-xs text-slate-500 font-semibold duration-300 transform -translate-y-3 scale-75 top-3.5 z-10 origin-[0] left-4 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-3 peer-focus:text-blue-600">State</label>
           </div>
 
-          <div className="space-y-1.5">
-            <label className="text-xs font-semibold text-slate-600">Country</label>
-            <input type="text" name="country" value={formData.country} onChange={handleChange} required className="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 text-slate-800 font-medium" />
+          <div className="relative">
+            <input type="text" id="country" name="country" value={formData.country} onChange={handleChange} required className="block px-4 pb-2 pt-5 w-full text-sm text-slate-800 bg-slate-50 border border-slate-200 rounded-xl appearance-none focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 peer font-medium" placeholder=" " />
+            <label htmlFor="country" className="absolute text-xs text-slate-500 font-semibold duration-300 transform -translate-y-3 scale-75 top-3.5 z-10 origin-[0] left-4 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-3 peer-focus:text-blue-600">Country</label>
           </div>
 
-          <div className="space-y-1.5">
-            <label className="text-xs font-semibold text-slate-600">Latitude</label>
-            <input type="text" name="latitude" value={formData.latitude} onChange={handleChange} className="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 text-slate-800 font-medium" />
+          <div className="relative">
+            <input type="text" id="latitude" name="latitude" value={formData.latitude} onChange={handleChange} className="block px-4 pb-2 pt-5 w-full text-sm text-slate-800 bg-slate-50 border border-slate-200 rounded-xl appearance-none focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 peer font-medium" placeholder=" " />
+            <label htmlFor="latitude" className="absolute text-xs text-slate-500 font-semibold duration-300 transform -translate-y-3 scale-75 top-3.5 z-10 origin-[0] left-4 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-3 peer-focus:text-blue-600">Latitude</label>
           </div>
 
-          <div className="space-y-1.5 sm:col-span-1 md:col-span-2">
-            <label className="text-xs font-semibold text-slate-600">Longitude</label>
-            <input type="text" name="longitude" value={formData.longitude} onChange={handleChange} className="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 text-slate-800 font-medium" />
+          <div className="relative sm:col-span-1 md:col-span-2">
+            <input type="text" id="longitude" name="longitude" value={formData.longitude} onChange={handleChange} className="block px-4 pb-2 pt-5 w-full text-sm text-slate-800 bg-slate-50 border border-slate-200 rounded-xl appearance-none focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 peer font-medium" placeholder=" " />
+            <label htmlFor="longitude" className="absolute text-xs text-slate-500 font-semibold duration-300 transform -translate-y-3 scale-75 top-3.5 z-10 origin-[0] left-4 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-3 peer-focus:text-blue-600">Longitude</label>
           </div>
 
-          <div className="space-y-1.5 sm:col-span-2 md:col-span-3">
-            <label className="text-xs font-semibold text-slate-600">Full Address</label>
-            <input type="text" name="fullAddress" value={formData.fullAddress} onChange={handleChange} required className="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 text-slate-800 font-medium" />
+          <div className="relative sm:col-span-2 md:col-span-3">
+            <input type="text" id="fullAddress" name="fullAddress" value={formData.fullAddress} onChange={handleChange} required className="block px-4 pb-2 pt-5 w-full text-sm text-slate-800 bg-slate-50 border border-slate-200 rounded-xl appearance-none focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 peer font-medium" placeholder=" " />
+            <label htmlFor="fullAddress" className="absolute text-xs text-slate-500 font-semibold duration-300 transform -translate-y-3 scale-75 top-3.5 z-10 origin-[0] left-4 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-3 peer-focus:text-blue-600">Full Address</label>
           </div>
         </div>
 

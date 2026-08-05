@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Cigarette, CigaretteOff, Bed, BedDouble, Coffee, ShieldCheck, Wifi, CreditCard, Building } from 'lucide-react';
-import UserLayout from '../../laybouts/Userlayout';
+import UserLayout from '../../layouts/Userlayout';
 
 function Booking() {
   const navigate = useNavigate();
@@ -145,18 +145,16 @@ function Booking() {
               {/* Step indicator */}
               <div className="flex items-center gap-2 bg-white rounded-xl p-4 border border-slate-200/80 shadow-sm">
                 <div className="flex items-center gap-2">
-                  <div className={`flex items-center justify-center w-6 h-6 rounded-full text-xs font-bold transition-all ${
-                    currentStep === 1 ? 'bg-blue-600 text-white ring-4 ring-blue-100' : 'bg-green-150 text-green-700'
-                  }`}>
+                  <div className={`flex items-center justify-center w-6 h-6 rounded-full text-xs font-bold transition-all ${currentStep === 1 ? 'bg-blue-600 text-white ring-4 ring-blue-100' : 'bg-green-150 text-green-700'
+                    }`}>
                     {currentStep === 1 ? '1' : '✓'}
                   </div>
                   <span className={`text-xs font-bold transition-all ${currentStep === 1 ? 'text-slate-800' : 'text-slate-400'}`}>1. Guest Details</span>
                 </div>
                 <div className="flex-1 h-0.5 bg-slate-100 max-w-[60px] mx-2" />
                 <div className="flex items-center gap-2">
-                  <div className={`flex items-center justify-center w-6 h-6 rounded-full text-xs font-bold transition-all ${
-                    currentStep === 2 ? 'bg-blue-600 text-white ring-4 ring-blue-100' : 'bg-slate-100 text-slate-400'
-                  }`}>
+                  <div className={`flex items-center justify-center w-6 h-6 rounded-full text-xs font-bold transition-all ${currentStep === 2 ? 'bg-blue-600 text-white ring-4 ring-blue-100' : 'bg-slate-100 text-slate-400'
+                    }`}>
                     2
                   </div>
                   <span className={`text-xs font-bold transition-all ${currentStep === 2 ? 'text-slate-800' : 'text-slate-400'}`}>2. Payment & Confirmation</span>
@@ -249,9 +247,8 @@ function Booking() {
                         </select>
                         <label
                           htmlFor="country"
-                          className={`absolute left-3 bg-white px-1 font-medium transition-all pointer-events-none z-10 ${
-                            formData.country ? '-top-2 text-[10px] text-slate-400' : 'top-2 text-xs text-slate-400'
-                          } peer-focus:-top-2 peer-focus:text-[10px] peer-focus:text-blue-600`}
+                          className={`absolute left-3 bg-white px-1 font-medium transition-all pointer-events-none z-10 ${formData.country ? '-top-2 text-[10px] text-slate-400' : 'top-2 text-xs text-slate-400'
+                            } peer-focus:-top-2 peer-focus:text-[10px] peer-focus:text-blue-600`}
                         >
                           Country of residence *
                         </label>
@@ -274,9 +271,8 @@ function Booking() {
                           </select>
                           <label
                             htmlFor="country_code"
-                            className={`absolute left-2.5 bg-white px-1 font-medium transition-all pointer-events-none z-10 ${
-                              formData.countryCode ? '-top-2 text-[10px] text-slate-400' : 'top-2 text-xs text-slate-400'
-                            } peer-focus:-top-2 peer-focus:text-[10px] peer-focus:text-blue-600`}
+                            className={`absolute left-2.5 bg-white px-1 font-medium transition-all pointer-events-none z-10 ${formData.countryCode ? '-top-2 text-[10px] text-slate-400' : 'top-2 text-xs text-slate-400'
+                              } peer-focus:-top-2 peer-focus:text-[10px] peer-focus:text-blue-600`}
                           >
                             Code *
                           </label>
@@ -315,9 +311,8 @@ function Booking() {
                         </select>
                         <label
                           htmlFor="number_of_guests"
-                          className={`absolute left-3 bg-white px-1 font-medium transition-all pointer-events-none z-10 ${
-                            formData.numberOfGuests ? '-top-2 text-[10px] text-slate-400' : 'top-2 text-xs text-slate-400'
-                          } peer-focus:-top-2 peer-focus:text-[10px] peer-focus:text-blue-600`}
+                          className={`absolute left-3 bg-white px-1 font-medium transition-all pointer-events-none z-10 ${formData.numberOfGuests ? '-top-2 text-[10px] text-slate-400' : 'top-2 text-xs text-slate-400'
+                            } peer-focus:-top-2 peer-focus:text-[10px] peer-focus:text-blue-600`}
                         >
                           Number of Guests *
                         </label>
@@ -366,11 +361,10 @@ function Booking() {
                           ].map((opt) => (
                             <label
                               key={opt.v}
-                              className={`flex items-center gap-3 p-3 rounded-lg border cursor-pointer transition-colors ${
-                                formData.roomTypePreference === opt.v
+                              className={`flex items-center gap-3 p-3 rounded-lg border cursor-pointer transition-colors ${formData.roomTypePreference === opt.v
                                   ? 'border-blue-600 bg-blue-50/20'
                                   : 'border-slate-200 hover:bg-slate-50'
-                              }`}
+                                }`}
                             >
                               <input
                                 type="radio"
@@ -398,11 +392,10 @@ function Booking() {
                           ].map((opt) => (
                             <label
                               key={opt.v}
-                              className={`flex items-center gap-3 p-3 rounded-lg border cursor-pointer transition-colors ${
-                                formData.bedSetupPreference === opt.v
+                              className={`flex items-center gap-3 p-3 rounded-lg border cursor-pointer transition-colors ${formData.bedSetupPreference === opt.v
                                   ? 'border-blue-600 bg-blue-50/20'
                                   : 'border-slate-200 hover:bg-slate-50'
-                              }`}
+                                }`}
                             >
                               <input
                                 type="radio"
@@ -453,10 +446,8 @@ function Booking() {
                         <div key={b.title} className="flex items-center justify-between py-3.5 first:pt-0 last:pb-0">
                           <div className="flex items-center gap-3">
                             <b.Icon className="w-5 h-5 text-blue-600 shrink-0" />
-                            <div>
-                              <p className="text-sm font-bold text-slate-850">{b.title}</p>
-                              <p className="text-xs text-slate-400">{b.desc}</p>
-                            </div>
+                            <p className="text-sm font-bold text-slate-850">{b.title}</p>
+                            <p className="text-xs text-slate-400">{b.desc}</p>
                           </div>
                           <span className="text-[10px] font-bold uppercase tracking-wide text-green-700 bg-green-50 border border-green-150 px-2.5 py-1 rounded-md">Free</span>
                         </div>
@@ -464,18 +455,6 @@ function Booking() {
                     </div>
                   </div>
 
-                  <div className="flex justify-end pt-2">
-                    <button
-                      type="button"
-                      onClick={handleNextStep}
-                      className="bg-blue-600 hover:bg-blue-750 text-white font-bold py-3 px-6 rounded-lg transition-colors flex items-center justify-center gap-2 text-sm cursor-pointer shadow-lg shadow-blue-500/15 animate-in fade-in zoom-in duration-200"
-                    >
-                      <span>Continue to payment</span>
-                      <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
-                      </svg>
-                    </button>
-                  </div>
                 </>
               )}
 
@@ -490,11 +469,10 @@ function Booking() {
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-5">
                       <label
                         onClick={() => handleSelectPayment('pay-now')}
-                        className={`flex flex-col p-3 rounded-lg border cursor-pointer transition-all ${
-                          formData.paymentMethod === 'pay-now'
+                        className={`flex flex-col p-3 rounded-lg border cursor-pointer transition-all ${formData.paymentMethod === 'pay-now'
                             ? 'border-blue-600 bg-blue-50/20'
                             : 'border-slate-200 hover:bg-slate-50'
-                        }`}
+                          }`}
                       >
                         <div className="flex items-center justify-between mb-1.5">
                           <span className="text-xs font-bold text-slate-900 flex items-center gap-1.5">
@@ -509,16 +487,15 @@ function Booking() {
                             className="w-3.5 h-3.5 accent-blue-600"
                           />
                         </div>
-                        <p className="text-[10px] text-slate-400 leading-relaxed">Card, UPI, or netbanking. Guarantees immediate check-in.</p>
+                        <p className="text-[10px] text-slate-400 leading-relaxed">Secure online payment. Funds are routed directly to the hotel owner.</p>
                       </label>
 
                       <label
                         onClick={() => handleSelectPayment('pay-hotel')}
-                        className={`flex flex-col p-3 rounded-lg border cursor-pointer transition-all ${
-                          formData.paymentMethod === 'pay-hotel'
+                        className={`flex flex-col p-3 rounded-lg border cursor-pointer transition-all ${formData.paymentMethod === 'pay-hotel'
                             ? 'border-blue-600 bg-blue-50/20'
                             : 'border-slate-200 hover:bg-slate-50'
-                        }`}
+                          }`}
                       >
                         <div className="flex items-center justify-between mb-1.5">
                           <span className="text-xs font-bold text-slate-900 flex items-center gap-1.5">
@@ -628,12 +605,10 @@ function Booking() {
                     <div className="mt-8 border-t border-slate-100 pt-6">
                       <button
                         type="submit"
-                        className="w-full bg-blue-600 hover:bg-blue-750 text-white font-bold py-3.5 px-6 rounded-lg transition-colors text-center flex items-center justify-center gap-2 text-sm sm:text-base cursor-pointer shadow-lg shadow-blue-500/15"
+                        className="w-full flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-bold py-3.5 px-6 rounded-xl transition-all shadow-sm group"
                       >
-                        <span>Confirm & book stay</span>
-                        <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
-                        </svg>
+                        <span>Confirm Booking</span>
+                        <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                       </button>
 
                       <button
@@ -749,6 +724,18 @@ function Booking() {
                   </div>
                 </div>
 
+                {currentStep === 1 && (
+                  <button
+                    type="button"
+                    onClick={handleNextStep}
+                    className="w-full bg-blue-600 hover:bg-blue-750 text-white font-bold py-3.5 px-6 rounded-lg transition-colors text-center flex items-center justify-center gap-2 text-sm sm:text-base cursor-pointer shadow-lg shadow-blue-500/15 animate-in fade-in zoom-in duration-200 mt-2"
+                  >
+                    <span>Continue to payment</span>
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2.5" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+                    </svg>
+                  </button>
+                )}
               </div>
             </div>
 

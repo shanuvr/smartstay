@@ -19,7 +19,8 @@ import {
   Building2,
   Percent,
   ArrowUpRight,
-  ShieldCheck
+  ShieldCheck,
+  X
 } from 'lucide-react';
 
 const formatINR = (n) => `₹${n.toLocaleString('en-IN')}`;
@@ -40,15 +41,29 @@ const initialTransactions = [
   { id: 'TXN-93798', date: '2026-07-28', guestName: 'Sanjay Dutt', bookingId: 'SS-98201', total: 9800, commission: 1470, netPayout: 8330, method: 'UPI (PhonePe)', status: 'Settled' }
 ];
 
-const payoutStatements = [
-  { id: 'STMT-2026-W31', period: '28 Jul - 03 Aug 2026', grossSales: 165000, commission: 24750, netPayout: 140250, date: '2026-08-04', status: 'Transferred' },
-  { id: 'STMT-2026-W30', period: '21 Jul - 27 Jul 2026', grossSales: 198000, commission: 29700, netPayout: 168300, date: '2026-07-28', status: 'Transferred' }
+const invoiceStatements = [
+  { id: 'INV-2026-08', period: 'August 2026', grossSales: 165000, commission: 24750, amountBilled: 24750, date: '2026-09-01', status: 'Unpaid' },
+  { id: 'INV-2026-07', period: 'July 2026', grossSales: 198000, commission: 29700, amountBilled: 29700, date: '2026-08-01', status: 'Paid' },
+  { id: 'INV-2026-06', period: 'June 2026', grossSales: 145000, commission: 21750, amountBilled: 21750, date: '2026-07-01', status: 'Paid' }
 ];
 
 const Finance = () => {
   const [transactions] = useState(initialTransactions);
-  const [statements] = useState(payoutStatements);
+  const [statements, setStatements] = useState(invoiceStatements);
   const [activeSubTab, setActiveSubTab] = useState('transactions');
+  const [isPaymentModalOpen, setIsPaymentModalOpen] = useState(false);
+  const [selectedInvoice, setSelectedInvoice] = useState(null);
+  const [paymentMethod, setPaymentMethod] = useState('stripe');
+
+  const handlePayNow = (stmt) => {
+    setSelectedInvoice(stmt);
+    setIsPaymentModalOpen(true);
+  };
+
+  const confirmPayment = () => {
+    setStatements(statements.map(s => s.id === selectedInvoice.id ? { ...s, status: 'Paid' } : s));
+    setIsPaymentModalOpen(false);
+  };
 
   const grossBookingVolume = 705800; // Total Gross Sales
   const platformCommission = 105870; // 15% SmartStay cut
@@ -61,17 +76,17 @@ const Finance = () => {
       <div className="mb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
           <div className="flex items-center gap-2 mb-1">
-            <h1 className="text-2xl font-extrabold text-slate-900 tracking-tight">Finance & Payouts</h1>
+            <h1 className="text-2xl font-extrabold text-slate-900 tracking-tight">Finance & Invoices</h1>
             <span className="bg-emerald-50 text-emerald-700 border border-emerald-200 text-[10px] font-extrabold uppercase px-2.5 py-0.5 rounded-md">
               15% Commission Model
             </span>
           </div>
-          <p className="text-xs font-semibold text-slate-500">Track guest booking volume, SmartStay 15% platform fee, and net weekly bank transfers.</p>
+          <p className="text-xs font-semibold text-slate-500">Track gross booking volume, SmartStay 15% platform fee, and monthly commission invoices.</p>
         </div>
         
         <button className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-5 py-2.5 rounded-xl text-sm font-semibold transition-colors self-start shadow-sm whitespace-nowrap shrink-0">
           <Download size={16} />
-          Export Payout Statement
+          Export Commission Invoices
         </button>
       </div>
 
@@ -92,7 +107,7 @@ const Finance = () => {
         {/* Net Hotel Payout (85%) */}
         <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-4 xl:p-5 flex items-center justify-between gap-2 overflow-hidden">
           <div className="min-w-0">
-            <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest block truncate">Net Payout to Hotel (85%)</span>
+            <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest block truncate">Invoices Paid</span>
             <span className="text-xl lg:text-2xl font-extrabold text-emerald-600 mt-1.5 block truncate">{formatINR(netHotelPayout)}</span>
           </div>
           <div className="p-3 bg-emerald-50 text-emerald-600 rounded-xl shrink-0">
@@ -116,7 +131,7 @@ const Finance = () => {
           <div className="min-w-0">
             <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest block truncate">Listing Plan</span>
             <span className="text-[15px] font-extrabold text-slate-800 mt-2 block truncate">0% Upfront Listing</span>
-            <span className="text-[9px] font-bold text-emerald-700 bg-emerald-50 px-1.5 py-0.5 rounded mt-1 inline-block truncate">Weekly Payouts (Mondays)</span>
+            <span className="text-[9px] font-bold text-emerald-700 bg-emerald-50 px-1.5 py-0.5 rounded mt-1 inline-block truncate">Monthly Invoicing (End of Month)</span>
           </div>
           <div className="p-3 bg-slate-50 text-slate-600 rounded-xl shrink-0 self-start">
             <ShieldCheck size={20} />
@@ -128,8 +143,8 @@ const Finance = () => {
       <div className="bg-white rounded-2xl border border-slate-200 shadow-sm p-4 sm:p-5 mb-6 w-full overflow-hidden">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6">
           <div>
-            <h3 className="text-base font-bold text-slate-800">Monthly Payout & Revenue Breakdown</h3>
-            <p className="text-xs text-slate-400 mt-0.5">Gross guest payments vs net payouts remitted to your bank.</p>
+            <h3 className="text-base font-bold text-slate-800">Monthly Revenue & Commission Breakdown</h3>
+            <p className="text-xs text-slate-400 mt-0.5">Gross guest payments received vs commission billed.</p>
           </div>
           <div className="flex items-center gap-1 bg-slate-50 border border-slate-200 rounded-xl p-1 text-[11px] font-semibold text-slate-500 w-fit shrink-0">
             <span className="flex items-center gap-1 px-2.5 py-1 bg-white rounded-lg text-slate-800 shadow-sm whitespace-nowrap">
@@ -152,10 +167,10 @@ const Finance = () => {
               <XAxis dataKey="name" stroke="#94a3b8" fontSize={11} tickLine={false} axisLine={false} />
               <YAxis stroke="#94a3b8" fontSize={11} tickLine={false} axisLine={false} tickFormatter={(val) => `₹${val/1000}k`} />
               <Tooltip 
-                formatter={(val, name) => [formatINR(val), name === 'payout' ? 'Net Payout (85%)' : 'Gross Booking Volume']}
+                formatter={(val, name) => [formatINR(val), name === 'commission' ? 'Commission Billed' : 'Gross Booking Volume']}
                 contentStyle={{ backgroundColor: '#ffffff', borderRadius: '12px', border: '1px solid #e2e8f0', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.05)' }} 
               />
-              <Area type="monotone" dataKey="payout" stroke="#10b981" strokeWidth={2.5} fillOpacity={1} fill="url(#colorPayout)" name="Net Payout" />
+              <Area type="monotone" dataKey="commission" stroke="#10b981" strokeWidth={2.5} fillOpacity={1} fill="url(#colorPayout)" name="Commission" />
             </AreaChart>
           </ResponsiveContainer>
         </div>
@@ -170,13 +185,13 @@ const Finance = () => {
             onClick={() => setActiveSubTab('transactions')}
             className={`px-3 sm:px-4 py-3 sm:py-4 text-[11px] sm:text-xs font-bold border-b-2 transition-all uppercase tracking-wider whitespace-nowrap ${activeSubTab === 'transactions' ? 'border-blue-600 text-blue-600' : 'border-transparent text-slate-500 hover:text-slate-700'}`}
           >
-            Booking Settlements
+            Booking Commission
           </button>
           <button
             onClick={() => setActiveSubTab('statements')}
             className={`px-3 sm:px-4 py-3 sm:py-4 text-[11px] sm:text-xs font-bold border-b-2 transition-all uppercase tracking-wider whitespace-nowrap ${activeSubTab === 'statements' ? 'border-blue-600 text-blue-600' : 'border-transparent text-slate-500 hover:text-slate-700'}`}
           >
-            Weekly Payout Statements
+            Monthly Commission Invoices
           </button>
         </div>
 
@@ -191,7 +206,7 @@ const Finance = () => {
                   <th className="px-4 sm:px-6 py-4">Guest / Booking</th>
                   <th className="px-4 sm:px-6 py-4 text-right">Gross Total</th>
                   <th className="px-4 sm:px-6 py-4 text-right">SmartStay (15%)</th>
-                  <th className="px-4 sm:px-6 py-4 text-right">Net Payout (85%)</th>
+                  <th className="px-4 sm:px-6 py-4 text-right">Your Net Revenue</th>
                   <th className="px-4 sm:px-6 py-4 text-center">Status</th>
                 </tr>
               </thead>
@@ -222,12 +237,12 @@ const Finance = () => {
             <table className="w-full text-left border-collapse min-w-[800px]">
               <thead>
                 <tr className="border-b border-slate-100 text-[10px] font-bold text-slate-400 uppercase tracking-widest bg-slate-50/20">
-                  <th className="px-4 sm:px-6 py-4">Statement ID</th>
-                  <th className="px-4 sm:px-6 py-4">Payout Period</th>
+                  <th className="px-4 sm:px-6 py-4">Invoice ID</th>
+                  <th className="px-4 sm:px-6 py-4">Billing Period</th>
                   <th className="px-4 sm:px-6 py-4 text-right">Gross Sales</th>
                   <th className="px-4 sm:px-6 py-4 text-right">Commission (15%)</th>
-                  <th className="px-4 sm:px-6 py-4 text-right">Net Bank Payout</th>
-                  <th className="px-4 sm:px-6 py-4 text-center">Transfer Status</th>
+                  <th className="px-4 sm:px-6 py-4 text-right">Amount Billed</th>
+                  <th className="px-4 sm:px-6 py-4 text-center">Payment Status</th>
                   <th className="px-4 sm:px-6 py-4"></th>
                 </tr>
               </thead>
@@ -238,16 +253,30 @@ const Finance = () => {
                     <td className="px-4 sm:px-6 py-4 text-slate-600 font-bold">{stmt.period}</td>
                     <td className="px-4 sm:px-6 py-4 text-right text-slate-600">{formatINR(stmt.grossSales)}</td>
                     <td className="px-4 sm:px-6 py-4 text-right text-rose-600 font-semibold">- {formatINR(stmt.commission)}</td>
-                    <td className="px-4 sm:px-6 py-4 text-right font-bold text-emerald-600">{formatINR(stmt.netPayout)}</td>
+                    <td className="px-4 sm:px-6 py-4 text-right font-bold text-slate-800">{formatINR(stmt.amountBilled)}</td>
                     <td className="px-4 sm:px-6 py-4 text-center">
-                      <span className="inline-flex px-2.5 py-0.5 text-[10px] font-bold rounded-full bg-emerald-50 text-emerald-700 whitespace-nowrap">
+                      <span className={`inline-flex px-2.5 py-0.5 text-[10px] font-bold rounded-full whitespace-nowrap ${
+                        stmt.status === 'Paid' 
+                          ? 'bg-emerald-50 text-emerald-700' 
+                          : 'bg-amber-50 text-amber-700 border border-amber-200'
+                      }`}>
                         {stmt.status}
                       </span>
                     </td>
                     <td className="px-4 sm:px-6 py-4 text-right">
-                      <button className="text-slate-400 hover:text-slate-600 p-1.5 hover:bg-slate-100 rounded-lg transition-all" title="View Statement PDF">
-                        <FileText size={15} />
-                      </button>
+                      <div className="flex items-center justify-end gap-2">
+                        {stmt.status === 'Unpaid' && (
+                          <button 
+                            onClick={() => handlePayNow(stmt)}
+                            className="bg-blue-600 hover:bg-blue-700 text-white text-[10px] font-bold px-3 py-1.5 rounded-md transition-colors shadow-sm"
+                          >
+                            Pay Now
+                          </button>
+                        )}
+                        <button className="text-slate-400 hover:text-slate-600 p-1.5 hover:bg-slate-100 rounded-lg transition-all" title="View Statement PDF">
+                          <FileText size={15} />
+                        </button>
+                      </div>
                     </td>
                   </tr>
                 ))}
@@ -256,6 +285,84 @@ const Finance = () => {
           )}
         </div>
       </div>
+
+      {/* Payment Modal */}
+      {isPaymentModalOpen && selectedInvoice && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6 animate-in fade-in duration-200">
+          <div 
+            className="absolute inset-0 bg-slate-900/60 backdrop-blur-sm"
+            onClick={() => setIsPaymentModalOpen(false)}
+          ></div>
+          
+          <div className="relative bg-white rounded-2xl shadow-2xl w-full max-w-lg overflow-hidden flex flex-col animate-in zoom-in-95 duration-200">
+            <div className="px-6 py-5 border-b border-slate-100 flex items-center justify-between bg-slate-50 shrink-0">
+              <div>
+                <h2 className="text-xl font-black text-slate-800">Pay Commission Invoice</h2>
+                <p className="text-sm font-medium text-slate-500 mt-1">{selectedInvoice.id} • {selectedInvoice.period}</p>
+              </div>
+              <button 
+                onClick={() => setIsPaymentModalOpen(false)}
+                className="p-2 text-slate-400 hover:text-slate-600 hover:bg-slate-200 rounded-full transition-colors bg-white shadow-sm border border-slate-200"
+              >
+                <X size={20} />
+              </button>
+            </div>
+
+            <div className="p-6 bg-white">
+              <div className="bg-slate-50 border border-slate-200 rounded-xl p-5 mb-6">
+                <div className="flex justify-between items-center mb-3">
+                  <span className="text-sm font-medium text-slate-600">Total Gross Sales</span>
+                  <span className="text-sm font-bold text-slate-800">{formatINR(selectedInvoice.grossSales)}</span>
+                </div>
+                <div className="flex justify-between items-center pb-4 border-b border-slate-200">
+                  <span className="text-sm font-medium text-slate-600">SmartStay Commission (15%)</span>
+                  <span className="text-sm font-bold text-slate-800">{formatINR(selectedInvoice.commission)}</span>
+                </div>
+                <div className="flex justify-between items-center mt-4">
+                  <span className="text-base font-bold text-slate-800">Amount Due</span>
+                  <span className="text-xl font-black text-blue-600">{formatINR(selectedInvoice.amountBilled)}</span>
+                </div>
+              </div>
+
+              <div className="mb-2">
+                <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-3">Select Payment Method</p>
+                <div className="grid grid-cols-2 gap-3">
+                  <button 
+                    onClick={() => setPaymentMethod('stripe')}
+                    className={`p-3 rounded-xl border flex flex-col items-center justify-center gap-2 transition-all ${paymentMethod === 'stripe' ? 'border-blue-500 bg-blue-50/50 text-blue-700 shadow-sm' : 'border-slate-200 hover:border-slate-300 text-slate-600'}`}
+                  >
+                    <CreditCard size={24} className={paymentMethod === 'stripe' ? 'text-blue-600' : 'text-slate-400'} />
+                    <span className="text-xs font-bold">Credit/Debit Card</span>
+                  </button>
+                  <button 
+                    onClick={() => setPaymentMethod('upi')}
+                    className={`p-3 rounded-xl border flex flex-col items-center justify-center gap-2 transition-all ${paymentMethod === 'upi' ? 'border-emerald-500 bg-emerald-50/50 text-emerald-700 shadow-sm' : 'border-slate-200 hover:border-slate-300 text-slate-600'}`}
+                  >
+                    <IndianRupee size={24} className={paymentMethod === 'upi' ? 'text-emerald-600' : 'text-slate-400'} />
+                    <span className="text-xs font-bold">UPI / NetBanking</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <div className="p-4 border-t border-slate-100 bg-slate-50 shrink-0 flex justify-end gap-3">
+              <button 
+                onClick={() => setIsPaymentModalOpen(false)}
+                className="px-4 py-2 bg-white border border-slate-200 hover:bg-slate-100 text-slate-700 text-sm font-bold rounded-lg transition-colors shadow-sm"
+              >
+                Cancel
+              </button>
+              <button 
+                onClick={confirmPayment}
+                className="px-5 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-bold rounded-lg transition-colors shadow-sm flex items-center gap-2"
+              >
+                <CheckCircle2 size={16} /> Confirm Payment
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
     </div>
   );
 };

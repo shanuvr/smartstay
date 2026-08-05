@@ -1,21 +1,21 @@
 import React from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { 
-  Check, 
-  Calendar, 
-  Users, 
-  MapPin, 
-  Printer, 
-  Download, 
-  Home, 
-  Clock, 
+import {
+  Check,
+  Calendar,
+  Users,
+  MapPin,
+  Printer,
+  Download,
+  Home,
+  Clock,
   CreditCard,
   Building,
   Coffee,
   ShieldCheck,
   Wifi
 } from 'lucide-react';
-import UserLayout from '../../laybouts/Userlayout';
+import UserLayout from '../../layouts/Userlayout';
 
 function BookingConfirmation() {
   const navigate = useNavigate();
@@ -38,7 +38,7 @@ function BookingConfirmation() {
     basePrice: 17000,
     taxes: 2040,
     totalPrice: 19040,
-    paymentMethod: 'Credit Card (Paid)',
+    paymentMethod: 'Credit Card (Paid directly to hotel)',
     preferences: {
       roomType: 'Non-smoking Room',
       bedSetup: 'Large Bed',
@@ -58,7 +58,7 @@ function BookingConfirmation() {
           {/* Confirmation header — spacious card */}
           <div className="bg-white rounded-xl border border-slate-200 p-6 md:p-8 mb-8 shadow-sm print:border-none print:p-0 print:mb-6">
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
-              
+
               {/* Left Column: Confirmation Status & Title */}
               <div className="space-y-3 text-left">
                 <div className="flex flex-wrap items-center gap-2">
@@ -72,7 +72,7 @@ function BookingConfirmation() {
                 <h1 className="text-2xl md:text-3xl font-extrabold text-slate-900 tracking-tight leading-tight">
                   You're all set for Hyderabad
                 </h1>
-                
+
                 <p className="text-slate-555 text-xs md:text-sm max-w-xl leading-relaxed">
                   Your stay at <span className="font-semibold text-slate-800">{bookingDetails.hotelName}</span> is booked. A confirmation email with details and your digital key link is on its way.
                 </p>
@@ -83,7 +83,7 @@ function BookingConfirmation() {
                 {/* Decorative punched holes to look like a ticket */}
                 <div className="absolute top-1/2 -left-2.5 w-5 h-5 rounded-full bg-white border-r border-slate-200 -translate-y-1/2 print:hidden" />
                 <div className="absolute top-1/2 -right-2.5 w-5 h-5 rounded-full bg-white border-l border-slate-200 -translate-y-1/2 print:hidden" />
-                
+
                 <span className="text-[10px] font-bold text-slate-400 uppercase tracking-[0.15em] block mb-1">
                   Booking Reference
                 </span>
@@ -121,7 +121,7 @@ function BookingConfirmation() {
                     <p className="text-sm font-bold text-slate-800">{bookingDetails.checkInDate}</p>
                     <p className="text-xs text-slate-500 mt-1">{bookingDetails.checkInTime}</p>
                   </div>
-                  
+
                   {/* Check-out */}
                   <div className="md:px-6 border-slate-100 md:border-l">
                     <p className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-1.5">Check-out</p>

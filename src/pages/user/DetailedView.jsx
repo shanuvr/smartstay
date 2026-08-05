@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import UserLayout from '../../laybouts/Userlayout';
+import UserLayout from '../../layouts/Userlayout';
 
 const galleryImages = [
   {
@@ -248,11 +248,11 @@ const renderAmenityIcon = (icon) => {
 };
 
 const getDaysInMonth = (year, month) => {
-    return new Date(year, month + 1, 0).getDate();
+  return new Date(year, month + 1, 0).getDate();
 };
 
 const getFirstDayOfMonth = (year, month) => {
-    return new Date(year, month, 1).getDay();
+  return new Date(year, month, 1).getDay();
 };
 
 export default function DetailedView() {
@@ -276,7 +276,7 @@ export default function DetailedView() {
     rooms: 1,
     nights: 2
   });
-  
+
   const [selectedRooms, setSelectedRooms] = useState([]);
 
   const handleRoomSelect = (room) => {
@@ -422,7 +422,7 @@ export default function DetailedView() {
         {/* Editable Booking Search Bar */}
         <div className="mb-6 mx-auto max-w-3xl bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 rounded-full p-1.5 sm:p-2 shadow-sm flex flex-row items-center gap-1.5 sm:gap-4 relative z-20">
           <div className="flex-1 w-full grid grid-cols-3 divide-x divide-gray-200 dark:divide-slate-700 min-w-0">
-            <div 
+            <div
               className="px-2 sm:px-4 py-1.5 sm:py-1 cursor-pointer hover:bg-gray-50 dark:hover:bg-slate-800 rounded-l-full transition-colors min-w-0"
               onClick={() => {
                 setShowCalendar(!showCalendar);
@@ -432,7 +432,7 @@ export default function DetailedView() {
               <p className="text-[8px] sm:text-[10px] font-bold text-gray-500 uppercase tracking-wider mb-0.5">Check-in</p>
               <p className="text-[10px] sm:text-sm font-semibold text-gray-900 dark:text-white truncate">{searchState.checkIn ? formatDateDisplay(searchState.checkIn) : 'Add date'}</p>
             </div>
-            <div 
+            <div
               className="px-2 sm:px-4 py-1.5 sm:py-1 cursor-pointer hover:bg-gray-50 dark:hover:bg-slate-800 transition-colors min-w-0"
               onClick={() => {
                 setShowCalendar(!showCalendar);
@@ -442,7 +442,7 @@ export default function DetailedView() {
               <p className="text-[8px] sm:text-[10px] font-bold text-gray-500 uppercase tracking-wider mb-0.5">Check-out</p>
               <p className="text-[10px] sm:text-sm font-semibold text-gray-900 dark:text-white truncate">{searchState.checkOut ? formatDateDisplay(searchState.checkOut) : 'Add date'}</p>
             </div>
-            <div 
+            <div
               className="px-2 sm:px-4 py-1.5 sm:py-1 cursor-pointer hover:bg-gray-50 dark:hover:bg-slate-800 rounded-r-full transition-colors min-w-0"
               onClick={() => {
                 setShowOccupancy(!showOccupancy);
@@ -504,12 +504,12 @@ export default function DetailedView() {
 
         {/* Backdrop for Popovers */}
         {(showCalendar || showOccupancy) && (
-          <div 
-            className="fixed inset-0 z-40 bg-transparent" 
+          <div
+            className="fixed inset-0 z-40 bg-transparent"
             onClick={() => {
               setShowCalendar(false);
               setShowOccupancy(false);
-            }} 
+            }}
           />
         )}
 
@@ -672,7 +672,7 @@ export default function DetailedView() {
         </div>
 
 
-      
+
         <div className="mb-4 sm:mb-6">
           <div className="flex md:grid md:grid-cols-12 gap-2 sm:gap-3 overflow-x-auto md:overflow-visible snap-x snap-mandatory scrollbar-none pb-2 md:pb-0">
 
@@ -723,7 +723,7 @@ export default function DetailedView() {
           </div>
         </div>
 
-    
+
         <div className="w-full px-2 sm:px-0 mb-6 sm:mb-8 sticky top-20 z-30 bg-white dark:bg-slate-950 py-1">
           <nav className="flex items-center justify-between sm:justify-start gap-1.5 sm:gap-8 whitespace-nowrap border border-gray-200 dark:border-slate-800 rounded-full px-3 sm:px-10 shadow-sm bg-white dark:bg-slate-900 w-full sm:w-max">
             <a className="py-2 sm:py-3.5 font-bold text-[10px] sm:text-sm text-[#2563eb] border-b-2 border-[#2563eb] transition-all" href="#overview">Overview</a>
@@ -750,7 +750,7 @@ export default function DetailedView() {
         </div>
 
         <div className="flex flex-col lg:flex-row gap-6 lg:gap-8">
-          
+
           {/* Main Content (Left) */}
           <div className="flex-1 min-w-0">
             {/* Overview Section */}
@@ -773,65 +773,123 @@ export default function DetailedView() {
                 {availableRooms.map((room) => {
                   const isSelected = selectedRooms.find(r => r.id === room.id);
                   return (
-                  <div key={room.id} className={`bg-white dark:bg-slate-900 rounded-xl p-3 sm:p-4 shadow-sm flex flex-col sm:flex-row gap-4 sm:gap-5 transition-all ${
-                    isSelected ? 'border-2 border-[#2563eb] ring-4 ring-blue-50 dark:ring-blue-900/20' : 'border border-gray-200 dark:border-slate-800 hover:border-blue-300'
-                  }`}>
-                    
-                    {/* Room Image */}
-                    <div className="w-full sm:w-[220px] md:w-[260px] h-[160px] sm:h-[180px] rounded-lg overflow-hidden shrink-0 relative group">
-                      <img src={room.image} alt={room.name} className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
-                    </div>
-                    
-                    {/* Room Details & Pricing */}
-                    <div className="flex-1 flex flex-col md:flex-row gap-4 justify-between min-w-0">
-                      
-                      {/* Info Area */}
-                      <div className="flex-1 flex flex-col min-w-0">
-                        <h3 className="text-base sm:text-lg font-bold text-gray-900 dark:text-white mb-2 truncate">{room.name}</h3>
-                        
-                        <div className="flex flex-wrap items-center gap-3 sm:gap-4 mb-3 text-[11px] sm:text-xs text-gray-500 dark:text-gray-400 font-medium">
-                          <div className="flex items-center gap-1.5"><svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4" /></svg>{room.size}</div>
-                          <div className="flex items-center gap-1.5"><svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" /></svg>{room.bed}</div>
-                          <div className="flex items-center gap-1.5"><svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" /></svg>2 Guests</div>
-                          <div className="flex items-center gap-1.5"><svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8.111 16.404a5.5 5.5 0 017.778 0M12 20h.01m-7.08-7.071c3.904-3.905 10.236-3.905 14.141 0M1.394 9.393c5.857-5.857 15.355-5.857 21.213 0" /></svg>Free Wi-Fi</div>
-                        </div>
-                        
-                        <p className="text-[11px] sm:text-xs text-gray-500 dark:text-gray-400 mb-4 line-clamp-2 leading-relaxed">
-                          Comfortable room with garden view and modern amenities. Enjoy a relaxing stay with our premium facilities.
-                        </p>
-                        
-                        <button className="text-[#2563eb] text-[11px] sm:text-xs font-semibold flex items-center gap-1 mt-auto hover:underline w-max">
-                          Room details
-                          <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" /></svg>
-                        </button>
-                      </div>
-                      
-                      {/* Pricing Area */}
-                      <div className="flex flex-col items-start md:items-end md:w-[170px] shrink-0 border-t md:border-t-0 md:border-l border-gray-100 dark:border-slate-800 pt-3 md:pt-0 md:pl-4">
-                        <div className="mb-3 md:text-right">
-                          <p className="text-lg sm:text-xl font-extrabold text-gray-900 dark:text-white leading-none mb-1">{formatPrice(room.price)} <span className="text-[10px] font-normal text-gray-500 dark:text-gray-400">/ night</span></p>
-                          <p className="text-[10px] text-gray-500 dark:text-gray-400">+ {formatPrice(Math.round(room.price * 0.12))} taxes & fees</p>
-                        </div>
-                        <div className="flex flex-row flex-wrap md:flex-col md:items-end gap-1.5 mb-3 w-full">
-                          <span className="bg-green-50 text-green-700 border border-green-100 dark:bg-green-500/10 dark:border-green-500/20 text-[9px] sm:text-[10px] font-bold px-2 py-0.5 rounded w-max">Free cancellation</span>
-                          <span className="bg-green-50 text-green-700 border border-green-100 dark:bg-green-500/10 dark:border-green-500/20 text-[9px] sm:text-[10px] font-bold px-2 py-0.5 rounded w-max">Pay at hotel</span>
-                        </div>
-                        <button 
-                          onClick={() => handleRoomSelect(room)}
-                          className={`w-full mt-auto px-4 py-2 sm:py-2.5 rounded-lg font-bold text-xs sm:text-sm transition-all shadow-sm ${
-                            isSelected 
-                              ? 'bg-green-500 hover:bg-green-600 text-white shadow-green-500/30' 
-                              : 'bg-[#2563eb] hover:bg-blue-700 text-white shadow-blue-500/30'
-                          }`}
-                        >
-                          {isSelected ? '✓ Selected' : 'Select Room'}
-                        </button>
+                    <div key={room.id} className={`bg-white dark:bg-slate-900 rounded-xl p-3 sm:p-4 shadow-sm flex flex-col sm:flex-row gap-4 sm:gap-5 transition-all ${isSelected ? 'border-2 border-[#2563eb] ring-4 ring-blue-50 dark:ring-blue-900/20' : 'border border-gray-200 dark:border-slate-800 hover:border-blue-300'
+                      }`}>
+
+                      {/* Room Image */}
+                      <div className="w-full sm:w-[220px] md:w-[260px] h-[160px] sm:h-[180px] rounded-lg overflow-hidden shrink-0 relative group">
+                        <img src={room.image} alt={room.name} className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
                       </div>
 
+                      {/* Room Details & Pricing */}
+                      <div className="flex-1 flex flex-col md:flex-row gap-4 justify-between min-w-0">
+
+                        {/* Info Area */}
+                        <div className="flex-1 flex flex-col min-w-0">
+                          <h3 className="text-base sm:text-lg font-bold text-gray-900 dark:text-white mb-2 truncate">{room.name}</h3>
+
+                          <div className="flex flex-wrap items-center gap-3 sm:gap-4 mb-3 text-[11px] sm:text-xs text-gray-500 dark:text-gray-400 font-medium">
+                            <div className="flex items-center gap-1.5"><svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4" /></svg>{room.size}</div>
+                            <div className="flex items-center gap-1.5"><svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" /></svg>{room.bed}</div>
+                            <div className="flex items-center gap-1.5"><svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" /></svg>2 Guests</div>
+                            <div className="flex items-center gap-1.5"><svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8.111 16.404a5.5 5.5 0 017.778 0M12 20h.01m-7.08-7.071c3.904-3.905 10.236-3.905 14.141 0M1.394 9.393c5.857-5.857 15.355-5.857 21.213 0" /></svg>Free Wi-Fi</div>
+                          </div>
+
+                          <p className="text-[11px] sm:text-xs text-gray-500 dark:text-gray-400 mb-4 line-clamp-2 leading-relaxed">
+                            Comfortable room with garden view and modern amenities. Enjoy a relaxing stay with our premium facilities.
+                          </p>
+
+                          <button className="text-[#2563eb] text-[11px] sm:text-xs font-semibold flex items-center gap-1 mt-auto hover:underline w-max">
+                            Room details
+                            <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" /></svg>
+                          </button>
+                        </div>
+
+                        {/* Pricing Area */}
+                        <div className="flex flex-col items-start md:items-end md:w-[170px] shrink-0 border-t md:border-t-0 md:border-l border-gray-100 dark:border-slate-800 pt-3 md:pt-0 md:pl-4">
+                          <div className="mb-3 md:text-right">
+                            <p className="text-lg sm:text-xl font-extrabold text-gray-900 dark:text-white leading-none mb-1">{formatPrice(room.price)} <span className="text-[10px] font-normal text-gray-500 dark:text-gray-400">/ night</span></p>
+                            <p className="text-[10px] text-gray-500 dark:text-gray-400">+ {formatPrice(Math.round(room.price * 0.12))} taxes & fees</p>
+                          </div>
+                          <div className="flex flex-row flex-wrap md:flex-col md:items-end gap-1.5 mb-3 w-full">
+                            <span className="bg-green-50 text-green-700 border border-green-100 dark:bg-green-500/10 dark:border-green-500/20 text-[9px] sm:text-[10px] font-bold px-2 py-0.5 rounded w-max">Free cancellation</span>
+                            <span className="bg-green-50 text-green-700 border border-green-100 dark:bg-green-500/10 dark:border-green-500/20 text-[9px] sm:text-[10px] font-bold px-2 py-0.5 rounded w-max">Pay at hotel</span>
+                          </div>
+                          <button
+                            onClick={() => handleRoomSelect(room)}
+                            className={`w-full mt-auto px-4 py-2 sm:py-2.5 rounded-lg font-bold text-xs sm:text-sm transition-all shadow-sm ${isSelected
+                                ? 'bg-green-500 hover:bg-green-600 text-white shadow-green-500/30'
+                                : 'bg-[#2563eb] hover:bg-blue-700 text-white shadow-blue-500/30'
+                              }`}
+                          >
+                            {isSelected ? '✓ Selected' : 'Select Room'}
+                          </button>
+                        </div>
+
+                      </div>
                     </div>
-                  </div>
                   );
                 })}
+              </div>
+            </div>
+
+            {/* Guest Reviews Section */}
+            <div id="reviews" className="scroll-mt-32 mb-10 sm:mb-14">
+              <h2 className="text-lg sm:text-xl font-extrabold text-gray-900 dark:text-white mb-4 sm:mb-6">Guest Reviews</h2>
+              <div className="bg-white dark:bg-slate-900 rounded-2xl shadow-sm border border-gray-200 dark:border-slate-800 p-5 sm:p-6 mb-6">
+                <div className="flex items-center gap-4 border-b border-gray-100 dark:border-slate-800 pb-5 mb-5">
+                  <div className="flex items-center justify-center bg-[#2563eb] text-white w-14 h-14 rounded-xl font-black text-2xl shadow-md shadow-blue-500/30">
+                    4.8
+                  </div>
+                  <div>
+                    <h3 className="font-bold text-gray-900 dark:text-white text-lg">Exceptional</h3>
+                    <p className="text-sm font-medium text-gray-500 dark:text-gray-400">Based on 124 verified reviews</p>
+                  </div>
+                </div>
+
+                <div className="space-y-5">
+                  <div className="border-b border-gray-100 dark:border-slate-800 pb-5">
+                    <div className="flex justify-between items-start mb-2">
+                      <div className="flex items-center gap-3">
+                        <div className="w-10 h-10 rounded-full bg-amber-50 text-amber-600 flex items-center justify-center font-bold text-sm">AS</div>
+                        <div>
+                          <h4 className="font-bold text-gray-900 dark:text-white text-sm">Aarav Sharma</h4>
+                          <p className="text-xs font-semibold text-gray-400">Stayed in Aug 2026</p>
+                        </div>
+                      </div>
+                      <div className="flex gap-1">
+                        {[1, 2, 3, 4, 5].map((star) => (
+                          <svg key={star} className="w-4 h-4 fill-amber-400 text-amber-400" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                        ))}
+                      </div>
+                    </div>
+                    <p className="font-bold text-gray-800 dark:text-gray-200 text-sm mb-1 mt-2">Excellent stay and great service!</p>
+                    <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">The room was incredibly clean and the staff were very accommodating. I loved the breakfast options. Will definitely come back.</p>
+                  </div>
+                  
+                  <div>
+                    <div className="flex justify-between items-start mb-2">
+                      <div className="flex items-center gap-3">
+                        <div className="w-10 h-10 rounded-full bg-emerald-50 text-emerald-600 flex items-center justify-center font-bold text-sm">NJ</div>
+                        <div>
+                          <h4 className="font-bold text-gray-900 dark:text-white text-sm">Neha Joshi</h4>
+                          <p className="text-xs font-semibold text-gray-400">Stayed in Jul 2026</p>
+                        </div>
+                      </div>
+                      <div className="flex gap-1">
+                        {[1, 2, 3, 4, 5].map((star) => (
+                          <svg key={star} className={`w-4 h-4 ${star <= 4 ? 'fill-amber-400 text-amber-400' : 'fill-gray-200 text-gray-200'}`} viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                        ))}
+                      </div>
+                    </div>
+                    <p className="font-bold text-gray-800 dark:text-gray-200 text-sm mb-1 mt-2">Very comfortable bed, decent breakfast</p>
+                    <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">Location is perfect for early flights. The soundproofing is amazing, didn't hear a single plane taking off.</p>
+                  </div>
+                </div>
+                
+                <button className="w-full mt-6 py-2.5 border border-gray-200 dark:border-slate-700 hover:bg-gray-50 dark:hover:bg-slate-800 text-gray-700 dark:text-gray-300 text-sm font-bold rounded-lg transition-colors">
+                  Show all 124 reviews
+                </button>
               </div>
             </div>
 
@@ -841,7 +899,7 @@ export default function DetailedView() {
               <div className="bg-white dark:bg-slate-900 rounded-2xl shadow-sm border border-gray-200 dark:border-slate-800 divide-y divide-gray-200 dark:divide-slate-800">
                 {faqs.map((faq, index) => (
                   <div key={index} className="group">
-                    <button 
+                    <button
                       onClick={() => setOpenFaqIndex(openFaqIndex === index ? null : index)}
                       className="w-full text-left px-5 py-4 sm:px-6 sm:py-5 flex items-center justify-between focus:outline-none focus-visible:bg-gray-50 dark:focus-visible:bg-slate-800 transition-colors"
                     >
@@ -852,10 +910,9 @@ export default function DetailedView() {
                         <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" /></svg>
                       </span>
                     </button>
-                    <div 
-                      className={`overflow-hidden transition-all duration-300 ease-in-out ${
-                        openFaqIndex === index ? 'max-h-40 opacity-100' : 'max-h-0 opacity-0'
-                      }`}
+                    <div
+                      className={`overflow-hidden transition-all duration-300 ease-in-out ${openFaqIndex === index ? 'max-h-40 opacity-100' : 'max-h-0 opacity-0'
+                        }`}
                     >
                       <p className="px-5 pb-4 sm:px-6 sm:pb-5 text-sm text-gray-600 dark:text-gray-300 leading-relaxed pt-1">
                         {faq.answer}
@@ -866,11 +923,11 @@ export default function DetailedView() {
               </div>
             </div>
           </div>
-          
+
           {/* Sidebar (Right) */}
           <div className="w-full lg:w-[320px] xl:w-[350px] shrink-0">
             <div className="sticky top-28 sm:top-32 space-y-4 sm:space-y-6 pb-10">
-              
+
               {/* Price Summary Card */}
               <div className="bg-white dark:bg-slate-900 rounded-2xl p-5 sm:p-6 shadow-sm border border-gray-200 dark:border-slate-800 transition-all">
                 {selectedRooms.length === 0 ? (
@@ -879,7 +936,7 @@ export default function DetailedView() {
                     <p className="font-bold text-gray-900 dark:text-white mb-2 text-sm sm:text-base">Your Stay</p>
                     <p className="text-sm text-gray-600 dark:text-gray-300 mb-1">{searchState.checkIn} — {searchState.checkOut}</p>
                     <p className="text-sm text-gray-600 dark:text-gray-300 mb-6">{searchState.nights} nights • {searchState.adults} Adults · {searchState.rooms} Room</p>
-                    
+
                     <div className="bg-gray-50 dark:bg-slate-800/50 rounded-xl p-4 border border-gray-100 dark:border-slate-700">
                       <p className="text-sm text-gray-500 dark:text-gray-400 font-medium">No room selected yet</p>
                       <p className="text-xs text-gray-400 dark:text-gray-500 mt-1">Choose an available room to see your total.</p>
@@ -890,7 +947,7 @@ export default function DetailedView() {
                   <div>
                     <h3 className="text-base sm:text-lg font-bold text-gray-900 dark:text-white mb-1">Your Stay</h3>
                     <p className="text-sm text-gray-600 dark:text-gray-300 mb-5">{searchState.checkIn} → {searchState.checkOut} <span className="mx-2">•</span> {searchState.adults} Adults · {searchState.rooms} Room</p>
-                    
+
                     <div className="space-y-4 text-xs sm:text-sm text-gray-600 dark:text-gray-300">
                       {selectedRooms.map((room, idx) => (
                         <div key={`${room.id}-${idx}`}>
@@ -901,21 +958,21 @@ export default function DetailedView() {
                           </div>
                         </div>
                       ))}
-                      
+
                       <div className="flex justify-between items-center pt-4 mt-4 border-t border-gray-100 dark:border-slate-800">
                         <span>Taxes & fees</span>
                         <span className="font-medium text-gray-900 dark:text-white">{formatPrice(calculateTaxes(calculateTotalRoomsPrice()))}</span>
                       </div>
                     </div>
-                    
+
                     <div className="my-4 sm:my-5 border-t border-gray-100 dark:border-slate-800 pt-4 sm:pt-5 flex justify-between items-center">
                       <span className="font-bold text-gray-900 dark:text-white text-sm sm:text-base">Total</span>
                       <span className="text-xl sm:text-2xl font-extrabold text-gray-900 dark:text-white leading-none">
                         {formatPrice(calculateTotalRoomsPrice() + calculateTaxes(calculateTotalRoomsPrice()))}
                       </span>
                     </div>
-                    
-                    <button 
+
+                    <button
                       onClick={() => navigate('/book/1')}
                       className="w-full bg-[#2563eb] hover:bg-blue-700 text-white py-3 sm:py-3.5 rounded-xl font-bold text-sm sm:text-base transition-all shadow-sm shadow-blue-500/30 mb-4 sm:mb-5"
                     >
@@ -950,7 +1007,7 @@ export default function DetailedView() {
 
             </div>
           </div>
-          
+
         </div>
 
       </section>
@@ -962,14 +1019,14 @@ export default function DetailedView() {
             {/* Header */}
             <div className="flex items-center justify-between p-3 sm:p-5 sm:px-6 border-b border-gray-100 dark:border-slate-800 shrink-0">
               <h2 className="text-lg sm:text-xl font-extrabold text-gray-900 dark:text-white">All Facilities</h2>
-              <button 
+              <button
                 onClick={() => setShowFacilitiesModal(false)}
                 className="p-1.5 sm:p-2 rounded-full hover:bg-gray-100 dark:hover:bg-slate-800 text-gray-500 transition-colors"
               >
                 <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M6 18L18 6M6 6l12 12" /></svg>
               </button>
             </div>
-            
+
             {/* Body */}
             <div className="flex-1 overflow-y-auto p-3 sm:p-5 sm:px-6 custom-scrollbar">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-4 sm:gap-y-6 pb-4 sm:pb-6">
@@ -1008,7 +1065,7 @@ export default function DetailedView() {
       {showLocationModal && (
         <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6 bg-slate-900/60 backdrop-blur-sm transition-opacity">
           <div className="bg-white dark:bg-slate-900 rounded-3xl shadow-2xl w-full max-w-[600px] flex flex-col overflow-hidden border border-gray-200 dark:border-slate-800 relative animate-in fade-in zoom-in-95 duration-200">
-            
+
             <div className="p-5 sm:p-7">
               {/* Header */}
               <div className="flex items-start justify-between mb-5">
@@ -1016,24 +1073,24 @@ export default function DetailedView() {
                   <h2 className="text-xl sm:text-2xl font-extrabold text-gray-900 dark:text-white leading-tight">Property Location</h2>
                   <p className="text-[13px] sm:text-sm text-gray-500 mt-1">Kondapur, HITEC City, Hyderabad</p>
                 </div>
-                <button 
+                <button
                   onClick={() => setShowLocationModal(false)}
                   className="p-2 sm:p-2.5 bg-gray-50 dark:bg-slate-800 rounded-full hover:bg-gray-100 dark:hover:bg-slate-700 text-gray-600 dark:text-gray-400 transition-colors shrink-0 border border-gray-200 dark:border-slate-700 shadow-sm"
                 >
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M6 18L18 6M6 6l12 12" /></svg>
                 </button>
               </div>
-              
+
               {/* Map View */}
               <div className="w-full h-[180px] sm:h-[220px] rounded-2xl overflow-hidden border border-gray-200 dark:border-slate-800 relative bg-gray-100 dark:bg-slate-800 shadow-inner mb-6">
-                <iframe 
-                  width="100%" 
-                  height="100%" 
-                  frameBorder="0" 
-                  scrolling="no" 
-                  marginHeight="0" 
-                  marginWidth="0" 
-                  src="https://www.openstreetmap.org/export/embed.html?bbox=78.3616%2C17.4506%2C78.3916%2C17.4706&amp;layer=mapnik&amp;marker=17.4616%2C78.3746" 
+                <iframe
+                  width="100%"
+                  height="100%"
+                  frameBorder="0"
+                  scrolling="no"
+                  marginHeight="0"
+                  marginWidth="0"
+                  src="https://www.openstreetmap.org/export/embed.html?bbox=78.3616%2C17.4506%2C78.3916%2C17.4706&amp;layer=mapnik&amp;marker=17.4616%2C78.3746"
                   className="absolute inset-0"
                   title="Location Map"
                   style={{ filter: 'var(--tw-backdrop-blur) var(--tw-brightness) var(--tw-contrast) var(--tw-grayscale) var(--tw-hue-rotate) var(--tw-invert) var(--tw-saturate) var(--tw-sepia)' }}
@@ -1074,7 +1131,7 @@ export default function DetailedView() {
                 <button className="px-5 sm:px-6 py-2.5 sm:py-3 rounded-xl border border-gray-300 dark:border-slate-700 text-sm font-bold text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-slate-800 transition-colors whitespace-nowrap">
                   Get Directions
                 </button>
-                <button 
+                <button
                   onClick={() => setShowLocationModal(false)}
                   className="px-5 sm:px-6 py-2.5 sm:py-3 rounded-xl bg-[#2563eb] hover:bg-blue-700 text-white text-sm font-bold transition-colors whitespace-nowrap shadow-md shadow-blue-500/20"
                 >
@@ -1091,7 +1148,7 @@ export default function DetailedView() {
       {showPoliciesModal && (
         <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6 bg-slate-900/60 backdrop-blur-sm transition-opacity">
           <div className="bg-white dark:bg-slate-900 rounded-3xl shadow-2xl w-full max-w-[600px] flex flex-col max-h-[90vh] overflow-hidden border border-gray-200 dark:border-slate-800 relative animate-in fade-in zoom-in-95 duration-200">
-            
+
             <div className="p-5 sm:p-7 flex-1 overflow-y-auto custom-scrollbar">
               {/* Header */}
               <div className="flex items-start justify-between mb-6 sticky top-0 bg-white dark:bg-slate-900 z-10 pt-1 pb-4 border-b border-gray-100 dark:border-slate-800">
@@ -1099,7 +1156,7 @@ export default function DetailedView() {
                   <h2 className="text-xl sm:text-2xl font-extrabold text-gray-900 dark:text-white leading-tight">Property Policies</h2>
                   <p className="text-[13px] sm:text-sm text-gray-500 mt-1">Please review the rules before booking</p>
                 </div>
-                <button 
+                <button
                   onClick={() => setShowPoliciesModal(false)}
                   className="p-2 sm:p-2.5 bg-gray-50 dark:bg-slate-800 rounded-full hover:bg-gray-100 dark:hover:bg-slate-700 text-gray-600 dark:text-gray-400 transition-colors shrink-0 border border-gray-200 dark:border-slate-700 shadow-sm"
                 >
@@ -1109,7 +1166,7 @@ export default function DetailedView() {
 
               {/* Policies List */}
               <div className="space-y-6">
-                
+
                 {/* Check-in / Check-out */}
                 <div className="flex items-start gap-4 border-b border-gray-100 dark:border-slate-800 pb-5">
                   <div className="w-10 h-10 rounded-full bg-blue-50 dark:bg-blue-900/20 flex items-center justify-center text-[#2563eb] dark:text-blue-400 shrink-0 mt-0.5 border border-blue-100 dark:border-blue-800/30">

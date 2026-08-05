@@ -4,7 +4,7 @@ function Footer() {
     return (
         <footer className="bg-white dark:bg-slate-950 border-t border-gray-150 dark:border-slate-800 pt-16 pb-8">
             <div className="max-w-[1300px] mx-auto px-4 sm:px-6">
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 mb-12">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
                     
                     {/* Brand Section */}
                     <div className="lg:col-span-2">
@@ -29,27 +29,7 @@ function Footer() {
                         </div>
                     </div>
 
-                    {/* Links Column 1 */}
-                    <div>
-                        <h4 className="font-bold text-gray-900 dark:text-white mb-4">Explore</h4>
-                        <ul className="space-y-3">
-                            <li><Link to="/" className="text-sm text-gray-500 dark:text-gray-400 hover:text-[#003B95] dark:hover:text-[#5DCAA5] transition-colors">Home</Link></li>
-                            <li><Link to="/explore" className="text-sm text-gray-500 dark:text-gray-400 hover:text-[#003B95] dark:hover:text-[#5DCAA5] transition-colors">Destinations</Link></li>
-                            <li><Link to="/explore" className="text-sm text-gray-500 dark:text-gray-400 hover:text-[#003B95] dark:hover:text-[#5DCAA5] transition-colors">Hotels</Link></li>
-                            <li><Link to="/offers" className="text-sm text-gray-500 dark:text-gray-400 hover:text-[#003B95] dark:hover:text-[#5DCAA5] transition-colors">Special Offers</Link></li>
-                        </ul>
-                    </div>
 
-                    {/* Links Column 2 */}
-                    <div>
-                        <h4 className="font-bold text-gray-900 dark:text-white mb-4">Company</h4>
-                        <ul className="space-y-3">
-                            <li><Link to="/about" className="text-sm text-gray-500 dark:text-gray-400 hover:text-[#003B95] dark:hover:text-[#5DCAA5] transition-colors">About Us</Link></li>
-                            <li><Link to="/careers" className="text-sm text-gray-500 dark:text-gray-400 hover:text-[#003B95] dark:hover:text-[#5DCAA5] transition-colors">Careers</Link></li>
-                            <li><Link to="/privacy" className="text-sm text-gray-500 dark:text-gray-400 hover:text-[#003B95] dark:hover:text-[#5DCAA5] transition-colors">Privacy Policy</Link></li>
-                            <li><Link to="/terms" className="text-sm text-gray-500 dark:text-gray-400 hover:text-[#003B95] dark:hover:text-[#5DCAA5] transition-colors">Terms of Service</Link></li>
-                        </ul>
-                    </div>
 
                     {/* Links Column 3 */}
                     <div>
